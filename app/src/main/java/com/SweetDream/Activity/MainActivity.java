@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
 
+    //Fragment fragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,31 +52,55 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
                 menuItem.setChecked(true);
                 mDrawerLayout.closeDrawers();
-
+                Fragment fragment = null;
                 switch (menuItem.getItemId()) {
-                    case R.id.navigation_item_myBooks:
-                        Intent intentMyBooks = new Intent(MainActivity.this, MyBookActivity.class);
-                        startActivity(intentMyBooks);
+                    case R.id.navigation_item_features:
+                        fragment = new FeaturePage();
                         break;
 
                     case R.id.navigation_item_favorites:
-                        Intent intentFavorites = new Intent(MainActivity.this, FavoritesActivity.class);
-                        startActivity(intentFavorites);
+                        fragment = new FavoritesActivity();
+                        break;
+
+                    case R.id.navigation_item_myBooks:
+                        fragment = new MyBookActivity();
                         break;
                 }
+                if (fragment != null) {
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.mainFrameLayout, fragment).commit();
 
+                    // update selected item and title, then close the drawer
 
+                } else {
+                    // error in creating fragment
+                    Log.e("UserActivity", "Error in creating fragment");
+                }
                 return true;
+
             }
         });
 
+        /*fragment = new FeaturePage();
+        if (fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.mainFrameLayout, fragment).commit();
 
+            // update selected item and title, then close the drawer
+
+        } else {
+            // error in creating fragment
+            Log.e("UserActivity", "Error in creating fragment");
+        }*/
         DesignDemoPagerAdapter adapter = new DesignDemoPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -116,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
             return fragment;
         }
 
-        @Nullable
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             Bundle args = getArguments();
@@ -185,5 +210,4 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
 }
