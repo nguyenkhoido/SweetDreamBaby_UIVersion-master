@@ -17,16 +17,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="com.SweetDream.Activity.MyBookActivity"
-            android:label="@string/header_my_books" >
-        </activity>
-
-        <activity
-            android:name="com.SweetDream.Activity.FavoritesActivity"
-            android:label="@string/header_favorites" >
-        </activity>
-
     </application>
 
 </manifest>

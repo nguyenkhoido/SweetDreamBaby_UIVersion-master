@@ -35,16 +35,26 @@
             android:layout_weight="1"
             android:gravity="center">
 
-            <!-- Textview Title-->
+            <!-- TextView Title-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Book Title" />
+                android:text="Book Title"
+                android:textColor="@color/primaryColor"
+                android:textSize="16dp"
+                android:textStyle="bold" />
             <!-- TextView Author-->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Author" />
+                android:text="Author"
+                android:textColor="@color/primaryColor"
+                android:textStyle="italic" />
+            <!-- TextView Price-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price" />
         </LinearLayout>
         <!-- Button Favorite-->
         <ImageButton
@@ -54,39 +64,11 @@
             android:src="@drawable/ic_love_disable_orange" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F7B84F"
-        android:layout_marginTop="40dp">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_play_black"
-            android:text="Play"
-            android:layout_weight="1"
-            android:id="@+id/btnPlay" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"></LinearLayout>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_download_black"
-
-            android:text="Download"
-            android:layout_weight="0.5" />
-
-    </LinearLayout>
-
     <RelativeLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
 
         <LinearLayout
@@ -95,7 +77,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="#F7B84F">
+            android:background="#F7B84F"
+            android:id="@+id/linearLayout2">
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -108,5 +91,47 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F7B84F"
+            android:layout_above="@+id/linearLayout2"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="5dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_play_black"
+                android:text="Play"
+                android:layout_weight="1"
+                android:id="@+id/btnPlay" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"></LinearLayout>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_download_black"
+
+                android:text="Download"
+                android:layout_weight="0.5" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Summaries Story Content......................................"
+            android:id="@+id/textView3"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:textSize="20dp" />
     </RelativeLayout>
 </LinearLayout>
