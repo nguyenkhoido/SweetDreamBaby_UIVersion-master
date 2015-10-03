@@ -2,7 +2,6 @@ package com.SweetDream.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -22,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.SweetDream.Adapter.FreeStoryAdapter;
 import com.SweetDream.Adapter.PaidStoryAdapter;
@@ -31,7 +31,7 @@ import com.SweetDream.R;
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-
+    Button btnLogin;
     //Fragment fragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +43,21 @@ public class MainActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+
+        btnLogin = (Button)findViewById(R.id.btnLogin);
+        btnLogin.setText("Login");
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(i);
+
+
+            }
+        });
+
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -65,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_item_myBooks:
                         fragment = new MyBookActivity();
                         break;
+                    case R.id.navigation_item_about:
+                        Intent i = new Intent(MainActivity.this,MyProfileActivity.class);
+                        startActivity(i);
                 }
                 if (fragment != null) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -82,18 +100,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*fragment = new FeaturePage();
-        if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.mainFrameLayout, fragment).commit();
-
-            // update selected item and title, then close the drawer
-
-        } else {
-            // error in creating fragment
-            Log.e("UserActivity", "Error in creating fragment");
-        }*/
         DesignDemoPagerAdapter adapter = new DesignDemoPagerAdapter(getSupportFragmentManager());
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
@@ -146,8 +152,7 @@ public class MainActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             Bundle args = getArguments();
             int tabPosition = args.getInt(TAB_POSITION);
-            //Set Layout For TabLayout
-            //View v =  inflater.inflate(R.layout.activity_main, container, false);
+
 
             if (tabPosition == 0) {
                 View free_story_layout = inflater.inflate(R.layout.free_story_tab, container, false);
@@ -189,9 +194,7 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             String title = "";
 
-            if (position == 0)
-
-            {
+            if (position == 0) {
                 title = "Free Story";
             }
 
