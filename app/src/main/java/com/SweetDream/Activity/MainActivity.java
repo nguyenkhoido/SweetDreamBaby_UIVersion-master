@@ -22,16 +22,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.SweetDream.Adapter.FreeStoryAdapter;
 import com.SweetDream.Adapter.PaidStoryAdapter;
 import com.SweetDream.R;
+import com.parse.ParseACL;
+import com.parse.ParseAnonymousUtils;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     Button btnLogin;
+    Button btnDetailAccount;
+    ImageButton btnLogOut;
+
     //Fragment fragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +53,52 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
 
-
-        btnLogin = (Button)findViewById(R.id.btnLogin);
+        final ParseUser currentUser = ParseUser.getCurrentUser();
+        btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setText("Login");
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this,LoginActivity.class);
-                startActivity(i);
 
-
+                loadLoginView();
             }
         });
+
+
+        btnDetailAccount = (Button) findViewById(R.id.btnDetailAccount);
+        btnLogOut = (ImageButton) findViewById(R.id.btnLogOut);
+
+        if (currentUser != null) {
+            btnLogin.setVisibility(View.GONE);
+            btnDetailAccount.setVisibility(View.VISIBLE);
+            btnDetailAccount.setText("" + currentUser.getUsername() + "\n" + currentUser.getEmail());
+            btnLogOut.setVisibility(View.VISIBLE);
+
+            //Phan dang nhap xong cho phep luu tru noi dung private bat ki cua user nay
+            /*ParseObject privateNote = new ParseObject("Note");
+            privateNote.put("content", "This note is private!");
+            privateNote.setACL(new ParseACL(ParseUser.getCurrentUser()));
+            privateNote.saveInBackground();*/
+
+            btnLogOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    ParseUser.logOut();
+
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
+
+                }
+            });
+        }
+        if (currentUser == null) {
+            btnLogin.setVisibility(View.VISIBLE);
+            btnDetailAccount.setVisibility(View.GONE);
+            btnLogOut.setVisibility(View.GONE);
+        }
 
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -81,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new MyBookActivity();
                         break;
                     case R.id.navigation_item_about:
-                        Intent i = new Intent(MainActivity.this,MyProfileActivity.class);
+                        Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
                         startActivity(i);
                 }
                 if (fragment != null) {
@@ -105,6 +147,11 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    private void loadLoginView() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
 
