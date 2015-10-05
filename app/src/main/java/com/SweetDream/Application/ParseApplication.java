@@ -19,8 +19,8 @@ public class ParseApplication extends Application {
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
         // Thu tu User dang ky
-        ParseUser.getCurrentUser().increment("RunCount");
-        ParseUser.getCurrentUser().saveInBackground();
+        //ParseUser.getCurrentUser().increment("RunCount");
+        //ParseUser.getCurrentUser().saveInBackground();
 
         // Thiet lap ACL mac dinh de bao mat thoi diem dang nhap cua 1 user
         ParseACL defaultACL = new ParseACL();

@@ -53,32 +53,64 @@ public class RegisterActivity extends AppCompatActivity {
                 mPass = pass.getText().toString();
                 mConfirmPass = confirmPass.getText().toString();
 
-                ParseUser user = new ParseUser();
-                user.setUsername(mUsername);
-                user.put("phone", mPhone);
-                user.setPassword(mPass);
-                user.setEmail(mEmail);
+                String alert = "";
+                if (mUsername.equalsIgnoreCase("")) {
+                    alert = "Please input Username";
+                } else if (mUsername.length() <= 4) {
+                    alert = "Please input Username at least 4 character";
+                } else if (mUsername.length() > 20) {
+                    alert = "Please input Username no more 20 character";
+                } else if (mEmail.equalsIgnoreCase("")) {
+                    alert = "Please input Email";
+                } else if (mPass.equalsIgnoreCase("")) {
+                    alert = "Please input Password";
+                } else if (mConfirmPass.equalsIgnoreCase("")) {
+                    alert = "Please input Confirm Password";
+                } else if (!mPass.equals(mConfirmPass)) {
+                    alert = "Please input Password equal Confirm Password";
+                }
 
-                user.signUpInBackground(new SignUpCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            //
-                            Toast.makeText(RegisterActivity.this, "Sign Up Success", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                        } else {
-                            //Call error
-                            AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
-                            builder.setMessage(e.getMessage())
-                                    .setTitle("Register Fail")
-                                    .setPositiveButton(android.R.string.ok, null);
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
-                    }
-                });
+                if (!alert.equalsIgnoreCase("")) {
+                    //Call error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage(alert)
+                            .setTitle("Register State")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    Register();
+                }
 
+
+            }
+        });
+    }
+
+    private void Register() {
+        ParseUser user = new ParseUser();
+        user.setUsername(mUsername);
+        user.put("phone", mPhone);
+        user.setPassword(mPass);
+        user.setEmail(mEmail);
+
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    //
+                    Toast.makeText(RegisterActivity.this, "Sign Up Success", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                } else {
+                    //Call error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setTitle("Register Fail")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
     }
