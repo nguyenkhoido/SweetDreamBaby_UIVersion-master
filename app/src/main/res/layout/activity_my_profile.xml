@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="com.SweetDream.Activity.MyProfileActivity"
-    android:padding="20dp"
-    android:background="@drawable/headerimg1">
+    android:padding="20dp">
 
 
     <LinearLayout
@@ -16,39 +15,27 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Username"
-            android:drawableLeft="@drawable/ic_user_white"
+            android:drawableLeft="@drawable/ic_user_black"
             android:layout_marginTop="10dp"
-            android:editable="false"
-            android:textColorHint="@color/white"
-            android:id="@+id/edtUserNameProfile"
-            android:inputType="text" />
+            android:editable="false"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Email"
-            android:drawableLeft="@drawable/ic_email_white"
+            android:drawableLeft="@drawable/ic_email_black"
             android:layout_marginTop="10dp"
-            android:editable="false"
-            android:textColorHint="@color/white"
-            android:id="@+id/edtEmailProfile"
-            android:inputType="textEmailAddress" />
+            android:editable="false"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Phone Number"
-            android:drawableLeft="@drawable/ic_phone_white"
+            android:drawableLeft="@drawable/ic_phone_black"
             android:layout_marginTop="10dp"
-            android:editable="false"
-            android:textColorHint="@color/white"
-            android:id="@+id/edtPhoneProfile"
-            android:inputType="phone" />
+            android:editable="false"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Coin"
-            android:drawableLeft="@drawable/ic_coin_white"
+            android:drawableLeft="@drawable/ic_coin_black"
             android:layout_marginTop="10dp"
-            android:editable="false"
-            android:textColorHint="@color/white"
-            android:id="@+id/edtCoinProfile"
-            android:inputType="number" />
+            android:editable="false"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,8 +49,7 @@
             android:text="Update Account Information"
             android:textColor="@color/white"
             android:background="#0E69E5"
-            android:layout_marginBottom="5dp"
-            android:id="@+id/btnUpdateAccInfor" />
+            android:layout_marginBottom="5dp" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
