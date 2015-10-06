@@ -67,7 +67,7 @@
             android:background="#0E69E5"
             android:layout_marginRight="5dp"/>
         <Button
-            android:id="@+id/edtReset"
+            android:id="@+id/btnResetRg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -89,5 +89,6 @@
         android:layout_height="wrap_content"
         android:text="Login to use our service better"
         android:textColor="@color/white"
-        android:background="#0E69E5"/>
+        android:background="#0E69E5"
+        android:id="@+id/btnBackLogin" />
 </LinearLayout>
