@@ -39,7 +39,7 @@
         <activity
             android:name=".Activity.GetCoinActivity"
             android:label="@string/title_activity_get_coin"
-            android:theme="@style/SweetDreamThemeActionBar">
+            android:theme="@style/SweetDreamThemeActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.MyProfileActivity" />
@@ -51,6 +51,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.UpdateAccountInformationActivity"
+            android:label="@string/title_activity_update_account_information"
+            android:theme="@style/SweetDreamThemeActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.SweetDream.Activity.MyProfileActivity" />
         </activity>
     </application>
 
