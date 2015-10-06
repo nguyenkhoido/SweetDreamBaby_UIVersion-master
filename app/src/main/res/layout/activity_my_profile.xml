@@ -13,24 +13,28 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <EditText
+            android:id="@+id/ifUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Username"
             android:drawableLeft="@drawable/ic_user_black"
             android:layout_marginTop="10dp"
             android:editable="false"/>
         <EditText
+            android:id="@+id/ifEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Email"
             android:drawableLeft="@drawable/ic_email_black"
             android:layout_marginTop="10dp"
             android:editable="false"/>
         <EditText
+            android:id="@+id/ifPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Phone Number"
             android:drawableLeft="@drawable/ic_phone_black"
             android:layout_marginTop="10dp"
             android:editable="false"/>
         <EditText
+            android:id="@+id/ifCoin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Coin"
             android:drawableLeft="@drawable/ic_coin_black"
@@ -49,7 +53,8 @@
             android:text="Update Account Information"
             android:textColor="@color/white"
             android:background="#0E69E5"
-            android:layout_marginBottom="5dp" />
+            android:layout_marginBottom="5dp"
+            android:id="@+id/btnUpdateAccount" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
