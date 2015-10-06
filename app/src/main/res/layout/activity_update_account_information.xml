@@ -84,13 +84,23 @@
                 android:id="@+id/txtChangePassword" />
 
             <Button
-                android:id="@+id/btnUpdateAccInfor"
+                android:id="@+id/btnUpdateNamePhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/ColorPrimary"
+                android:text="Update"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btnUpdateAll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="#0E69E5"
                 android:text="Update"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btnCancel"

@@ -22,14 +22,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.SweetDream.Adapter.FreeStoryAdapter;
 import com.SweetDream.Adapter.PaidStoryAdapter;
 import com.SweetDream.R;
-import com.parse.ParseACL;
-import com.parse.ParseAnonymousUtils;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 
@@ -39,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button btnLogin;
     Button btnDetailAccount;
     ImageButton btnLogOut;
-
+    EditText edtUserName, edtPhone, edtEmail, edtCoin;
     //Fragment fragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        /*edtUserName =(EditText)findViewById(R.id.edtUserNameProfile);
+        edtPhone =(EditText)findViewById(R.id.edtUserNameProfile);
+        edtEmail =(EditText)findViewById(R.id.edtUserNameProfile);
+        edtCoin =(EditText)findViewById(R.id.edtUserNameProfile);*/
 
         final ParseUser currentUser = ParseUser.getCurrentUser();
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -73,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
             btnLogin.setVisibility(View.GONE);
             btnDetailAccount.setVisibility(View.VISIBLE);
             btnDetailAccount.setText("" + currentUser.getUsername() + "\n" + currentUser.getEmail());
+            btnDetailAccount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
+                    startActivity(i);
+                }
+            });
+
             btnLogOut.setVisibility(View.VISIBLE);
 
             //Phan dang nhap xong cho phep luu tru noi dung private bat ki cua user nay
@@ -122,9 +132,8 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_item_myBooks:
                         fragment = new MyBookActivity();
                         break;
-                    case R.id.navigation_item_about:
-                        Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
-                        startActivity(i);
+
+
                 }
                 if (fragment != null) {
                     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -152,8 +161,8 @@ public class MainActivity extends AppCompatActivity {
     private void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-    }
 
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

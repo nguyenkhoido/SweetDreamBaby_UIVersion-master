@@ -11,11 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.SweetDream.R;
+import com.parse.ParseUser;
 
 public class MyProfileActivity extends AppCompatActivity {
     Button btnGetCoin, btnUpdateAccount;
     EditText edtUserName, edtPhone, edtEmail, edtCoin;
-
+    ParseUser currentUser = ParseUser.getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,10 +26,37 @@ public class MyProfileActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+
+
         edtUserName = (EditText)findViewById(R.id.edtUserNameProfile);
         edtEmail = (EditText)findViewById(R.id.edtEmailProfile);
         edtPhone = (EditText)findViewById(R.id.edtPhoneProfile);
         edtCoin = (EditText)findViewById(R.id.edtCoinProfile);
+
+
+        /*ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.whereEqualTo("phone","sweet dream");
+        query.findInBackground(new FindCallback<ParseUser>() {
+            public void done(List<ParseUser> objects, ParseException e) {
+                if (e == null) {
+                    // The query was successful.
+                } else {
+                    // Something went wrong.
+                }
+            }
+        });*/
+        edtUserName.setText(currentUser.getUsername());
+        edtEmail.setText(currentUser.getEmail());
+
+        String phone = currentUser.getString("phone");
+
+        if(phone.equals("")){
+            edtPhone.setText("Update Later!");
+        }
+        else{
+            edtPhone.setText(phone);
+        }
+        edtCoin.setText(String.valueOf(currentUser.getNumber("coin")));
 
         btnGetCoin = (Button) findViewById(R.id.btnGetCoin);
         btnUpdateAccount = (Button) findViewById(R.id.btnUpdateAccInfor);

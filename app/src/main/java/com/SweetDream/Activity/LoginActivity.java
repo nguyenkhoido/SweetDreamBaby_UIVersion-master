@@ -10,13 +10,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.SweetDream.R;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
-
-import java.text.ParseException;
 
 public class LoginActivity extends AppCompatActivity {
     Button btnRegister;
@@ -56,12 +53,14 @@ public class LoginActivity extends AppCompatActivity {
                     public void done(ParseUser user, com.parse.ParseException e) {
                         if (user != null) {
                             //Success
-                            Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            /*Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);*/
 
                             //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
+                            /*startActivity(intent);*/
+
+                            onBackPressed();
                         } else {
                             // Fail
                             AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -78,6 +77,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    public void onBackPressed() {
+        Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+        startActivity(myIntent);
+        finish();
+        return;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

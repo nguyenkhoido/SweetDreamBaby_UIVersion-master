@@ -1,28 +1,37 @@
 package com.SweetDream.Activity;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.SweetDream.R;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class UpdateAccountInformationActivity extends AppCompatActivity {
     TextView txtChangePass;
-
-    Button btnUpdate, btnCancel;
+    String txtUser, txtPhone, txtOldPass, txtNewPass, txtConfirmPass;
+    Button btnUpdateNamePhone, btnUpdateAll, btnCancel;
     EditText edtUserName, edtPhone, edtOldPass, edtNewPass, edtConfirmPass;
+    ParseUser user = ParseUser.getCurrentUser();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_account_information);
 
-        btnUpdate = (Button) findViewById(R.id.btnUpdateAccInfor);
+        btnUpdateNamePhone = (Button) findViewById(R.id.btnUpdateNamePhone);
+        btnUpdateAll = (Button) findViewById(R.id.btnUpdateAll);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         edtUserName = (EditText) findViewById(R.id.edtUsernameUAI);
         edtPhone = (EditText) findViewById(R.id.edtPhoneUAI);
@@ -30,11 +39,15 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
         edtNewPass = (EditText) findViewById(R.id.edtPasswordUAI);
         edtConfirmPass = (EditText) findViewById(R.id.edtConfirmPasswordUAI);
 
+        edtUserName.setText(user.getUsername());
+        edtPhone.setText(user.getString("phone"));
 
         txtChangePass = (TextView) findViewById(R.id.txtChangePassword);
         txtChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnUpdateNamePhone.setVisibility(View.GONE);
+                btnUpdateAll.setVisibility(View.VISIBLE);
                 txtChangePass.setVisibility(View.GONE);
                 edtOldPass.setVisibility(View.VISIBLE);
                 edtNewPass.setVisibility(View.VISIBLE);
@@ -44,15 +57,157 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btnUpdateNamePhone.setVisibility(View.VISIBLE);
+                btnUpdateAll.setVisibility(View.GONE);
                 edtOldPass.setVisibility(View.GONE);
                 edtNewPass.setVisibility(View.GONE);
                 edtConfirmPass.setVisibility(View.GONE);
                 txtChangePass.setVisibility(View.VISIBLE);
-                edtUserName.setText("");
-                edtPhone.setText("");
+                //edtUserName.setText("");
+                //edtPhone.setText("");
                 edtOldPass.setText("");
                 edtNewPass.setText("");
                 edtConfirmPass.setText("");
+            }
+        });
+        //Update UserName when txtChangePass.-----------------------------------------------
+
+        btnUpdateNamePhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Get Value in EditText
+
+                txtUser = edtUserName.getText().toString();
+                txtPhone = edtPhone.getText().toString();
+                // txtOldPass = edtOldPass.getText().toString();
+                // txtNewPass = edtNewPass.getText().toString();
+                // txtConfirmPass = edtConfirmPass.getText().toString();
+                //Check Error EditText
+
+                String alert = "";
+                if (txtUser.equalsIgnoreCase("")) {
+                    alert = "Please input Username";
+                } else if (txtUser.length() <= 4) {
+                    alert = "Please input Username at least 4 character";
+                } else if (txtUser.length() > 20) {
+                    alert = "Please input Username no more 20 character";
+                } else {
+                    UpdateAccount();
+                }
+                if (!alert.equalsIgnoreCase("")) {
+                    //Call error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
+                    builder.setMessage(alert)
+                            .setTitle("Update State")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                //Process UpdateAccount()
+
+
+            }
+        });
+        //Update Alll.--------------------------------------------------------------------
+        btnUpdateAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Get Value in EditText
+                txtUser = edtUserName.getText().toString();
+                txtPhone = edtPhone.getText().toString();
+                txtOldPass = edtOldPass.getText().toString();
+                txtNewPass = edtNewPass.getText().toString();
+                txtConfirmPass = edtConfirmPass.getText().toString();
+
+
+                //Check Error EditText
+                String alert = "";
+                if (txtUser.equalsIgnoreCase("")) {
+                    alert = "Please input Username";
+                } else if (txtUser.length() <= 4) {
+                    alert = "Please input Username at least 4 character";
+                } else if (txtUser.length() > 20) {
+                    alert = "Please input Username no more 20 character";
+                } else if (txtOldPass.equalsIgnoreCase("")) {
+                    alert = "Please input Old Password";
+                } else if (txtNewPass.equalsIgnoreCase("")) {
+                    alert = "Please input New Password";
+                } else if (txtConfirmPass.equalsIgnoreCase("")) {
+                    alert = "Please input Confirm Password";
+                } else if (!txtNewPass.equals(txtConfirmPass)) {
+                    alert = "Please input Password equal Confirm Password";
+                } else {
+                    UpdateAccount1();
+                }
+                //Process UpdateAccount()
+                if (!alert.equalsIgnoreCase("")) {
+                    //Call error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
+                    builder.setMessage(alert)
+                            .setTitle("Update State")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+
+        });
+    }
+
+
+    //Update username and phone
+    void UpdateAccount() {
+        //updater username
+        user.setUsername(txtUser);
+        //updater phonenumber
+        user.put("phone", txtPhone);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+
+                    Toast.makeText(UpdateAccountInformationActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
+                    Intent myIntent = new Intent(UpdateAccountInformationActivity.this, MyProfileActivity.class);
+                    myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                    startActivity(myIntent);
+                    finish();
+                } else {
+                    //Call error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setTitle("Update State")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+        });
+    }
+
+    //Update Password User
+    void UpdateAccount1() {
+
+        user.setPassword(txtNewPass);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+
+                    Toast.makeText(UpdateAccountInformationActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
+                    Intent myIntent = new Intent(UpdateAccountInformationActivity.this, MyProfileActivity.class);
+                    myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                    startActivity(myIntent);
+                    finish();
+                } else {
+                    //Call error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setTitle("Update State")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         });
     }

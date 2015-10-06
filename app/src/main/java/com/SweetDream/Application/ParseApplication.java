@@ -17,6 +17,7 @@ public class ParseApplication extends Application {
         Parse.initialize(this, "e7sgVQA7cLjKIT0x56W3h5VZFPDbVy3Hl7iPEdiA", "pS4yCy20nxKhmBtFJYeHf1z6oBNuwB9lZPxp9bt6");
         ParseInstallation.getCurrentInstallation().saveInBackground();
 
+
         // Thu tu User dang ky
         //ParseUser.getCurrentUser().increment("RunCount");
         //ParseUser.getCurrentUser().saveInBackground();
@@ -26,7 +27,7 @@ public class ParseApplication extends Application {
 
         // If you would like all objects to be private by default, remove this
         // line.
-        defaultACL.setPublicReadAccess(false);
+        defaultACL.setPublicReadAccess(true);
 
         ParseACL.setDefaultACL(defaultACL, true);
     }
