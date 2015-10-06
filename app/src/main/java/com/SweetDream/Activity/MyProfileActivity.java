@@ -8,11 +8,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.SweetDream.R;
 
 public class MyProfileActivity extends AppCompatActivity {
-Button btnGetCoin;
+    Button btnGetCoin, btnUpdateAccount;
+    EditText edtUserName, edtPhone, edtEmail, edtCoin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +25,26 @@ Button btnGetCoin;
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        btnGetCoin = (Button)findViewById(R.id.btnGetCoin);
+        edtUserName = (EditText)findViewById(R.id.edtUserNameProfile);
+        edtEmail = (EditText)findViewById(R.id.edtEmailProfile);
+        edtPhone = (EditText)findViewById(R.id.edtPhoneProfile);
+        edtCoin = (EditText)findViewById(R.id.edtCoinProfile);
+
+        btnGetCoin = (Button) findViewById(R.id.btnGetCoin);
+        btnUpdateAccount = (Button) findViewById(R.id.btnUpdateAccInfor);
         btnGetCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent getCoin = new Intent(MyProfileActivity.this, GetCoinActivity.class);
                 startActivity(getCoin);
+            }
+        });
+
+        btnUpdateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent updateAccount = new Intent(MyProfileActivity.this, UpdateAccountInformationActivity.class);
+                startActivity(updateAccount);
             }
         });
     }
