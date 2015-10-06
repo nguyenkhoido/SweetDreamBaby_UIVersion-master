@@ -4,15 +4,57 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.SweetDream.R;
 
 public class UpdateAccountInformationActivity extends AppCompatActivity {
+    TextView txtChangePass;
+
+    Button btnUpdate, btnCancel;
+    EditText edtUserName, edtPhone, edtOldPass, edtNewPass, edtConfirmPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_account_information);
+
+        btnUpdate = (Button) findViewById(R.id.btnUpdateAccInfor);
+        btnCancel = (Button) findViewById(R.id.btnCancel);
+        edtUserName = (EditText) findViewById(R.id.edtUsernameUAI);
+        edtPhone = (EditText) findViewById(R.id.edtPhoneUAI);
+        edtOldPass = (EditText) findViewById(R.id.edtOldPasswordUAI);
+        edtNewPass = (EditText) findViewById(R.id.edtPasswordUAI);
+        edtConfirmPass = (EditText) findViewById(R.id.edtConfirmPasswordUAI);
+
+
+        txtChangePass = (TextView) findViewById(R.id.txtChangePassword);
+        txtChangePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtChangePass.setVisibility(View.GONE);
+                edtOldPass.setVisibility(View.VISIBLE);
+                edtNewPass.setVisibility(View.VISIBLE);
+                edtConfirmPass.setVisibility(View.VISIBLE);
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edtOldPass.setVisibility(View.GONE);
+                edtNewPass.setVisibility(View.GONE);
+                edtConfirmPass.setVisibility(View.GONE);
+                txtChangePass.setVisibility(View.VISIBLE);
+                edtUserName.setText("");
+                edtPhone.setText("");
+                edtOldPass.setText("");
+                edtNewPass.setText("");
+                edtConfirmPass.setText("");
+            }
+        });
     }
 
     @Override
