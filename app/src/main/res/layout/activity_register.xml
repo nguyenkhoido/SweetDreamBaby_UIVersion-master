@@ -17,35 +17,40 @@
         android:layout_height="wrap_content" android:hint="Username"
         android:drawableLeft="@drawable/ic_user_white"
         android:textColorHint="@color/white"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:inputType="text" />
         <EditText
             android:id="@+id/edtEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Email"
             android:drawableLeft="@drawable/ic_email_white"
             android:textColorHint="@color/white"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:inputType="textEmailAddress" />
         <EditText
             android:id="@+id/edtPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Phone Number"
             android:drawableLeft="@drawable/ic_phone_white"
             android:textColorHint="@color/white"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:inputType="phone" />
         <EditText
             android:id="@+id/edtPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Password"
             android:drawableLeft="@drawable/ic_password_white"
             android:textColorHint="@color/white"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:inputType="textPassword" />
         <EditText
             android:id="@+id/edtConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" android:hint="Confirm Password"
             android:drawableLeft="@drawable/ic_password_white"
             android:textColorHint="@color/white"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:inputType="textPassword" />
 
     </LinearLayout>
     <LinearLayout

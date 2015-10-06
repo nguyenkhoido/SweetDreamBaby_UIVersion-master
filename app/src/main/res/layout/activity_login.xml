@@ -86,7 +86,8 @@
         android:textColorLink="@color/white"
         android:textColorHighlight="@color/white"
         android:drawableLeft="@drawable/ic_user_white"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/edtPassword"
@@ -98,7 +99,8 @@
         android:textColorLink="@color/white"
         android:textColorHighlight="@color/white"
         android:drawableLeft="@drawable/ic_password_white"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:inputType="textPassword" />
 
     <CheckBox
         android:id="@+id/ckbRem"

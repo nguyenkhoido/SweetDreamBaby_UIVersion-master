@@ -5,7 +5,6 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseInstallation;
-import com.parse.ParseUser;
 
 /**
  * Created by Minh Color on 10/5/2015.
@@ -27,7 +26,7 @@ public class ParseApplication extends Application {
 
         // If you would like all objects to be private by default, remove this
         // line.
-        defaultACL.setPublicReadAccess(true);
+        defaultACL.setPublicReadAccess(false);
 
         ParseACL.setDefaultACL(defaultACL, true);
     }
