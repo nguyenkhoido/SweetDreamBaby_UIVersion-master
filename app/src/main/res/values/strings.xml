@@ -1,4 +1,5 @@
 <resources>
+    <string name="offer_share_via">Share app</string>
     <string name="app_name">Sweet Dream</string>
     <string name="header_my_books">My Books</string>
     <string name="header_favorites">Favorites</string>

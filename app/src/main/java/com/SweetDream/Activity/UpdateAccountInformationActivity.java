@@ -28,7 +28,8 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
     EditText edtUserName, edtPhone, edtOldPass, edtNewPass, edtConfirmPass;
     ParseUser user = ParseUser.getCurrentUser();
 
-
+    boolean checkOldPass = true;
+    List<ParseException> exceptionList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +43,101 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
         edtOldPass = (EditText) findViewById(R.id.edtOldPasswordUAI);
         edtNewPass = (EditText) findViewById(R.id.edtPasswordUAI);
         edtConfirmPass = (EditText) findViewById(R.id.edtConfirmPasswordUAI);
+        txtChangePass = (TextView) findViewById(R.id.txtChangePassword);
 
         edtUserName.setText(user.getUsername());
         edtPhone.setText(user.getString("phone"));
 
-        txtChangePass = (TextView) findViewById(R.id.txtChangePassword);
+
+        //Update UserName when txtChangePass.-----------------------------------------------
+
+        btnUpdateNamePhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Get Value in EditText
+
+                txtUser = edtUserName.getText().toString();
+                txtPhone = edtPhone.getText().toString();
+                // txtOldPass = edtOldPass.getText().toString();
+                // txtNewPass = edtNewPass.getText().toString();
+                // txtConfirmPass = edtConfirmPass.getText().toString();
+                //Check Error EditText
+
+                String alert = "";
+                if (txtUser.equalsIgnoreCase("")) {
+                    alert = "Please input Username";
+                } else if (txtUser.length() < 4) {
+                    alert = "Please input Username at least 4 character";
+                } else if (txtUser.length() > 20) {
+                    alert = "Please input Username no more 20 character";
+                } else {
+                    UpdateAccount();
+                }
+                //Process UpdateAccount()
+                if (!alert.equalsIgnoreCase("")) {
+                    //Call error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
+                    builder.setMessage(alert)
+                            .setTitle("Update State")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+
+
+
+            }
+        });
+        //Update Alll.--------------------------------------------------------------------
+        btnUpdateAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                //Get Value in EditText
+                txtUser = edtUserName.getText().toString();
+                txtPhone = edtPhone.getText().toString();
+                txtOldPass = edtOldPass.getText().toString();
+                txtNewPass = edtNewPass.getText().toString();
+                txtConfirmPass = edtConfirmPass.getText().toString();
+
+                //Toast.makeText(UpdateAccountInformationActivity.this, error[0], Toast.LENGTH_LONG).show();
+                //Check Validation
+                String alert = "";
+                if (txtUser.equalsIgnoreCase("")) {
+                    alert = "Please input Username";
+                } else if (txtUser.length() <= 4) {
+                    alert = "Please input Username at least 4 character";
+                } else if (txtUser.length() > 20) {
+                    alert = "Please input Username no more 20 character";
+                } else if (txtOldPass.equalsIgnoreCase("")) {
+                    alert = "Please input Old Password";
+                } else if (checkOldPassword(txtOldPass) == false) {
+                    alert = "Wrong Old Password";
+                    //Toast.makeText(UpdateAccountInformationActivity.this, "Wrong Old Password", Toast.LENGTH_LONG).show();
+
+                } else if (txtNewPass.equalsIgnoreCase("")) {
+                    alert = "Please input New Password";
+                } else if (txtConfirmPass.equalsIgnoreCase("")) {
+                    alert = "Please input Confirm Password";
+                } else if (!txtNewPass.equals(txtConfirmPass)) {
+                    alert = "Please input Password equal Confirm Password";
+                } else {
+
+                    UpdateAccount1();
+                }
+                //Process UpdateAccount()
+                if (!alert.equalsIgnoreCase("")) {
+                    //Call error
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
+                    builder.setMessage(alert)
+                            .setTitle("Update State")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+
+        });
         txtChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,110 +165,23 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
                 edtConfirmPass.setText("");
             }
         });
-        //Update UserName when txtChangePass.-----------------------------------------------
-
-        btnUpdateNamePhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Get Value in EditText
-
-                txtUser = edtUserName.getText().toString();
-                txtPhone = edtPhone.getText().toString();
-                // txtOldPass = edtOldPass.getText().toString();
-                // txtNewPass = edtNewPass.getText().toString();
-                // txtConfirmPass = edtConfirmPass.getText().toString();
-                //Check Error EditText
-
-                String alert = "";
-                if (txtUser.equalsIgnoreCase("")) {
-                    alert = "Please input Username";
-                } else if (txtUser.length() <= 4) {
-                    alert = "Please input Username at least 4 character";
-                } else if (txtUser.length() > 20) {
-                    alert = "Please input Username no more 20 character";
-                } else {
-                    UpdateAccount();
-                }
-                if (!alert.equalsIgnoreCase("")) {
-                    //Call error
-                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
-                    builder.setMessage(alert)
-                            .setTitle("Update State")
-                            .setPositiveButton(android.R.string.ok, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-                //Process UpdateAccount()
-
-
-            }
-        });
-        //Update Alll.--------------------------------------------------------------------
-        btnUpdateAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Get Value in EditText
-                txtUser = edtUserName.getText().toString();
-                txtPhone = edtPhone.getText().toString();
-                txtOldPass = edtOldPass.getText().toString();
-                txtNewPass = edtNewPass.getText().toString();
-                txtConfirmPass = edtConfirmPass.getText().toString();
-
-
-                //Toast.makeText(UpdateAccountInformationActivity.this, error[0], Toast.LENGTH_LONG).show();
-                //Check Error EditText
-                String alert = "";
-                if (txtUser.equalsIgnoreCase("")) {
-                    alert = "Please input Username";
-                } else if (txtUser.length() <= 4) {
-                    alert = "Please input Username at least 4 character";
-                } else if (txtUser.length() > 20) {
-                    alert = "Please input Username no more 20 character";
-                } else if (txtOldPass.equalsIgnoreCase("")) {
-                    alert = "Please input Old Password";
-                } else if (!checkOldPass(txtOldPass)) {
-                    alert = "Wrong Old Password";
-                } else if (txtNewPass.equalsIgnoreCase("")) {
-                    alert = "Please input New Password";
-                } else if (txtConfirmPass.equalsIgnoreCase("")) {
-                    alert = "Please input Confirm Password";
-                } else if (!txtNewPass.equals(txtConfirmPass)) {
-                    alert = "Please input Password equal Confirm Password";
-                } else {
-                    UpdateAccount1();
-                }
-                //Process UpdateAccount()
-                if (!alert.equalsIgnoreCase("")) {
-                    //Call error
-                    AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
-                    builder.setMessage(alert)
-                            .setTitle("Update State")
-                            .setPositiveButton(android.R.string.ok, null);
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            }
-
-        });
     }
 
 
     // check Login old password
-    boolean checkOldPass(String oldPass) {
-        final List<String> exceptionList = new ArrayList<>();
+    boolean checkOldPassword(String oldPass) {
+
         ParseUser.logInInBackground(ParseUser.getCurrentUser().getUsername(), oldPass, new LogInCallback() {
             public void done(ParseUser user, ParseException e) {
-                if (user != null) {
-                    // Hooray! The password is correct
-                } else {
-                    // The password was incorrect
-                    exceptionList.add(e.getMessage());
-                }
+                // Hooray! The password is correct
+// The password was incorrect
+                checkOldPass = user != null;
+                Toast.makeText(UpdateAccountInformationActivity.this, "" + checkOldPass, Toast.LENGTH_SHORT).show();//true
+
             }
         });
-        Toast.makeText(this, "" + exceptionList.size(), Toast.LENGTH_LONG).show();
-        return exceptionList.size() <= 0;
+
+        return checkOldPass;
     }
 
     //Update username and phone

@@ -102,7 +102,19 @@
         android:textColor="@color/white"
         android:inputType="textPassword" />
 
-    <CheckBox
+    <TextView
+        android:id="@+id/txtForgotPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="Forgot password, click here?"
+        android:clickable="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/white"
+        android:textSize="18dp"
+        android:textIsSelectable="true" />
+    <!--<CheckBox
         android:id="@+id/ckbRem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,7 +122,7 @@
         android:layout_marginTop="10dp"
         android:checked="false"
         android:text="Remember me?"
-        android:textColor="@color/white" />
+        android:textColor="@color/white" />-->
 
     <LinearLayout
         android:layout_width="match_parent"
