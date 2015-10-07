@@ -1,5 +1,7 @@
 package com.SweetDream.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.SweetDream.Activity.StoryDetails;
 import com.SweetDream.Model.ItemsBook;
 import com.SweetDream.R;
 
@@ -62,13 +65,13 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
         viewHolder.txtType.setText(item.getTypeBook());
         viewHolder.imgFreeStory.setImageResource(item.getImage());
 
-        /*viewHolder.imgFreeStory.setOnClickListener(new View.OnClickListener() {
+        viewHolder.imgFreeStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                context.startActivity(new Intent(context,MyBookActivity.class));
+                context.startActivity(new Intent(context,StoryDetails.class));
             }
-        });*/
+        });
     }
 
     @Override

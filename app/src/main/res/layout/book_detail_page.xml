@@ -120,7 +120,8 @@
                 android:drawableLeft="@drawable/ic_download_black"
 
                 android:text="Download"
-                android:layout_weight="0.5" />
+                android:layout_weight="0.5"
+                android:id="@+id/btnDownload" />
 
         </LinearLayout>
 

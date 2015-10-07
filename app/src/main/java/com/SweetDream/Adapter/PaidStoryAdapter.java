@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.SweetDream.Activity.MyBookActivity;
+import com.SweetDream.Activity.StoryDetails;
 import com.SweetDream.Model.ItemsBook;
 import com.SweetDream.R;
 
@@ -66,7 +66,7 @@ public class PaidStoryAdapter extends RecyclerView.Adapter<PaidStoryAdapter.View
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                context.startActivity(new Intent(context, MyBookActivity.class));
+                context.startActivity(new Intent(context, StoryDetails.class));
             }
         });
     }

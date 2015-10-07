@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.SweetDream.R;
@@ -32,21 +33,23 @@ public class RegisterActivity extends AppCompatActivity {
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        //Call id in Layout
+        ScrollView scrView = (ScrollView)findViewById(R.id.scrViewRegister);
+        scrView.setVerticalScrollBarEnabled(false);
+        username = (EditText) findViewById(R.id.edtUsername);
+        email = (EditText) findViewById(R.id.edtEmail);
+        phone = (EditText) findViewById(R.id.edtPhone);
+        pass = (EditText) findViewById(R.id.edtPassword);
+        confirmPass = (EditText) findViewById(R.id.edtConfirmPassword);
+
         // Use parse to test recive data
         // thong ke lai nguoi dung dang ky
         ParseAnalytics.trackAppOpened(getIntent());
-
+        Button btnReset = (Button)findViewById(R.id.btnResetRg);
         Button signup = (Button) findViewById(R.id.btnRegister);
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                username = (EditText) findViewById(R.id.edtUsername);
-                email = (EditText) findViewById(R.id.edtEmail);
-                phone = (EditText) findViewById(R.id.edtPhone);
-                pass = (EditText) findViewById(R.id.edtPassword);
-                confirmPass = (EditText) findViewById(R.id.edtConfirmPassword);
-
 
                 mUsername = username.getText().toString();
                 mEmail = email.getText().toString();
@@ -86,7 +89,21 @@ public class RegisterActivity extends AppCompatActivity {
 
             }
         });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                username.setText("");
+                email.setText("");
+                phone.setText("");
+                pass.setText("");
+                confirmPass.setText("");
+            }
+        });
     }
+
+
+
 
     private void Register() {
         ParseUser user = new ParseUser();
@@ -102,8 +119,9 @@ public class RegisterActivity extends AppCompatActivity {
                 if (e == null) {
                     //
                     Toast.makeText(RegisterActivity.this, "Sign Up Success", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     //Call error
                     AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);

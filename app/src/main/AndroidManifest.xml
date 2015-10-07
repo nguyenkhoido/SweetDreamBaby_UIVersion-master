@@ -55,10 +55,27 @@
         <activity
             android:name=".Activity.UpdateAccountInformationActivity"
             android:label="@string/title_activity_update_account_information"
-            android:theme="@style/SweetDreamThemeActionBar">
+            android:theme="@style/SweetDreamThemeActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.MyProfileActivity" />
+        </activity>
+        <activity
+            android:name=".Activity.StoryDetails"
+            android:label="@string/title_activity_story_details"
+            android:theme="@style/SweetDreamThemeActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.SweetDream.Activity.MainActivity" />
+        </activity>
+
+        <activity
+            android:name=".Activity.PlayingPage"
+            android:label="@string/title_activity_playing_page"
+            android:theme="@style/SweetDreamThemeActionBar" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.SweetDream.Activity.MainActivity" />
         </activity>
     </application>
 

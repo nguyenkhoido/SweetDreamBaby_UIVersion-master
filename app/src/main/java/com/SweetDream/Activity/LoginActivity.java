@@ -4,29 +4,25 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SweetDream.R;
 import com.parse.LogInCallback;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
-
-import java.net.URI;
-
-import com.parse.ParseException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
-    Button btnRegister;
+    Button btnRegister, btnReset;
     EditText username, pass;
     String mUsername, mPass;
     TextView forgotPass;
@@ -51,8 +47,15 @@ public class LoginActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_back);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        ScrollView scrV = (ScrollView) findViewById(R.id.scrViewLogin);
+        scrV.setVerticalScrollBarEnabled(false);
+        //Call id in Layout
+        username = (EditText) findViewById(R.id.edtUsername);
+        pass = (EditText) findViewById(R.id.edtPassword);
+        btnReset = (Button) findViewById(R.id.btnResetLgLayout);
+        forgotPass = (Button) findViewById(R.id.btnForgotPass);
         btnRegister = (Button) findViewById(R.id.btnRegister);
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,26 +64,39 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        forgotPass = (TextView) findViewById(R.id.txtForgotPass);
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                username.setText("");
+                pass.setText("");
+            }
+        });
+
         forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Forgot pass", Toast.LENGTH_LONG).show();
+
 
                 final EditText input = new EditText(LoginActivity.this);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
 
                 // Fail
-                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                 builder.setMessage("Type your email to reset")
                         .setTitle("Login Error")
                         .setView(input);
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String youremail = input.getText().toString();
-                        forgotPass(youremail);
+                        String yourEmail = input.getText().toString();
+                        forgotPass(yourEmail);
                     }
                 });
                 AlertDialog dialog = builder.create();
@@ -94,8 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                username = (EditText) findViewById(R.id.edtUsername);
-                pass = (EditText) findViewById(R.id.edtPassword);
+
 
                 mUsername = username.getText().toString();
                 mPass = pass.getText().toString();
@@ -105,13 +120,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void done(ParseUser user, com.parse.ParseException e) {
                         if (user != null) {
-                            //Success
-                            /*Toast.makeText(LoginActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);*/
-
-                            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            /*startActivity(intent);*/
 
                             onBackPressed();
                         } else {

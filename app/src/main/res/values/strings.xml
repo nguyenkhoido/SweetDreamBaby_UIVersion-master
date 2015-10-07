@@ -20,4 +20,7 @@
     <string name="title_activity_my_profile">My Profile</string>
     <string name="title_activity_update_account_information">Update Account Information</string>
     <string name="changePass"><u>Change Password</u></string>
+    <string name="forgotPass"><u>Forgot password, click here!</u></string>
+    <string name="title_activity_story_details">Story Details</string>
+    <string name="title_activity_playing_page">Playing Page</string>
 </resources>

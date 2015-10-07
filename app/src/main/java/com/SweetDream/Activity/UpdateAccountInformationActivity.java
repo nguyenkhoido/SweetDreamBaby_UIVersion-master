@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +31,13 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
 
     boolean checkOldPass = true;
     List<ParseException> exceptionList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_account_information);
+        ScrollView scrView = (ScrollView)findViewById(R.id.scrViewUAI);
+        scrView.setVerticalScrollBarEnabled(false);
 
         btnUpdateNamePhone = (Button) findViewById(R.id.btnUpdateNamePhone);
         btnUpdateAll = (Button) findViewById(R.id.btnUpdateAll);
@@ -85,7 +89,6 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
                 }
 
 
-
             }
         });
         //Update Alll.--------------------------------------------------------------------
@@ -111,19 +114,35 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
                     alert = "Please input Username no more 20 character";
                 } else if (txtOldPass.equalsIgnoreCase("")) {
                     alert = "Please input Old Password";
-                } else if (checkOldPassword(txtOldPass) == false) {
-                    alert = "Wrong Old Password";
-                    //Toast.makeText(UpdateAccountInformationActivity.this, "Wrong Old Password", Toast.LENGTH_LONG).show();
-
                 } else if (txtNewPass.equalsIgnoreCase("")) {
                     alert = "Please input New Password";
                 } else if (txtConfirmPass.equalsIgnoreCase("")) {
                     alert = "Please input Confirm Password";
                 } else if (!txtNewPass.equals(txtConfirmPass)) {
-                    alert = "Please input Password equal Confirm Password";
+                    alert = "Please input Confirm Password equal New Password";
                 } else {
+                    // Processing check old password before update new pass
+                    ParseUser.logInInBackground(ParseUser.getCurrentUser().getUsername(), txtOldPass, new LogInCallback() {
+                        public void done(ParseUser user, ParseException e) {
+                            // Hooray! The password is correct
 
-                    UpdateAccount1();
+                            if (user != null) {
+                                ;
+                                UpdateAccount1();
+                            } else {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(UpdateAccountInformationActivity.this);
+                                builder.setMessage("Wrong Old Password")
+                                        .setTitle("Error!")
+                                        .setPositiveButton(android.R.string.ok, null);
+                                AlertDialog dialog = builder.create();
+                                dialog.show();
+
+                            }
+                            //Toast.makeText(UpdateAccountInformationActivity.this, "" + checkOldPass, Toast.LENGTH_SHORT).show();//true
+
+                        }
+                    });
+
                 }
                 //Process UpdateAccount()
                 if (!alert.equalsIgnoreCase("")) {
@@ -171,15 +190,6 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
     // check Login old password
     boolean checkOldPassword(String oldPass) {
 
-        ParseUser.logInInBackground(ParseUser.getCurrentUser().getUsername(), oldPass, new LogInCallback() {
-            public void done(ParseUser user, ParseException e) {
-                // Hooray! The password is correct
-// The password was incorrect
-                checkOldPass = user != null;
-                Toast.makeText(UpdateAccountInformationActivity.this, "" + checkOldPass, Toast.LENGTH_SHORT).show();//true
-
-            }
-        });
 
         return checkOldPass;
     }
