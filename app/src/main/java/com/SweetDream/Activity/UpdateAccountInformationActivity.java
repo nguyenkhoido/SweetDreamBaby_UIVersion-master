@@ -13,9 +13,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SweetDream.R;
+import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UpdateAccountInformationActivity extends AppCompatActivity {
     TextView txtChangePass;
@@ -121,6 +125,7 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
                 txtConfirmPass = edtConfirmPass.getText().toString();
 
 
+                //Toast.makeText(UpdateAccountInformationActivity.this, error[0], Toast.LENGTH_LONG).show();
                 //Check Error EditText
                 String alert = "";
                 if (txtUser.equalsIgnoreCase("")) {
@@ -131,6 +136,8 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
                     alert = "Please input Username no more 20 character";
                 } else if (txtOldPass.equalsIgnoreCase("")) {
                     alert = "Please input Old Password";
+                } else if (!checkOldPass(txtOldPass)) {
+                    alert = "Wrong Old Password";
                 } else if (txtNewPass.equalsIgnoreCase("")) {
                     alert = "Please input New Password";
                 } else if (txtConfirmPass.equalsIgnoreCase("")) {
@@ -155,6 +162,23 @@ public class UpdateAccountInformationActivity extends AppCompatActivity {
         });
     }
 
+
+    // check Login old password
+    boolean checkOldPass(String oldPass) {
+        final List<String> exceptionList = new ArrayList<>();
+        ParseUser.logInInBackground(ParseUser.getCurrentUser().getUsername(), oldPass, new LogInCallback() {
+            public void done(ParseUser user, ParseException e) {
+                if (user != null) {
+                    // Hooray! The password is correct
+                } else {
+                    // The password was incorrect
+                    exceptionList.add(e.getMessage());
+                }
+            }
+        });
+        Toast.makeText(this, "" + exceptionList.size(), Toast.LENGTH_LONG).show();
+        return exceptionList.size() <= 0;
+    }
 
     //Update username and phone
     void UpdateAccount() {
