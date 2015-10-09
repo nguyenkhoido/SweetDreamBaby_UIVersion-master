@@ -75,7 +75,7 @@
             android:theme="@style/SweetDreamThemeActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.SweetDream.Activity.MainActivity" />
+                android:value="com.SweetDream.Activity.StoryDetails" />
         </activity>
     </application>
 

@@ -27,6 +27,7 @@ public class PlayingPage extends AppCompatActivity {
 
         btnTimes = (Button) findViewById(R.id.imgButtonTimes);
         btnPlaying = (ImageButton) findViewById(R.id.btnPlaying);
+
         final ArrayAdapter<String> Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.times));
 
         btnTimes.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +39,8 @@ public class PlayingPage extends AppCompatActivity {
                         .setAdapter(Adapter, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(PlayingPage.this, "" + builder.getContext(), Toast.LENGTH_LONG).show();
+                               // Adapter.getItem(which);
+                                Toast.makeText(getApplication(), Adapter.getItem(which), Toast.LENGTH_LONG).show();
                             }
                         });
                 AlertDialog dialog = builder.create();
