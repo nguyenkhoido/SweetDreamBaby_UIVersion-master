@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="times">
+        <item>5 minute</item>
+        <item>10 minute</item>
+        <item>15 minute</item>
+        <item>20 minute</item>
+        <item>30 minute</item>
+        <item>45 minute</item>
+    </string-array>
+</resources>
