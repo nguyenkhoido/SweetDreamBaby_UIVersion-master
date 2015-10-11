@@ -92,8 +92,9 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
                 @Override
                 public void done(byte[] data, ParseException e) {
                     if (e == null) {
+
                         Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        img.setImageBitmap(bmp);
+                        img.setImageBitmap(Bitmap.createScaledBitmap(bmp, 820, 320, false));
                     } else {
                     }
                 }
