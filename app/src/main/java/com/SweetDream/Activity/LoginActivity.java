@@ -258,7 +258,6 @@ public class LoginActivity extends AppCompatActivity {
                         try {
 
                             name = response.getJSONObject().getString("name");
-
                             email = response.getJSONObject().getString("email");
 
                            //setText user profile at facebook
