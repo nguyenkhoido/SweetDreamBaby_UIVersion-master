@@ -1,6 +1,8 @@
 package com.SweetDream.Activity;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -15,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,38 +25,51 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.SweetDream.Adapter.FreeStoryAdapter;
 import com.SweetDream.Adapter.PaidStoryAdapter;
 import com.SweetDream.R;
 import com.parse.ParseUser;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     Button btnLogin;
-    Button btnDetailAccount;
+
     ImageButton btnLogOut;
-    EditText edtUserName, edtPhone, edtEmail, edtCoin;
-    //Fragment fragment = null;
+    TextView txtUserNameFB, txtUserEmailFB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
+        txtUserEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.SweetDream",
+                    PackageManager.GET_SIGNATURES);
+            for (android.content.pm.Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
 
+        } catch (NoSuchAlgorithmException e) {
+
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
-
-        /*edtUserName =(EditText)findViewById(R.id.edtUserNameProfile);
-        edtPhone =(EditText)findViewById(R.id.edtUserNameProfile);
-        edtEmail =(EditText)findViewById(R.id.edtUserNameProfile);
-        edtCoin =(EditText)findViewById(R.id.edtUserNameProfile);*/
 
         final ParseUser currentUser = ParseUser.getCurrentUser();
         btnLogin = (Button) findViewById(R.id.btnLogin);
@@ -68,14 +84,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        btnDetailAccount = (Button) findViewById(R.id.btnDetailAccount);
+
         btnLogOut = (ImageButton) findViewById(R.id.btnLogOut);
 
         if (currentUser != null) {
             btnLogin.setVisibility(View.GONE);
-            btnDetailAccount.setVisibility(View.VISIBLE);
+            /*btnDetailAccount.setVisibility(View.VISIBLE);
             btnDetailAccount.setText("" + currentUser.getUsername() + "\n" + currentUser.getEmail());
             btnDetailAccount.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
+                    startActivity(i);
+                }
+            });*/
+            txtUserNameFB.setText(currentUser.getUsername());
+            txtUserEmailFB.setText(currentUser.getEmail());
+            txtUserEmailFB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
@@ -106,7 +131,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if (currentUser == null) {
             btnLogin.setVisibility(View.VISIBLE);
-            btnDetailAccount.setVisibility(View.GONE);
+            txtUserEmailFB.setVisibility(View.GONE);
+            txtUserNameFB.setVisibility(View.GONE);
             btnLogOut.setVisibility(View.GONE);
         }
 
@@ -163,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

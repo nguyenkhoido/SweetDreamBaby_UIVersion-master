@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.SweetDream" >
+    package="com.SweetDream">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -10,10 +10,23 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/SweetDreamTheme" >
+        android:theme="@style/SweetDreamTheme">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1234"
+            android:exported="true" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".Activity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +36,7 @@
         <activity
             android:name=".Activity.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/SweetDreamThemeActionBar" >
+            android:theme="@style/SweetDreamThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.MainActivity" />
@@ -31,7 +44,7 @@
         <activity
             android:name=".Activity.RegisterActivity"
             android:label="@string/title_activity_register"
-            android:theme="@style/SweetDreamThemeActionBar" >
+            android:theme="@style/SweetDreamThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.LoginActivity" />
@@ -39,7 +52,7 @@
         <activity
             android:name=".Activity.GetCoinActivity"
             android:label="@string/title_activity_get_coin"
-            android:theme="@style/SweetDreamThemeActionBar" >
+            android:theme="@style/SweetDreamThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.MyProfileActivity" />
@@ -47,7 +60,7 @@
         <activity
             android:name=".Activity.MyProfileActivity"
             android:label="@string/title_activity_my_profile"
-            android:theme="@style/SweetDreamThemeActionBar" >
+            android:theme="@style/SweetDreamThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.MainActivity" />
@@ -55,7 +68,7 @@
         <activity
             android:name=".Activity.UpdateAccountInformationActivity"
             android:label="@string/title_activity_update_account_information"
-            android:theme="@style/SweetDreamThemeActionBar" >
+            android:theme="@style/SweetDreamThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.MyProfileActivity" />
@@ -63,7 +76,7 @@
         <activity
             android:name=".Activity.StoryDetails"
             android:label="@string/title_activity_story_details"
-            android:theme="@style/SweetDreamThemeActionBar" >
+            android:theme="@style/SweetDreamThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.MainActivity" />
@@ -72,11 +85,12 @@
         <activity
             android:name=".Activity.PlayingPage"
             android:label="@string/title_activity_playing_page"
-            android:theme="@style/SweetDreamThemeActionBar" >
+            android:theme="@style/SweetDreamThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.SweetDream.Activity.StoryDetails" />
         </activity>
+
     </application>
 
 </manifest>

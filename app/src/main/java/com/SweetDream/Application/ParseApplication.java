@@ -13,9 +13,17 @@ public class ParseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //String appId = "157503941262245";
         // Khai bao cai dat keyid, clientid cho toan ung dung
+        //ParseFacebookUtils.initialize(context, callbackRequestCodeOffset);
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+        Parse.enableLocalDatastore(this);
         Parse.initialize(this, "e7sgVQA7cLjKIT0x56W3h5VZFPDbVy3Hl7iPEdiA", "pS4yCy20nxKhmBtFJYeHf1z6oBNuwB9lZPxp9bt6");
+        //ParseFacebookUtils.initialize(getApplicationContext());
         ParseInstallation.getCurrentInstallation().saveInBackground();
+
+
+
 
 
         // Thu tu User dang ky
@@ -31,4 +39,5 @@ public class ParseApplication extends Application {
 
         ParseACL.setDefaultACL(defaultACL, true);
     }
+
 }

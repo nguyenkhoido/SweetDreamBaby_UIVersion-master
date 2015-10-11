@@ -50,12 +50,12 @@ public class MyProfileActivity extends AppCompatActivity {
 
         String phone = currentUser.getString("phone");
 
-        if(phone.equals("")){
+        /*if(phone.equals("")){
             edtPhone.setText("Update Later!");
         }
         else{
             edtPhone.setText(phone);
-        }
+        }*/
         edtCoin.setText(String.valueOf(currentUser.getNumber("coin")));
 
         btnGetCoin = (Button) findViewById(R.id.btnGetCoin);

@@ -1,60 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:padding="10dp"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/headerimg4"
+    android:orientation="vertical"
+    android:padding="10dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <!---->
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/btnLogOut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/customshapebutton"
+            android:src="@drawable/ic_log_out_white"
+            />
+        <!--android:visibility="gone"-->
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_above="@+id/btnLogOut"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/linearLayout4">
+            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profile_image"
+                android:layout_width="76dp"
+                android:layout_height="76dp"
+                android:src="@drawable/ic_action_account_circle_blue"
+                app:border_color="#FF000000"/>
 
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User Name \n Email"
                 android:background="@null"
+                android:text="Login"
                 android:textAllCaps="false"
-                android:textSize="20dp"/>
-
-            <Button
-                android:id="@+id/btnDetailAccount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="User Name \n Email"
-                android:background="@null"
-                android:textAllCaps="false"
-                android:visibility="gone"
-                android:textSize="20dp" />
+                android:textSize="24dp"
+                />
         </LinearLayout>
-        <!---->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <ImageButton
-                android:id="@+id/btnLogOut"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/customshapebutton"
-                android:src="@drawable/ic_log_out_white"
-                android:visibility="gone"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
+        <!--   android:visibility="gone"-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtUserNameFacebook"
+            android:text="User Name"
+            android:textColor="@color/white"
+            android:layout_below="@+id/linearLayout4" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtUserEmailFacebook"
+            android:text="Email"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
 
 
-    </LinearLayout>
-
-
-</RelativeLayout>
+</LinearLayout>

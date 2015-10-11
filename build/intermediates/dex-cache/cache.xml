@@ -2,11 +2,25 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\nguye_000\.gradle\caches\modules-2\files-2.1\com.parse\parse-android\1.10.2\2eaa8b8ca97c915eab3883bab40e15611e5e0393\parse-android-1.10.2.jar"
+        jar="C:\Users\nguye_000\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-android\1.2.1\44780c2cf98f6a3cf4e77f1234d644758b329201\bolts-android-1.2.1.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="2eaa8b8ca97c915eab3883bab40e15611e5e0393">
-        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\parse-android-1.10.2-6cb4a258a2e4ae2c83b8ad844d488caab88bbbe7.jar" />
+        sha1="44780c2cf98f6a3cf4e77f1234d644758b329201">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\bolts-android-1.2.1-00dd35812074752e30057c492f3d1ccd402aae00.jar" />
+    </item>
+    <item
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\libs\ParseFacebookUtilsV4-1.9.3.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="8e48db090422d6f3ef016f71e2f67ece319b34d2">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\ParseFacebookUtilsV4-1.9.3-8a7bde05cc7c47e5f864a4206f040a2d3fccadd2.jar" />
+    </item>
+    <item
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\libs\bolts-android-1.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="6ee2953ccf51ce72b6d548c30c4633b99eb4f9dd">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\bolts-android-1.2.0-2db4ff8d9c06b4d1abab48dec7b1bc9cafde5463.jar" />
     </item>
     <item
         jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\classes.jar"
@@ -16,11 +30,11 @@
         <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-390f0785b7c84ea349ca59808cfff5f2856c79c3.jar" />
     </item>
     <item
-        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\design\22.2.1\jars\classes.jar"
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.2.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="1821601ddbec5ff125653097812823388700af74">
-        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-fac86ecef5922849cfb50e2de0b026c6959ea04a.jar" />
+        sha1="e1fa5e1123997a55e3ed65b44892993ff4b58cfe">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-63db00e2a2f9d32fc4eee7e76ea8a522f451566f.jar" />
     </item>
     <item
         jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.1\jars\libs\internal_impl-22.2.1.jar"
@@ -30,18 +44,25 @@
         <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.1-1f85bc0affccc221ec43a17262b51ece31528c77.jar" />
     </item>
     <item
-        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.1\jars\classes.jar"
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\libs\Parse-1.9.3.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
-        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-a1ab50e43222faa2af1dc6c22716f31634b97121.jar" />
+        sha1="35921ead63f6cafd9f84ff178c60fe474c4b17a6">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\Parse-1.9.3-91411ff4595dbc01582a5bcb790a03d3218ecacb.jar" />
     </item>
     <item
-        jar="C:\Users\nguye_000\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-android\1.2.1\44780c2cf98f6a3cf4e77f1234d644758b329201\bolts-android-1.2.1.jar"
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\libs\ParseCrashReporting-1.9.3.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="44780c2cf98f6a3cf4e77f1234d644758b329201">
-        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\bolts-android-1.2.1-00dd35812074752e30057c492f3d1ccd402aae00.jar" />
+        sha1="4b2fc26f71157545cc214e36008dae494adeda93">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\ParseCrashReporting-1.9.3-37e673995c51e3b36b051e4fcd168c8104a56494.jar" />
+    </item>
+    <item
+        jar="C:\Users\nguye_000\.gradle\caches\modules-2\files-2.1\com.parse\parse-android\1.10.2\2eaa8b8ca97c915eab3883bab40e15611e5e0393\parse-android-1.10.2.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2eaa8b8ca97c915eab3883bab40e15611e5e0393">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\parse-android-1.10.2-6cb4a258a2e4ae2c83b8ad844d488caab88bbbe7.jar" />
     </item>
     <item
         jar="D:\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.1\support-annotations-22.2.1.jar"
@@ -51,6 +72,27 @@
         <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.1-0bb0540704196004630adfc9c9016d3bfb057bf3.jar" />
     </item>
     <item
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.facebook.android\facebook-android-sdk\4.7.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="5bdb38b7e4b6094891648c1dc4dc08589b460f97">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-29287bc8eba9ef0318a4e86a009bda50575313c6.jar" />
+    </item>
+    <item
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\22.2.1\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="3abb4b88f5a8a0584a9b01d3170d7165f12f8588">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-a1ab50e43222faa2af1dc6c22716f31634b97121.jar" />
+    </item>
+    <item
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\de.hdodenhof\circleimageview\1.3.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="ac6948cce36f694f3eb3d73a135e298dc4b3527a">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-21dd3a0fcce8b00d3e02f3a5170a8fe7fbab620d.jar" />
+    </item>
+    <item
         jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
@@ -58,11 +100,11 @@
         <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-2a39222331978fbb2d68f571dd386c155b8fab4f.jar" />
     </item>
     <item
-        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\22.2.1\jars\classes.jar"
+        jar="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\exploded-aar\com.android.support\design\22.2.1\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="e1fa5e1123997a55e3ed65b44892993ff4b58cfe">
-        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-63db00e2a2f9d32fc4eee7e76ea8a522f451566f.jar" />
+        sha1="1821601ddbec5ff125653097812823388700af74">
+        <dex dex="D:\MyOneDrive\OneDrive\Private\Nguyen\SweetDreamBaby_UIVersion-master\SweetDreamBaby_UIVersion-master\app\build\intermediates\pre-dexed\debug\classes-fac86ecef5922849cfb50e2de0b026c6959ea04a.jar" />
     </item>
 
 </items>

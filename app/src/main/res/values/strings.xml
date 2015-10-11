@@ -23,4 +23,6 @@
     <string name="forgotPass"><u>Forgot password, click here!</u></string>
     <string name="title_activity_story_details">Story Details</string>
     <string name="title_activity_playing_page">Playing Page</string>
+    <string name="facebook_app_id">1704750209756004</string>
+
 </resources>
