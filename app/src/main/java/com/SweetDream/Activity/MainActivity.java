@@ -16,11 +16,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -280,7 +283,17 @@ public class MainActivity extends AppCompatActivity {
             if (tabPosition == 0) {
                 getAllStory();
                 // get Adapter above and set to recyclerview
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                Display display = getActivity().getWindowManager().getDefaultDisplay();
+                DisplayMetrics outMetrics = new DisplayMetrics();
+                display.getMetrics(outMetrics);
+
+                float density  = getResources().getDisplayMetrics().density;
+                float dpWidth  = outMetrics.widthPixels / density;
+                int columns = Math.round(dpWidth/400);
+                //recyclerView.setHasFixedSize(true);
+                // The number of Columns
+                recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
                 recyclerView.setAdapter(adapterFreeStory);
                 return story_view;
             }
