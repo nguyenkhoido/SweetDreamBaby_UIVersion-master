@@ -2,6 +2,8 @@ package com.SweetDream.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.SweetDream.Activity.StoryDetails;
+import com.SweetDream.Model.ItemStory;
 import com.SweetDream.Model.ItemsBook;
 import com.SweetDream.R;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,33 +27,15 @@ import java.util.List;
  * Created by nguye_000 on 25/09/2015.
  */
 public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.ViewHolder> {
-    List<ItemsBook> itemsFreeBooks;
 
-    public FreeStoryAdapter()
+    // A list story not real to make background
+    List<ItemStory> itemsFreeBooks;
+
+    public FreeStoryAdapter(List<ItemStory> itemsBookList)
     {
         super();
-        itemsFreeBooks = new ArrayList<ItemsBook>();
-
-        ItemsBook item = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
-
-        itemsFreeBooks.add(item);
-
-        ItemsBook item1 = new ItemsBook("Lord Of Ring","Free",R.drawable.lordofring);
-
-        itemsFreeBooks.add(item1);
-
-        ItemsBook item2 = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
-
-        itemsFreeBooks.add(item2);
-
-        ItemsBook item3 = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
-
-        itemsFreeBooks.add(item3);
-
-        ItemsBook item4 = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
-
-        itemsFreeBooks.add(item4);
-
+        // we setup list story to use this from MainActivity
+        this.itemsFreeBooks = itemsBookList;
 
     }
 
@@ -60,10 +48,11 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        ItemsBook item = itemsFreeBooks.get(i);
+        ItemStory item = itemsFreeBooks.get(i);
         viewHolder.txtTitle.setText(item.getTitleBook());
         viewHolder.txtType.setText(item.getTypeBook());
-        viewHolder.imgFreeStory.setImageResource(item.getImage());
+        // we load image from parse to imageview
+        loadImages(item.getImage(),viewHolder.imgFreeStory);
 
         viewHolder.imgFreeStory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,4 +83,23 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
             btnTabFreeBooks.setVisibility(itemView.GONE);
         }
     }
+
+    // load file from parse and set it to imageview (not real)
+    private void loadImages(ParseFile thumbnail, final ImageView img) {
+
+        if (thumbnail != null) {
+            thumbnail.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        img.setImageBitmap(bmp);
+                    } else {
+                    }
+                }
+            });
+        } else {
+            img.setImageResource(R.drawable.thor);
+        }
+    }// load image
 }

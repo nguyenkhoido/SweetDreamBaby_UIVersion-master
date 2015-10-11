@@ -1,5 +1,7 @@
 package com.SweetDream.Activity;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -30,11 +32,19 @@ import android.widget.TextView;
 
 import com.SweetDream.Adapter.FreeStoryAdapter;
 import com.SweetDream.Adapter.PaidStoryAdapter;
+import com.SweetDream.Model.ItemStory;
 import com.SweetDream.R;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -219,10 +229,44 @@ public class MainActivity extends AppCompatActivity {
     public static class DesignDemoFragment extends Fragment {
         private static final String TAB_POSITION = "tab_position";
 
+        //Declare list from parse and adapter of Recyclerview
+        List<ItemStory> itemsBookList;
+        FreeStoryAdapter adapterFreeStory;
+        private Dialog processingDialog;
+
+        // in contructor create list from parse
         public DesignDemoFragment() {
+            itemsBookList = new ArrayList<>();
+            adapterFreeStory = new FreeStoryAdapter(itemsBookList);
+            //processingDialog = new ProgressDialog(getActivity());
 
         }
 
+        // this guy will get all your story information
+        private void getAllStory(){
+            processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> postList, ParseException e) {
+                    if (e == null) {
+                        processingDialog.dismiss();
+                        // if there results, update the list of posts
+                        for (ParseObject post : postList) {
+                            ParseFile fileObject = (ParseFile) post.get("Image");
+                            ItemStory answer = new ItemStory(post.getObjectId(), post.getString("StoryName"),fileObject);
+                            itemsBookList.add(answer);
+                        }
+                        adapterFreeStory.notifyDataSetChanged();
+                    } else {
+                        Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
+                    }
+
+                }
+            });
+        }
+
+        // this guy is get postion of the tablayout to setview
         public static DesignDemoFragment newInstance(int tabPosition) {
             DesignDemoFragment fragment = new DesignDemoFragment();
             Bundle args = new Bundle();
@@ -236,22 +280,23 @@ public class MainActivity extends AppCompatActivity {
             Bundle args = getArguments();
             int tabPosition = args.getInt(TAB_POSITION);
 
+            // define view to set our tablayout
+            View story_view = inflater.inflate(R.layout.free_story_tab, container, false);
+            RecyclerView recyclerView = (RecyclerView) story_view.findViewById(R.id.recycler_view_freeStoryTab);
 
             if (tabPosition == 0) {
-                View free_story_layout = inflater.inflate(R.layout.free_story_tab, container, false);
-                RecyclerView recyclerView = (RecyclerView) free_story_layout.findViewById(R.id.recycler_view_freeStoryTab);
+                getAllStory();
+                // get Adapter above and set to recyclerview
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                FreeStoryAdapter adapterFreeStory = new FreeStoryAdapter();
                 recyclerView.setAdapter(adapterFreeStory);
-                return free_story_layout;
+                return story_view;
             }
             if (tabPosition == 1) {
-                View paid_story_layout = inflater.inflate(R.layout.free_story_tab, container, false);
-                RecyclerView recyclerView = (RecyclerView) paid_story_layout.findViewById(R.id.recycler_view_freeStoryTab);
+
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 PaidStoryAdapter adapterPaidStory = new PaidStoryAdapter();
                 recyclerView.setAdapter(adapterPaidStory);
-                return paid_story_layout;
+                return story_view;
             }
             return null;
         }
