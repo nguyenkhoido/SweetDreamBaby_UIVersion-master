@@ -99,15 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentUser != null) {
             btnLogin.setVisibility(View.GONE);
-            /*btnDetailAccount.setVisibility(View.VISIBLE);
-            btnDetailAccount.setText("" + currentUser.getUsername() + "\n" + currentUser.getEmail());
-            btnDetailAccount.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
-                    startActivity(i);
-                }
-            });*/
+
+            //Set Text UserName Email when login Parse Or Facebook-------------Error, Need to resolve!
             txtUserNameFB.setText(currentUser.getUsername());
             txtUserEmailFB.setText(currentUser.getEmail());
             txtUserEmailFB.setOnClickListener(new View.OnClickListener() {
