@@ -5,6 +5,7 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseInstallation;
+import com.parse.ParseTwitterUtils;
 
 /**
  * Created by Minh Color on 10/5/2015.
@@ -19,6 +20,7 @@ public class ParseApplication extends Application {
         //FacebookSdk.sdkInitialize(getApplicationContext());
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "e7sgVQA7cLjKIT0x56W3h5VZFPDbVy3Hl7iPEdiA", "pS4yCy20nxKhmBtFJYeHf1z6oBNuwB9lZPxp9bt6");
+
         //ParseFacebookUtils.initialize(getApplicationContext());
         ParseInstallation.getCurrentInstallation().saveInBackground();
 

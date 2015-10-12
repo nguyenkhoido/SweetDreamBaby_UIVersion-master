@@ -37,6 +37,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseFile;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
 import com.parse.SaveCallback;
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+        ParseTwitterUtils.initialize("7hWHzX5vIJ9EmipMBnBgIhyK1", "XUE03ZJVWsdgaGSvlVcEV5AYEgGBtqauzJX7zyKxkZyP5XEWZl");
         FacebookSdk.sdkInitialize(getApplicationContext());
         ParseFacebookUtils.initialize(this.getApplicationContext());
 
@@ -137,6 +138,33 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        btnTwitter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseTwitterUtils.logIn(LoginActivity.this, new LogInCallback() {
+                    @Override
+                    public void done(ParseUser user, ParseException err) {
+                        if (user == null) {
+                            Toast.makeText(LoginActivity.this,"Uh oh. The user cancelled the Twitter login.",Toast.LENGTH_LONG).show();
+                        }
+                        else if (user.isNew()) {
+                            String screen_name = ParseTwitterUtils.getTwitter().getScreenName();
+                            //editor.putString("screen_name", screen_name);
+                            //btnViewUserProfile.setText(parseUser.getUsername() +"\n"+ parseUser.getEmail());
+                            Toast.makeText(LoginActivity.this,screen_name + " has signed in",Toast.LENGTH_LONG).show();
+                            Log.d("MyApp", screen_name + " has signed in");
+                            // Refresh
+                            Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                            startActivity(myIntent);
+                        }else {
+
+                            Toast.makeText(LoginActivity.this, "User logged in through Facebook!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
         });
 
