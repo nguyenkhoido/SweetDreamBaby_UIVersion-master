@@ -22,7 +22,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/customshapebutton"
+            android:background="@drawable/custom_shape_button"
             android:src="@drawable/ic_log_out_white"
             />
         <!--android:visibility="gone"-->

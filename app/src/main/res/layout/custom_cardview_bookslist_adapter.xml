@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:text="Buy"
                 android:id="@+id/btnBooksListPage"
-                android:background="@drawable/customshapebutton"
+                android:background="@drawable/custom_shape_button"
                 android:layout_gravity="center_horizontal" />
 
 

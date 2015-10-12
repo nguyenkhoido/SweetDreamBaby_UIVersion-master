@@ -42,6 +42,7 @@ import com.parse.RequestPasswordResetCallback;
 import com.parse.SaveCallback;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -59,25 +60,25 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class LoginActivity extends AppCompatActivity {
-  //Variable on layout---------------------------
+    //Variable on layout---------------------------
     Button btnRegister, btnReset, btnLogin, btnFacebook, btnTwitter;
     EditText mEdtUserNameParse, mEdtPasswordParse;
     TextView forgotPass;
     CircleImageView imgProfile;
-    String strUserNameParse,strPasswordParse;
-//Variable for facebook-------------------------------
+    String strUserNameParse, strPasswordParse;
+    //Variable for facebook-------------------------------
     Profile mFbProfile;
-    String name=null, email=null;
+    String name = null, email = null;
     String[] nameOfAppsToShareWith = new String[]{"facebook", "twitter", "gmail"};
     String[] blacklist = new String[]{"com.any.package", "net.other.package"};
-    List<String> mPermissions = Arrays.asList("public_profile", "email");
+    List<String> mPermissions = Arrays.asList("public_profile", "user_about_me", "user_relationships", "user_birthday", "user_location", "email");
 
     private Dialog processingDialog;
     ParseUser parseUser;
     TextView txtUserNameFB;
 
 
-   // private ProgressView loader;
+    // private ProgressView loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "User signed up and logged in through Facebook!", Toast.LENGTH_LONG).show();
 
 
-                            getUserDetailsFromFB();
+                            getUserDetailsFromFB1();
 
                         } else {
                             Toast.makeText(LoginActivity.this, "User logged in through Facebook!", Toast.LENGTH_LONG).show();
@@ -159,13 +160,14 @@ public class LoginActivity extends AppCompatActivity {
         forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "", "Loading...", true);
                 final EditText input = new EditText(LoginActivity.this);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
                 // Fail
                 final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                 builder.setMessage("Type your email to reset")
-                        .setTitle("Login Error")
+                        .setTitle("Get Password")
                         .setView(input);
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -181,6 +183,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
                 AlertDialog dialog = builder.create();
+                progressDialog.dismiss();
                 dialog.show();
 
 
@@ -216,6 +219,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
     //Save New USer.........................................................................
     private void saveNewUser() {
         parseUser = ParseUser.getCurrentUser();
@@ -243,6 +247,27 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void getUserDetailsFromFB2() {
+
+    }
+
+    private void getUserDetailsFromFB1() {
+        GraphRequest request = GraphRequest.newMeRequest(
+                AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(
+                            JSONObject object,
+                            GraphResponse response) {
+                        // Application code
+                        String user = object.toString();
+                        Toast.makeText(LoginActivity.this, user, Toast.LENGTH_LONG).show();
+
+                    }
+                });
+        request.executeAsync();
+    }
+
     //Get User Details Email Name---------------------------------------------------------
     private void getUserDetailsFromFB() {
 
@@ -254,13 +279,13 @@ public class LoginActivity extends AppCompatActivity {
 
                 new GraphRequest.Callback() {
                     public void onCompleted(GraphResponse response) {
-           /* handle the result */
+                        //* handle the result *//*
                         try {
 
                             name = response.getJSONObject().getString("name");
                             email = response.getJSONObject().getString("email");
 
-                           //setText user profile at facebook
+                            //setText user profile at facebook
                             saveNewUser();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -271,6 +296,7 @@ public class LoginActivity extends AppCompatActivity {
         ProfilePhotoAsync profilePhotoAsync = new ProfilePhotoAsync(mFbProfile);
         profilePhotoAsync.execute();
     }
+
 
     //Get Details User In Parse
     private void getUserDetailsFromParse() {
@@ -285,9 +311,10 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-       // btnViewUserProfile.setText(parseUser.getUsername() +"\n"+ parseUser.getEmail());
+        // btnViewUserProfile.setText(parseUser.getUsername() +"\n"+ parseUser.getEmail());
         Toast.makeText(LoginActivity.this, "Welcome back " + txtUserNameFB.getText().toString(), Toast.LENGTH_SHORT).show();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -370,8 +397,8 @@ public class LoginActivity extends AppCompatActivity {
         // your share intent
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "some text");
-        intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "a subject");
+        //intent.putExtra(Intent.EXTRA_TEXT, "some text");
+        //intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "a subject");
         // ... anything else you want to add invoke custom chooser
         startActivity(generateCustomChooserIntent(intent, blacklist));
     }
@@ -428,7 +455,7 @@ public class LoginActivity extends AppCompatActivity {
                             metaInfo.get("className"));
                     targetedShareIntents.add(targetedShareIntent);
                 }
-                String shareVia = getString(R.string.offer_share_via);
+                String shareVia = getString(R.string.open_email_via);
                 String shareTitle = shareVia.substring(0, 1).toUpperCase()
                         + shareVia.substring(1);
                 chooserIntent = Intent.createChooser(targetedShareIntents
@@ -440,9 +467,8 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         return Intent.createChooser(prototype,
-                getString(R.string.offer_share_via));
+                getString(R.string.open_email_via));
     }
-
 
 
     public void onBackPressed() {

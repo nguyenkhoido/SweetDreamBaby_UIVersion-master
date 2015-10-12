@@ -1,7 +1,6 @@
 package com.SweetDream.Activity;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -17,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
@@ -35,7 +33,8 @@ import android.widget.TextView;
 
 import com.SweetDream.Adapter.FreeStoryAdapter;
 import com.SweetDream.Adapter.PaidStoryAdapter;
-import com.SweetDream.Model.ItemStory;
+import com.SweetDream.Model.ItemFreeStory;
+import com.SweetDream.Model.ItemPaidStory;
 import com.SweetDream.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -226,34 +225,62 @@ public class MainActivity extends AppCompatActivity {
         private static final String TAB_POSITION = "tab_position";
 
         //Declare list from parse and adapter of Recyclerview
-        List<ItemStory> itemsBookList;
+        List<ItemFreeStory> itemsFreeStoryList;
+        List<ItemPaidStory> itemsPaidStoryList;
         FreeStoryAdapter adapterFreeStory;
+        PaidStoryAdapter adapterPaidStory;
         private Dialog processingDialog;
 
         // in contructor create list from parse
         public DesignDemoFragment() {
-            itemsBookList = new ArrayList<>();
-            adapterFreeStory = new FreeStoryAdapter(itemsBookList);
+            itemsFreeStoryList = new ArrayList<>();
+            itemsPaidStoryList = new ArrayList<>();
+            adapterFreeStory = new FreeStoryAdapter(itemsFreeStoryList);
+            adapterPaidStory = new PaidStoryAdapter(itemsPaidStoryList);
             //processingDialog = new ProgressDialog(getActivity());
 
         }
 
         // this guy will get all your story information
-        private void getAllStory(){
-            processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
+        private void getFreeStory(){
+            //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> postList, ParseException e) {
                     if (e == null) {
-                        processingDialog.dismiss();
+                        //processingDialog.dismiss();
                         // if there results, update the list of posts
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemStory answer = new ItemStory(post.getString("StoryName"),post.getObjectId(),fileObject);
-                            itemsBookList.add(answer);
+                            ItemFreeStory answer = new ItemFreeStory(post.getString("StoryName"),post.getString("Author"), post.getInt("Price"), fileObject);
+                            itemsFreeStoryList.add(answer);
                         }
                         adapterFreeStory.notifyDataSetChanged();
+                    } else {
+                        Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
+                    }
+
+                }
+            });
+        }
+
+        // this guy will get all your story information
+        private void getPaidStory(){
+            //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> postList, ParseException e) {
+                    if (e == null) {
+                        //processingDialog.dismiss();
+                        // if there results, update the list of posts
+                        for (ParseObject post : postList) {
+                            ParseFile fileObject = (ParseFile) post.get("Image");
+                            ItemPaidStory answer = new ItemPaidStory(post.getString("StoryName"),post.getString("Author"),post.getNumber("Price"),fileObject);
+                            itemsPaidStoryList.add(answer);
+                        }
+                        adapterPaidStory.notifyDataSetChanged();
                     } else {
                         Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
                     }
@@ -280,27 +307,30 @@ public class MainActivity extends AppCompatActivity {
             View story_view = inflater.inflate(R.layout.free_story_tab, container, false);
             RecyclerView recyclerView = (RecyclerView) story_view.findViewById(R.id.recycler_view_freeStoryTab);
 
-            if (tabPosition == 0) {
-                getAllStory();
-                // get Adapter above and set to recyclerview
-                //recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                DisplayMetrics outMetrics = new DisplayMetrics();
-                display.getMetrics(outMetrics);
+            Display display = getActivity().getWindowManager().getDefaultDisplay();
+            DisplayMetrics outMetrics = new DisplayMetrics();
+            display.getMetrics(outMetrics);
 
-                float density  = getResources().getDisplayMetrics().density;
-                float dpWidth  = outMetrics.widthPixels / density;
-                int columns = Math.round(dpWidth/300);
-                recyclerView.setHasFixedSize(true);
-                // The number of Columns
-                recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
+            float density  = getResources().getDisplayMetrics().density;
+            float dpWidth  = outMetrics.widthPixels / density;
+            int columns = Math.round(dpWidth/300);
+            recyclerView.setHasFixedSize(true);
+            // The number of Columns
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
+
+            if (tabPosition == 0) {
+                //Call get free story method
+                getFreeStory();
+                // get Adapter above and set to recyclerview
+
                 recyclerView.setAdapter(adapterFreeStory);
                 return story_view;
             }
             if (tabPosition == 1) {
 
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                PaidStoryAdapter adapterPaidStory = new PaidStoryAdapter();
+                //Call get paid story method
+                getPaidStory();
+
                 recyclerView.setAdapter(adapterPaidStory);
                 return story_view;
             }

@@ -8,19 +8,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.SweetDream.Activity.StoryDetails;
-import com.SweetDream.Model.ItemStory;
-import com.SweetDream.Model.ItemsBook;
+import com.SweetDream.Model.ItemFreeStory;
 import com.SweetDream.R;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,9 +26,9 @@ import java.util.List;
 public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.ViewHolder> {
 
     // A list story not real to make background
-    List<ItemStory> itemsFreeBooks;
+    List<ItemFreeStory> itemsFreeBooks;
 
-    public FreeStoryAdapter(List<ItemStory> itemsBookList)
+    public FreeStoryAdapter(List<ItemFreeStory> itemsBookList)
     {
         super();
         // we setup list story to use this from MainActivity
@@ -48,9 +45,9 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        ItemStory item = itemsFreeBooks.get(i);
+        ItemFreeStory item = itemsFreeBooks.get(i);
         viewHolder.txtTitle.setText(item.getTitleBook());
-        viewHolder.txtType.setText(item.getTypeBook());
+        viewHolder.txtAuthor.setText(item.getAuthorBook());
         // we load image from parse to imageview
         loadImages(item.getImage(),viewHolder.imgFreeStory);
 
@@ -70,17 +67,17 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imgFreeStory;
-        public TextView txtTitle;
-        public TextView txtType;
-        Button btnTabFreeBooks;
+        public TextView txtTitle,txtAuthor,txtPrice;
+
+
+        //Button btnTabFreeBooks;
         public ViewHolder(View itemView) {
             super(itemView);
             imgFreeStory = (ImageView) itemView.findViewById(R.id.imgTabFreeBooks);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitleTabFreeBooks);
-            txtType = (TextView) itemView.findViewById(R.id.txtTypeTabFreeBooks);
-
-            btnTabFreeBooks = (Button)itemView.findViewById(R.id.btnTabFreeBooks);
-            btnTabFreeBooks.setVisibility(itemView.GONE);
+            txtAuthor = (TextView) itemView.findViewById(R.id.txtTypeTabFreeBooks);
+            txtPrice = (TextView)itemView.findViewById(R.id.txtPriceStory);
+            txtPrice.setVisibility(itemView.GONE);
         }
     }
 
@@ -95,6 +92,7 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
 
                         Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                         img.setImageBitmap(bmp);
+
                     } else {
                     }
                 }
