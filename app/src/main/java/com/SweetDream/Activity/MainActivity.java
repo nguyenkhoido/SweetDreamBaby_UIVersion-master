@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
                         // if there results, update the list of posts
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemStory answer = new ItemStory(post.getObjectId(), post.getString("StoryName"),fileObject);
+                            ItemStory answer = new ItemStory(post.getString("StoryName"),post.getObjectId(),fileObject);
                             itemsBookList.add(answer);
                         }
                         adapterFreeStory.notifyDataSetChanged();
@@ -290,8 +290,8 @@ public class MainActivity extends AppCompatActivity {
 
                 float density  = getResources().getDisplayMetrics().density;
                 float dpWidth  = outMetrics.widthPixels / density;
-                int columns = Math.round(dpWidth/400);
-                //recyclerView.setHasFixedSize(true);
+                int columns = Math.round(dpWidth/300);
+                recyclerView.setHasFixedSize(true);
                 // The number of Columns
                 recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
                 recyclerView.setAdapter(adapterFreeStory);

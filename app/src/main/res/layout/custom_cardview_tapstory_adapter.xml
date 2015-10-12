@@ -3,38 +3,43 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="9dp"
-        android:layout_marginRight="9dp"
-        android:layout_marginTop="9dp"
         card_view:cardCornerRadius="3dp"
-        card_view:cardElevation="0.01dp">
+        card_view:cardBackgroundColor="@android:color/transparent"
+        card_view:cardElevation="0.15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:background="@null"
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imgTabFreeBooks"
-                android:layout_width="wrap_content"
-                android:layout_height="182dp"
-                android:layout_gravity="center_horizontal">
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter">
 
             </ImageView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+
+            android:background="#7000"
+            android:orientation="vertical">
             <TextView
                 android:id="@+id/txtTitleTabFreeBooks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/primaryColor"
+                android:textColor="@color/white"
                 android:textSize="18dp"
                 android:textStyle="bold|italic" />
 
@@ -43,8 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:gravity="center"
-                android:textColor="@color/primaryColor"
+                android:textColor="@color/white"
                 android:textSize="14dp"
                 android:textStyle="italic"/>
 
@@ -55,6 +59,8 @@
                 android:id="@+id/btnTabFreeBooks"
                 android:background="@drawable/customshapebutton"
                 android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
 
 
         </LinearLayout>
