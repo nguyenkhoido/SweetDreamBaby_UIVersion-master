@@ -25,6 +25,7 @@
             android:background="@drawable/custom_shape_button"
             android:src="@drawable/ic_log_out_white"
             />
+
         <!--android:visibility="gone"-->
 
         <LinearLayout
@@ -35,6 +36,14 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:id="@+id/linearLayout4">
+
+            <com.facebook.login.widget.ProfilePictureView
+                android:id="@+id/userProfilePicture"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                facebook:com_facebook_preset_size="small" />
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/profile_image"
                 android:layout_width="76dp"
@@ -51,6 +60,7 @@
                 android:textAllCaps="false"
                 android:textSize="24dp"
                 />
+
         </LinearLayout>
 
         <!--   android:visibility="gone"-->

@@ -2,10 +2,13 @@ package com.SweetDream.Application;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseTwitterUtils;
+import com.parse.ParseUser;
 
 /**
  * Created by Minh Color on 10/5/2015.
@@ -16,11 +19,14 @@ public class ParseApplication extends Application {
         super.onCreate();
         //String appId = "157503941262245";
         // Khai bao cai dat keyid, clientid cho toan ung dung
-        //ParseFacebookUtils.initialize(context, callbackRequestCodeOffset);
-        //FacebookSdk.sdkInitialize(getApplicationContext());
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "e7sgVQA7cLjKIT0x56W3h5VZFPDbVy3Hl7iPEdiA", "pS4yCy20nxKhmBtFJYeHf1z6oBNuwB9lZPxp9bt6");
 
+        ParseUser.enableAutomaticUser();
+        Parse.enableLocalDatastore(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+
+        Parse.initialize(this, "e7sgVQA7cLjKIT0x56W3h5VZFPDbVy3Hl7iPEdiA", "pS4yCy20nxKhmBtFJYeHf1z6oBNuwB9lZPxp9bt6");
+        ParseFacebookUtils.initialize(this.getApplicationContext());
         //ParseFacebookUtils.initialize(getApplicationContext());
         ParseInstallation.getCurrentInstallation().saveInBackground();
 

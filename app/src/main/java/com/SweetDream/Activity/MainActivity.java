@@ -1,9 +1,12 @@
 package com.SweetDream.Activity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -30,19 +33,31 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.SweetDream.Adapter.FreeStoryAdapter;
 import com.SweetDream.Adapter.PaidStoryAdapter;
 import com.SweetDream.Model.ItemFreeStory;
 import com.SweetDream.Model.ItemPaidStory;
 import com.SweetDream.R;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.widget.ProfilePictureView;
 import com.parse.FindCallback;
+import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -53,40 +68,42 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     Button btnLogin;
-
+    String name = null, email = null;
     ImageButton btnLogOut;
     TextView txtUserNameFB, txtUserEmailFB;
+
+    //ParseUser currentUser = ParseUser.getCurrentUser();
+    private ProfilePictureView userProfilePictureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
         txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
         txtUserEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.SweetDream",
-                    PackageManager.GET_SIGNATURES);
-            for (android.content.pm.Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
 
-        } catch (NoSuchAlgorithmException e) {
-
-        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        final ParseUser currentUser = ParseUser.getCurrentUser();
+        btnLogOut = (ImageButton) findViewById(R.id.btnLogOut);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setText("Login");
+//Fetch Facebook user info if it is logged
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (!ParseAnonymousUtils.isLinked(currentUser) && currentUser.isAuthenticated()) {
+            makeMeRequest();
+        }
 
+        //ParseUser currentUser = ParseUser.getCurrentUser();
+
+        if (currentUser != null) {
+            txtUserNameFB.setText(currentUser.getString("username"));
+            txtUserEmailFB.setText(currentUser.getString("email"));
+        }
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,15 +113,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-        btnLogOut = (ImageButton) findViewById(R.id.btnLogOut);
-
-        if (currentUser != null) {
+        if (!ParseAnonymousUtils.isLinked(currentUser)) {
             btnLogin.setVisibility(View.GONE);
-
-            //Set Text UserName Email when login Parse Or Facebook-------------Error, Need to resolve!
-            txtUserNameFB.setText(currentUser.getUsername());
-            txtUserEmailFB.setText(currentUser.getEmail());
             txtUserEmailFB.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -112,35 +122,31 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(i);
                 }
             });
-
             btnLogOut.setVisibility(View.VISIBLE);
-
             //Phan dang nhap xong cho phep luu tru noi dung private bat ki cua user nay
             /*ParseObject privateNote = new ParseObject("Note");
             privateNote.put("content", "This note is private!");
             privateNote.setACL(new ParseACL(ParseUser.getCurrentUser()));
             privateNote.saveInBackground();*/
-
-            btnLogOut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    ParseUser.logOut();
-
-                    Intent intent = getIntent();
-                    finish();
-                    startActivity(intent);
-
-                }
-            });
         }
-        if (currentUser == null) {
+        if (ParseAnonymousUtils.isLinked(currentUser)) {
             btnLogin.setVisibility(View.VISIBLE);
             txtUserEmailFB.setVisibility(View.GONE);
             txtUserNameFB.setVisibility(View.GONE);
             btnLogOut.setVisibility(View.GONE);
         }
+        btnLogOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                ParseUser.logOut();
+
+                Intent intent = getIntent();
+                finish();
+                startActivity(intent);
+
+            }
+        });
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
@@ -197,6 +203,156 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            // Check if the user is currently logged
+            // and show any cached content
+            updateViewsWithProfileInfo();
+        } else {
+            // If the user is not logged in, go to the
+            // activity showing the login view.
+            Intent intent = getIntent();
+            finish();
+            startActivity(intent);
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AppEventsLogger.deactivateApp(this);
+    }
+
+
+    private void makeMeRequest() {
+        GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                        if (jsonObject != null) {
+                            JSONObject userProfile = new JSONObject();
+
+                            try {
+                                userProfile.put("facebookId", jsonObject.getLong("id"));
+                                userProfile.put("name", jsonObject.getString("name"));
+
+                               /* if (jsonObject.getString("gender") != null)
+                                    userProfile.put("gender", jsonObject.getString("gender"));
+*/
+                                if (jsonObject.getString("email") != null)
+                                    userProfile.put("email", jsonObject.getString("email"));
+
+                                // Save the user profile info in a user property
+                                ParseUser currentUser = ParseUser.getCurrentUser();
+                                currentUser.put("profile", userProfile);
+                                currentUser.saveInBackground();
+
+                                // Show the user info
+                                updateViewsWithProfileInfo();
+                            } catch (JSONException e) {
+                                Toast.makeText(MainActivity.this, "Error parsing returned user data. " + e, Toast.LENGTH_LONG).show();
+                                /*Log.d(IntegratingFacebookTutorialApplication.TAG,
+                                        "Error parsing returned user data. " + e);*/
+                            }
+                        } else if (graphResponse.getError() != null) {
+                            switch (graphResponse.getError().getCategory()) {
+                                case LOGIN_RECOVERABLE:
+                                    Toast.makeText(MainActivity.this, "Authentication error: " + graphResponse.getError(), Toast.LENGTH_LONG).show();
+                                    /*Log.d(IntegratingFacebookTutorialApplication.TAG,
+                                            "Authentication error: " + graphResponse.getError());*/
+                                    break;
+
+                                case TRANSIENT:
+                                    Toast.makeText(MainActivity.this, "Transient error. Try again. " + graphResponse.getError(), Toast.LENGTH_LONG).show();
+                                    /*Log.d(IntegratingFacebookTutorialApplication.TAG,
+                                            "Transient error. Try again. " + graphResponse.getError());*/
+                                    break;
+
+                                case OTHER:
+                                    Toast.makeText(MainActivity.this, "Some other error: " + graphResponse.getError(), Toast.LENGTH_LONG).show();
+                                    /*Log.d(IntegratingFacebookTutorialApplication.TAG,
+                                            "Some other error: " + graphResponse.getError());*/
+                                    break;
+                            }
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,email,gender,name");
+        request.setParameters(parameters);
+        request.executeAsync();
+    }
+
+    private void updateViewsWithProfileInfo() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser.has("profile")) {
+            JSONObject userProfile = currentUser.getJSONObject("profile");
+            try {
+
+                if (userProfile.has("facebookId")) {
+                    userProfilePictureView.setProfileId(userProfile.getString("facebookId"));
+                } else {
+                    // Show the default, blank user profile picture
+                    userProfilePictureView.setProfileId(null);
+                }
+
+                if (userProfile.has("name")) {
+                    txtUserNameFB.setText(userProfile.getString("name"));
+                    currentUser.setUsername(userProfile.getString("name"));
+                } else {
+                    txtUserNameFB.setText("");
+                }
+
+               /* if (userProfile.has("gender")) {
+                    userGenderView.setText(userProfile.getString("gender"));
+                } else {
+                    userGenderView.setText("");
+                }*/
+
+                if (userProfile.has("email")) {
+                    txtUserEmailFB.setText(userProfile.getString("email"));
+                    currentUser.setEmail(userProfile.getString("email"));
+                } else {
+                    txtUserEmailFB.setText("");
+                }
+
+                // Alert
+                currentUser.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+
+                            Toast.makeText(MainActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
+                            /*Intent myIntent = new Intent(MainActivity.this, MyProfileActivity.class);
+                            myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
+                            startActivity(myIntent);
+                            finish();*/
+                        } else {
+                            //Call error
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setMessage(e.getMessage())
+                                    .setTitle("Update State")
+                                    .setPositiveButton(android.R.string.ok, null);
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    }
+                });
+
+            } catch (JSONException e) {
+                Toast.makeText(MainActivity.this, "Error parsing saved user data.", Toast.LENGTH_LONG).show();
+                // Log.d(IntegratingFacebookTutorialApplication.TAG, "Error parsing saved user data.");
+            }
+        }
+    }
+
+
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -242,7 +398,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // this guy will get all your story information
-        private void getFreeStory(){
+        private void getFreeStory() {
             //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
             query.findInBackground(new FindCallback<ParseObject>() {
@@ -253,7 +409,7 @@ public class MainActivity extends AppCompatActivity {
                         // if there results, update the list of posts
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemFreeStory answer = new ItemFreeStory(post.getString("StoryName"),post.getString("Author"), post.getInt("Price"), fileObject);
+                            ItemFreeStory answer = new ItemFreeStory(post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject);
                             itemsFreeStoryList.add(answer);
                         }
                         adapterFreeStory.notifyDataSetChanged();
@@ -266,7 +422,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // this guy will get all your story information
-        private void getPaidStory(){
+        private void getPaidStory() {
             //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
             query.findInBackground(new FindCallback<ParseObject>() {
@@ -277,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
                         // if there results, update the list of posts
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemPaidStory answer = new ItemPaidStory(post.getString("StoryName"),post.getString("Author"),post.getNumber("Price"),fileObject);
+                            ItemPaidStory answer = new ItemPaidStory(post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
                             itemsPaidStoryList.add(answer);
                         }
                         adapterPaidStory.notifyDataSetChanged();
@@ -311,12 +467,12 @@ public class MainActivity extends AppCompatActivity {
             DisplayMetrics outMetrics = new DisplayMetrics();
             display.getMetrics(outMetrics);
 
-            float density  = getResources().getDisplayMetrics().density;
-            float dpWidth  = outMetrics.widthPixels / density;
-            int columns = Math.round(dpWidth/300);
+            float density = getResources().getDisplayMetrics().density;
+            float dpWidth = outMetrics.widthPixels / density;
+            int columns = Math.round(dpWidth / 300);
             recyclerView.setHasFixedSize(true);
             // The number of Columns
-            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),columns));
+            recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), columns));
 
             if (tabPosition == 0) {
                 //Call get free story method
