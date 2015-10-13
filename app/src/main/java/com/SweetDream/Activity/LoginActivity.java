@@ -6,7 +6,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
-
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBar;
@@ -23,14 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SweetDream.R;
-
-import com.facebook.Profile;
-
 import com.parse.LogInCallback;
-
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
-
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
@@ -42,14 +36,12 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class LoginActivity extends AppCompatActivity {
     //Variable on layout---------------------------
     Button btnRegister, btnReset, btnLogin, btnFacebook, btnTwitter;
     EditText mEdtUserNameParse, mEdtPasswordParse;
     TextView forgotPass;
-    CircleImageView imgProfile;
+
     String strUserNameParse, strPasswordParse;
     //Variable for facebook-------------------------------
 
@@ -95,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnFacebook = (Button) findViewById(R.id.btnFacebookLogin);
         btnTwitter = (Button) findViewById(R.id.btnTwitterLogin);
-        imgProfile = (CircleImageView) findViewById(R.id.profile_image);
+
         txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
         txtEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
 

@@ -1,12 +1,7 @@
 package com.SweetDream.Activity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -17,11 +12,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -43,7 +38,6 @@ import com.SweetDream.R;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.widget.ProfilePictureView;
 import com.parse.FindCallback;
 import com.parse.ParseAnonymousUtils;
@@ -57,9 +51,6 @@ import com.parse.SaveCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,9 +62,10 @@ public class MainActivity extends AppCompatActivity {
     String name = null, email = null;
     ImageButton btnLogOut;
     TextView txtUserNameFB, txtUserEmailFB;
-
+    //CircleImageView imgProfile;
     //ParseUser currentUser = ParseUser.getCurrentUser();
     private ProfilePictureView userProfilePictureView;
+    Thread mThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
         txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
         txtUserEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
-
+        //imgProfile = (CircleImageView) findViewById(R.id.profile_image);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -98,9 +90,10 @@ public class MainActivity extends AppCompatActivity {
             makeMeRequest();
         }
 
+
         //ParseUser currentUser = ParseUser.getCurrentUser();
 
-        if (currentUser != null) {
+        if (currentUser != null && !ParseAnonymousUtils.isLinked(currentUser)) {
             txtUserNameFB.setText(currentUser.getString("username"));
             txtUserEmailFB.setText(currentUser.getString("email"));
         }
@@ -193,7 +186,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setupWithViewPager(viewPager);
+
     }
+
 
     private void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -207,10 +202,11 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if (currentUser != null) {
+        if (currentUser != null && currentUser.isAuthenticated()) {
             // Check if the user is currently logged
             // and show any cached content
             updateViewsWithProfileInfo();
+
         } else {
             // If the user is not logged in, go to the
             // activity showing the login view.
@@ -224,7 +220,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        AppEventsLogger.deactivateApp(this);
+        updateViewsWithProfileInfo();
+
     }
 
 
@@ -241,8 +238,7 @@ public class MainActivity extends AppCompatActivity {
                                 userProfile.put("name", jsonObject.getString("name"));
 
                                /* if (jsonObject.getString("gender") != null)
-                                    userProfile.put("gender", jsonObject.getString("gender"));
-*/
+                                    userProfile.put("gender", jsonObject.getString("gender"));*/
                                 if (jsonObject.getString("email") != null)
                                     userProfile.put("email", jsonObject.getString("email"));
 
@@ -301,8 +297,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (userProfile.has("name")) {
-                    txtUserNameFB.setText(userProfile.getString("name"));
                     currentUser.setUsername(userProfile.getString("name"));
+                    txtUserNameFB.setText(userProfile.getString("name"));
+
                 } else {
                     txtUserNameFB.setText("");
                 }
@@ -314,8 +311,9 @@ public class MainActivity extends AppCompatActivity {
                 }*/
 
                 if (userProfile.has("email")) {
-                    txtUserEmailFB.setText(userProfile.getString("email"));
                     currentUser.setEmail(userProfile.getString("email"));
+                    txtUserEmailFB.setText(userProfile.getString("email"));
+
                 } else {
                     txtUserEmailFB.setText("");
                 }
@@ -324,21 +322,17 @@ public class MainActivity extends AppCompatActivity {
                 currentUser.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e == null) {
-
-                            Toast.makeText(MainActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
-                            /*Intent myIntent = new Intent(MainActivity.this, MyProfileActivity.class);
-                            myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
-                            startActivity(myIntent);
-                            finish();*/
-                        } else {
-                            //Call error
+                        if (e != null) {
                             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                             builder.setMessage(e.getMessage())
                                     .setTitle("Update State")
                                     .setPositiveButton(android.R.string.ok, null);
                             AlertDialog dialog = builder.create();
                             dialog.show();
+                            //Toast.makeText(MainActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            //Toast.makeText(MainActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -348,8 +342,8 @@ public class MainActivity extends AppCompatActivity {
                 // Log.d(IntegratingFacebookTutorialApplication.TAG, "Error parsing saved user data.");
             }
         }
-    }
 
+    }
 
 
     @Override

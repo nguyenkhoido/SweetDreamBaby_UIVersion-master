@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="200dp"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/headerimg4"
+    android:background="@drawable/background_blur7"
     android:orientation="vertical"
     android:padding="10dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
@@ -43,13 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center_horizontal"
-                facebook:com_facebook_preset_size="small" />
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/profile_image"
-                android:layout_width="76dp"
-                android:layout_height="76dp"
-                android:src="@drawable/ic_action_account_circle_blue"
-                app:border_color="#FF000000"/>
+                facebook:com_facebook_preset_size="small"/>
+
 
             <Button
                 android:id="@+id/btnLogin"
