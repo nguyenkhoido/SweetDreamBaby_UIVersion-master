@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#BCBCBC"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -10,19 +10,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <GridView
-            android:id="@+id/grid_Favorites"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="10dp"
-            android:columnWidth="150dp"
-            android:horizontalSpacing="10dp"
-            android:numColumns="2"
-            android:scrollbars="none"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="10dp"></GridView>
+        <ListView
+            android:dividerHeight="5dp"
+            android:divider="@color/white"
+            android:id="@+id/listItemFavorites"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"></ListView>
+
     </LinearLayout>
 
 

@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SweetDream.R;
+import com.facebook.login.widget.ProfilePictureView;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -45,7 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     Button btnRegister, btnReset, btnLogin, btnFacebook, btnTwitter;
     EditText mEdtUserNameParse, mEdtPasswordParse;
     TextView forgotPass;
-
+    private Dialog processingDialog;
+private ProgressDialog progressingDialog;
     String strUserNameParse, strPasswordParse;
     //Variable for facebook-------------------------------
 
@@ -54,12 +56,11 @@ public class LoginActivity extends AppCompatActivity {
     String[] blacklist = new String[]{"com.any.package", "net.other.package"};
     List<String> mPermissions = Arrays.asList("public_profile", "user_about_me", "user_relationships", "user_birthday", "user_location", "email");
 
-    private Dialog processingDialog;
 
     //Variable on drawer layout---------------------------
     TextView txtUserNameFB, txtEmailFB;
 
-
+    private ProfilePictureView userProfilePictureView;
     // private ProgressView loader;
 
     @Override
@@ -73,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
 // Check if there is a currently logged in user
         // and it's linked to a Facebook account.
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
+        if ((currentUser != null)) {
             // Go to the user info activity
             showUserDetailsActivity();
         }
@@ -91,6 +92,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnFacebook = (Button) findViewById(R.id.btnFacebookLogin);
         btnTwitter = (Button) findViewById(R.id.btnTwitterLogin);
+        userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
 
         txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
         txtEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
@@ -119,12 +121,14 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     }
                 });
+
             }
         });
 
         btnTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressingDialog = ProgressDialog.show(LoginActivity.this,"","Loading..",true);
                 ParseTwitterUtils.logIn(LoginActivity.this, new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException err) {
@@ -168,7 +172,8 @@ public class LoginActivity extends AppCompatActivity {
         forgotPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ProgressDialog progressDialog = ProgressDialog.show(LoginActivity.this, "", "Loading...", true);
+
+
                 final EditText input = new EditText(LoginActivity.this);
                 // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
                 input.setInputType(InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
@@ -186,12 +191,15 @@ public class LoginActivity extends AppCompatActivity {
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+
                         String yourEmail = input.getText().toString();
+
                         forgotPass(yourEmail);
                     }
                 });
+
                 AlertDialog dialog = builder.create();
-                progressDialog.dismiss();
                 dialog.show();
 
 
@@ -235,8 +243,10 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void saveUser(){
+    private void saveUser() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+
+
         if (currentUser.has("profile")) {
             JSONObject userProfile = currentUser.getJSONObject("profile");
             try {
@@ -272,12 +282,13 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
+
+
     private void showUserDetailsActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -290,6 +301,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     Toast.makeText(LoginActivity.this, "An email was successfully sent with reset", Toast.LENGTH_LONG).show();
+
                     // An email was successfully sent with reset instructions.
                     shareContent();
                 } else {

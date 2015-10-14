@@ -12,7 +12,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,13 +39,11 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.widget.ProfilePictureView;
 import com.parse.FindCallback;
-import com.parse.ParseAnonymousUtils;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,13 +56,12 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
     Button btnLogin;
-    String name = null, email = null;
     ImageButton btnLogOut;
     TextView txtUserNameFB, txtUserEmailFB;
-    //CircleImageView imgProfile;
-    //ParseUser currentUser = ParseUser.getCurrentUser();
+
     private ProfilePictureView userProfilePictureView;
     Thread mThread;
+    View layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
         userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
         txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
         txtUserEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
-        //imgProfile = (CircleImageView) findViewById(R.id.profile_image);
+        layout = (View)findViewById(R.id.userDetailsLayout);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -84,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogOut = (ImageButton) findViewById(R.id.btnLogOut);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setText("Login");
-//Fetch Facebook user info if it is logged
+        //Fetch Facebook user info if it is logged------------------------------------------------------------------------------------------------------------------------------------
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null && currentUser.isAuthenticated()) {
             makeMeRequest();
@@ -95,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (currentUser != null) {
             btnLogin.setVisibility(View.GONE);
-            txtUserEmailFB.setOnClickListener(new View.OnClickListener() {
+            layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(MainActivity.this, MyProfileActivity.class);
@@ -207,13 +204,7 @@ public class MainActivity extends AppCompatActivity {
             updateViewsWithProfileInfo();
 
         }
-        /*else {
-            // If the user is not logged in, go to the
-            // activity showing the login view.
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
-        }*/
+
 
     }
 
@@ -230,8 +221,8 @@ public class MainActivity extends AppCompatActivity {
                                 userProfile.put("facebookId", jsonObject.getLong("id"));
                                 userProfile.put("name", jsonObject.getString("name"));
 
-                               /* if (jsonObject.getString("gender") != null)
-                                    userProfile.put("gender", jsonObject.getString("gender"));*/
+                                if (jsonObject.getString("gender") != null)
+                                    userProfile.put("gender", jsonObject.getString("gender"));
                                 if (jsonObject.getString("email") != null)
                                     userProfile.put("email", jsonObject.getString("email"));
 
@@ -244,27 +235,23 @@ public class MainActivity extends AppCompatActivity {
                                 updateViewsWithProfileInfo();
                             } catch (JSONException e) {
                                 Toast.makeText(MainActivity.this, "Error parsing returned user data. " + e, Toast.LENGTH_LONG).show();
-                                /*Log.d(IntegratingFacebookTutorialApplication.TAG,
-                                        "Error parsing returned user data. " + e);*/
+
                             }
                         } else if (graphResponse.getError() != null) {
                             switch (graphResponse.getError().getCategory()) {
                                 case LOGIN_RECOVERABLE:
                                     Toast.makeText(MainActivity.this, "Authentication error: " + graphResponse.getError(), Toast.LENGTH_LONG).show();
-                                    /*Log.d(IntegratingFacebookTutorialApplication.TAG,
-                                            "Authentication error: " + graphResponse.getError());*/
+
                                     break;
 
                                 case TRANSIENT:
                                     Toast.makeText(MainActivity.this, "Transient error. Try again. " + graphResponse.getError(), Toast.LENGTH_LONG).show();
-                                    /*Log.d(IntegratingFacebookTutorialApplication.TAG,
-                                            "Transient error. Try again. " + graphResponse.getError());*/
+
                                     break;
 
                                 case OTHER:
                                     Toast.makeText(MainActivity.this, "Some other error: " + graphResponse.getError(), Toast.LENGTH_LONG).show();
-                                    /*Log.d(IntegratingFacebookTutorialApplication.TAG,
-                                            "Some other error: " + graphResponse.getError());*/
+
                                     break;
                             }
                         }
@@ -297,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                     txtUserNameFB.setText("");
                 }
 
-               /* if (userProfile.has("gender")) {
+              /* if (userProfile.has("gender")) {
                     userGenderView.setText(userProfile.getString("gender"));
                 } else {
                     userGenderView.setText("");

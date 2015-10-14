@@ -2,9 +2,9 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_blur7"
     android:orientation="vertical"
     android:padding="10dp"
@@ -23,57 +23,64 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/custom_shape_button"
-            android:src="@drawable/ic_log_out_white"
-            />
+            android:src="@drawable/ic_log_out_white" />
 
         <!--android:visibility="gone"-->
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_above="@+id/btnLogOut"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:id="@+id/linearLayout4">
-
-            <com.facebook.login.widget.ProfilePictureView
-                android:id="@+id/userProfilePicture"
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_horizontal"
-                facebook:com_facebook_preset_size="small"/>
+            android:id="@+id/userDetailsLayout"
+            android:layout_alignBottom="@+id/btnLogOut"
+            android:layout_alignParentStart="true">
 
 
-            <Button
-                android:id="@+id/btnLogin"
+            <LinearLayout
+                android:id="@+id/linearLayout4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:text="Login"
-                android:textAllCaps="false"
-                android:textSize="24dp"
-                />
+                android:layout_above="@+id/btnLogOut"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:orientation="vertical">
 
+                <com.facebook.login.widget.ProfilePictureView
+                    android:id="@+id/userProfilePicture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_horizontal"
+                    facebook:com_facebook_preset_size="small" />
+
+
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:text="Login"
+                    android:textAllCaps="false"
+                    android:textSize="24dp" />
+
+            </LinearLayout>
+
+            <!--   android:visibility="gone"-->
+            <TextView
+                android:id="@+id/txtUserNameFacebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearLayout4"
+                android:text="User Name"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/txtUserEmailFacebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="Email"
+                android:textColor="@color/white" />
         </LinearLayout>
-
-        <!--   android:visibility="gone"-->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtUserNameFacebook"
-            android:text="User Name"
-            android:textColor="@color/white"
-            android:layout_below="@+id/linearLayout4" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtUserEmailFacebook"
-            android:text="Email"
-            android:textColor="@color/white"
-            android:layout_alignParentBottom="true" />
-
     </RelativeLayout>
 
 
