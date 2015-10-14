@@ -20,7 +20,7 @@ public class ParseApplication extends Application {
         //String appId = "157503941262245";
         // Khai bao cai dat keyid, clientid cho toan ung dung
 
-        ParseUser.enableAutomaticUser();
+        //ParseUser.enableAutomaticUser();
         Parse.enableLocalDatastore(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
 

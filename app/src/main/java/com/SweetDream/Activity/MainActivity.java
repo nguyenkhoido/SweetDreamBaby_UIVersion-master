@@ -86,27 +86,14 @@ public class MainActivity extends AppCompatActivity {
         btnLogin.setText("Login");
 //Fetch Facebook user info if it is logged
         ParseUser currentUser = ParseUser.getCurrentUser();
-        if (!ParseAnonymousUtils.isLinked(currentUser) && currentUser.isAuthenticated()) {
+        if (currentUser != null && currentUser.isAuthenticated()) {
             makeMeRequest();
         }
 
 
         //ParseUser currentUser = ParseUser.getCurrentUser();
 
-        if (currentUser != null && !ParseAnonymousUtils.isLinked(currentUser)) {
-            txtUserNameFB.setText(currentUser.getString("username"));
-            txtUserEmailFB.setText(currentUser.getString("email"));
-        }
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                loadLoginView();
-            }
-        });
-
-
-        if (!ParseAnonymousUtils.isLinked(currentUser)) {
+        if (currentUser != null) {
             btnLogin.setVisibility(View.GONE);
             txtUserEmailFB.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -121,8 +108,20 @@ public class MainActivity extends AppCompatActivity {
             privateNote.put("content", "This note is private!");
             privateNote.setACL(new ParseACL(ParseUser.getCurrentUser()));
             privateNote.saveInBackground();*/
+            txtUserNameFB.setText(currentUser.getString("username"));
+            txtUserEmailFB.setText(currentUser.getString("email"));
         }
-        if (ParseAnonymousUtils.isLinked(currentUser)) {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                loadLoginView();
+            }
+        });
+
+
+
+        if (currentUser == null) {
             btnLogin.setVisibility(View.VISIBLE);
             txtUserEmailFB.setVisibility(View.GONE);
             txtUserNameFB.setVisibility(View.GONE);
@@ -193,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadLoginView() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-
+        //finish();
     }
 
 
@@ -207,20 +206,14 @@ public class MainActivity extends AppCompatActivity {
             // and show any cached content
             updateViewsWithProfileInfo();
 
-        } else {
+        }
+        /*else {
             // If the user is not logged in, go to the
             // activity showing the login view.
             Intent intent = getIntent();
             finish();
             startActivity(intent);
-        }
-
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        updateViewsWithProfileInfo();
+        }*/
 
     }
 
@@ -279,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
                 });
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,email,gender,name");
+
         request.setParameters(parameters);
         request.executeAsync();
     }
@@ -288,7 +282,6 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser.has("profile")) {
             JSONObject userProfile = currentUser.getJSONObject("profile");
             try {
-
                 if (userProfile.has("facebookId")) {
                     userProfilePictureView.setProfileId(userProfile.getString("facebookId"));
                 } else {
@@ -297,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 if (userProfile.has("name")) {
-                    currentUser.setUsername(userProfile.getString("name"));
+
                     txtUserNameFB.setText(userProfile.getString("name"));
 
                 } else {
@@ -311,31 +304,13 @@ public class MainActivity extends AppCompatActivity {
                 }*/
 
                 if (userProfile.has("email")) {
-                    currentUser.setEmail(userProfile.getString("email"));
+
                     txtUserEmailFB.setText(userProfile.getString("email"));
 
                 } else {
                     txtUserEmailFB.setText("");
                 }
 
-                // Alert
-                currentUser.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e != null) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setMessage(e.getMessage())
-                                    .setTitle("Update State")
-                                    .setPositiveButton(android.R.string.ok, null);
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                            //Toast.makeText(MainActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
-                        }
-                        else {
-                            //Toast.makeText(MainActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
 
             } catch (JSONException e) {
                 Toast.makeText(MainActivity.this, "Error parsing saved user data.", Toast.LENGTH_LONG).show();

@@ -28,6 +28,10 @@ import com.parse.ParseFacebookUtils;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.RequestPasswordResetCallback;
+import com.parse.SaveCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -107,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Uh oh. The user cancelled the Facebook login", Toast.LENGTH_LONG).show();
                         } else if (user.isNew()) {
                             Toast.makeText(LoginActivity.this, "User signed up and logged in through Facebook!", Toast.LENGTH_LONG).show();
-
+                            saveUser();
                             showUserDetailsActivity();
                         } else {
                             Toast.makeText(LoginActivity.this, "User logged in through Facebook!", Toast.LENGTH_LONG).show();
@@ -231,6 +235,43 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void saveUser(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser.has("profile")) {
+            JSONObject userProfile = currentUser.getJSONObject("profile");
+            try {
+                if (userProfile.has("name")) {
+                    currentUser.setUsername(userProfile.getString("name"));
+                    Toast.makeText(LoginActivity.this, "Name", Toast.LENGTH_LONG).show();
+                }
+                if (userProfile.has("email")) {
+                    currentUser.setEmail(userProfile.getString("email"));
+                }
+
+                // Alert
+                currentUser.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Toast.makeText(LoginActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
+
+                        } else {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                            builder.setMessage(e.getMessage())
+                                    .setTitle("Update State")
+                                    .setPositiveButton(android.R.string.ok, null);
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    }
+                });
+
+            } catch (JSONException e) {
+                Toast.makeText(LoginActivity.this, "Error parsing saved user data.", Toast.LENGTH_LONG).show();
+                // Log.d(IntegratingFacebookTutorialApplication.TAG, "Error parsing saved user data.");
+            }
+        }
+    }
     private void showUserDetailsActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
