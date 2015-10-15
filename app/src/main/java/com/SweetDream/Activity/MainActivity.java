@@ -149,16 +149,22 @@ public class MainActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.navigation_item_features:
                         fragment = new FeaturePage();
+                        setTitle("Sweet Dream - Feature Page");
                         break;
 
                     case R.id.navigation_item_favorites:
                         fragment = new FavoritesActivity();
+                        setTitle("Sweet Dream - My Favorites");
                         break;
 
                     case R.id.navigation_item_myBooks:
                         fragment = new MyBookActivity();
+                        setTitle("Sweet Dream - My Books");
                         break;
 
+                    case R.id.navigation_item_myDownloads:
+                        fragment = new MyDownload();
+                        setTitle("Sweet Dream - My Downloads");
 
                 }
                 if (fragment != null) {

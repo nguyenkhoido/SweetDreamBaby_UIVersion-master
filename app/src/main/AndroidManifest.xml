@@ -86,10 +86,10 @@
         <activity
             android:name=".Activity.PlayingPage"
             android:label="@string/title_activity_playing_page"
-            android:theme="@style/SweetDreamThemeActionBar">
-            <meta-data
+            android:theme="@style/SweetDreamTheme">
+            <!--<meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.SweetDream.Activity.StoryDetails" />
+                android:value="com.SweetDream.Activity.StoryDetails" />-->
         </activity>
 
     </application>
