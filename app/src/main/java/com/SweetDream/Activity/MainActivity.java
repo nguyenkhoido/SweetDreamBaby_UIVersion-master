@@ -332,7 +332,9 @@ public class MainActivity extends AppCompatActivity {
             case android.R.id.home:
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
-            case R.id.action_settings:
+            case R.id.action_search:
+                Intent intent = new Intent(this,SearchStoryActivity.class);
+                startActivity(intent);
                 return true;
         }
 
