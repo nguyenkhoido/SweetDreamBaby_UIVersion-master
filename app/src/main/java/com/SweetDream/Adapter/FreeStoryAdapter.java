@@ -2,6 +2,7 @@ package com.SweetDream.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        ItemFreeStory item = itemsFreeBooks.get(i);
+        final ItemFreeStory item = itemsFreeBooks.get(i);
         viewHolder.txtTitle.setText(item.getTitleBook());
         viewHolder.txtAuthor.setText(item.getAuthorBook());
         // we load image from parse to imageview
@@ -55,7 +56,12 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                context.startActivity(new Intent(context,StoryDetails.class));
+                SharedPreferences myprefs= context.getSharedPreferences("user", context.MODE_WORLD_READABLE);
+                myprefs.edit().putString("session_id", item.getObjectId()).commit();
+
+                Intent intent = new Intent(context,StoryDetails.class);
+                //intent.putExtra("objectId", item.getObjectId());
+                context.startActivity(intent);
             }
         });
     }
