@@ -357,6 +357,7 @@ public class MainActivity extends AppCompatActivity {
             itemsPaidStoryList = new ArrayList<>();
             adapterFreeStory = new FreeStoryAdapter(itemsFreeStoryList);
             adapterPaidStory = new PaidStoryAdapter(itemsPaidStoryList);
+
             //processingDialog = new ProgressDialog(getActivity());
 
         }
@@ -373,7 +374,7 @@ public class MainActivity extends AppCompatActivity {
                         // if there results, update the list of posts
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemFreeStory answer = new ItemFreeStory(post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject);
+                            ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject);
                             itemsFreeStoryList.add(answer);
                         }
                         adapterFreeStory.notifyDataSetChanged();

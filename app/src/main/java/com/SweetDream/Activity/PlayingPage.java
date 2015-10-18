@@ -1,11 +1,18 @@
 package com.SweetDream.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.SweetDream.R;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 /**
  * Created by nguye_000 on 07/10/2015.
@@ -19,10 +26,25 @@ public class PlayingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playing_page);
 
+        SharedPreferences myprefs= getSharedPreferences("user", MODE_WORLD_READABLE);
+        String session_id= myprefs.getString("session_id", null);
 
+        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
+        query.whereEqualTo("objectId", session_id);
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (parseObject != null) {
+                    Toast.makeText(PlayingPage.this,"Name Song is: " + parseObject.getString("LinkSong"), Toast.LENGTH_LONG).show();
+                    //ParseFile file = parseObject.getParseFile("Image");
 
-
-       // final ArrayAdapter<String> Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.times));
+                } else {
+                    Toast.makeText(PlayingPage.this, "Data load fail", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        //Toast.makeText(this, "Data load fail" + session_id, Toast.LENGTH_LONG).show();
+        // final ArrayAdapter<String> Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.times));
       /*  btnBackActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
