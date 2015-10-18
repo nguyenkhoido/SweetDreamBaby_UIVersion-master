@@ -1,6 +1,7 @@
 package com.SweetDream.Activity;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -86,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser != null && currentUser.isAuthenticated()) {
             makeMeRequest();
         }
-
 
         //ParseUser currentUser = ParseUser.getCurrentUser();
 
@@ -349,10 +349,11 @@ public class MainActivity extends AppCompatActivity {
         List<ItemPaidStory> itemsPaidStoryList;
         FreeStoryAdapter adapterFreeStory;
         PaidStoryAdapter adapterPaidStory;
-        private Dialog processingDialog;
+        public Dialog processingDialog;
 
         // in contructor create list from parse
         public DesignDemoFragment() {
+
             itemsFreeStoryList = new ArrayList<>();
             itemsPaidStoryList = new ArrayList<>();
             adapterFreeStory = new FreeStoryAdapter(itemsFreeStoryList);
@@ -364,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
 
         // this guy will get all your story information
         private void getFreeStory() {
-            //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
+            processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
@@ -378,6 +379,7 @@ public class MainActivity extends AppCompatActivity {
                             itemsFreeStoryList.add(answer);
                         }
                         adapterFreeStory.notifyDataSetChanged();
+                        processingDialog.dismiss();
                     } else {
                         Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
                     }
@@ -388,7 +390,7 @@ public class MainActivity extends AppCompatActivity {
 
         // this guy will get all your story information
         private void getPaidStory() {
-            //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
+            processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
@@ -402,6 +404,7 @@ public class MainActivity extends AppCompatActivity {
                             itemsPaidStoryList.add(answer);
                         }
                         adapterPaidStory.notifyDataSetChanged();
+                        processingDialog.dismiss();
                     } else {
                         Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
                     }
@@ -441,6 +444,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (tabPosition == 0) {
                 //Call get free story method
+
                 getFreeStory();
                 // get Adapter above and set to recyclerview
 
