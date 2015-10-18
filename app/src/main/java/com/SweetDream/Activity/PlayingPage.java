@@ -49,11 +49,11 @@ public class PlayingPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.playing_page);
 
-        SharedPreferences myprefs = getSharedPreferences("user", MODE_WORLD_READABLE);
-        String session_id = myprefs.getString("session_id", null);
+        Intent intent = getIntent();
+        String objectId = intent.getStringExtra("objectId");
 
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
-        query.whereEqualTo("objectId", session_id);
+        query.whereEqualTo("objectId", objectId);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
@@ -61,7 +61,7 @@ public class PlayingPage extends AppCompatActivity {
                     ParseFile song = parseObject.getParseFile("Source");
                     String audiofile = song.getUrl();
                     PlayMedia(audiofile);
-                    Toast.makeText(PlayingPage.this,"Name Song is: " + parseObject.getString("LinkSong"), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(PlayingPage.this,"Name Song is: " + parseObject.getString("LinkSong"), Toast.LENGTH_LONG).show();
                     //ParseFile file = parseObject.getParseFile("Image");
 
                 } else {

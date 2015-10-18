@@ -39,11 +39,11 @@ public class StoryDetails extends AppCompatActivity {
         tvStoryName = (TextView) findViewById(R.id.tvStoryName);
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
 
-        SharedPreferences myprefs= getSharedPreferences("user", MODE_WORLD_READABLE);
-        String session_id= myprefs.getString("session_id", null);
+        Intent intent = getIntent();
+        final String objectId = intent.getStringExtra("objectId");
 
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
-        query.whereEqualTo("objectId", session_id);
+        query.whereEqualTo("objectId", objectId);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject parseObject, ParseException e) {
@@ -67,6 +67,7 @@ public class StoryDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent playIntent = new Intent(StoryDetails.this, PlayingPage.class);
+                playIntent.putExtra("objectId", objectId);
                 startActivity(playIntent);
             }
         });

@@ -56,11 +56,10 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                SharedPreferences myprefs= context.getSharedPreferences("user", context.MODE_WORLD_READABLE);
-                myprefs.edit().putString("session_id", item.getObjectId()).commit();
+
 
                 Intent intent = new Intent(context,StoryDetails.class);
-                //intent.putExtra("objectId", item.getObjectId());
+                intent.putExtra("objectId", item.getObjectId());
                 context.startActivity(intent);
             }
         });
