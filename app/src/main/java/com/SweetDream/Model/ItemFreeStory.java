@@ -5,6 +5,7 @@ import com.parse.ParseFile;
 /**
  * Created by Minh Color on 10/11/2015.
  */
+//
 public class ItemFreeStory {
     private String titleBook;
     private String authorBook;
