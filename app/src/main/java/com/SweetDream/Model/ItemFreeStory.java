@@ -6,16 +6,26 @@ import com.parse.ParseFile;
  * Created by Minh Color on 10/11/2015.
  */
 public class ItemFreeStory {
+    private String objectId;
     private String titleBook;
     private String authorBook;
 
     private ParseFile image;
     //private int image;
 
-    public ItemFreeStory(String titleBook, String authorBook, int price, ParseFile image) {
+    public ItemFreeStory(String objectId, String titleBook, String authorBook, int price, ParseFile image) {
+        this.objectId = objectId;
         this.titleBook = titleBook;
         this.authorBook = authorBook;
         this.image = image;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 
     public String getTitleBook() {
