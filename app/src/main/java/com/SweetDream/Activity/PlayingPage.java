@@ -38,7 +38,7 @@ import java.io.IOException;
 /**
  * Created by nguye_000 on 07/10/2015.
  */
-public class PlayingPage extends AppCompatActivity {
+public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnCompletionListener{
     ImageButton btnBackActivity,btnRandom,btnBack,btnPrevious,btnPause,btnPlay, btnForward, btnNext,btnLoop;
     //Button btnTimes;
 
@@ -153,6 +153,7 @@ public class PlayingPage extends AppCompatActivity {
                 }
             });
 
+            mediaPlayer.setOnCompletionListener(this);
 
         } catch (IOException e) {
             Activity a = this;
@@ -190,12 +191,12 @@ public class PlayingPage extends AppCompatActivity {
 
                     @Override
                     public void onStopTrackingTouch(SeekBar seekBar) {
-
+                        //btnPlay.setImageResource(R.drawable.btn_pause);
                     }
 
                     @Override
                     public void onStartTrackingTouch(SeekBar seekBar) {
-
+                        //btnPlay.setImageResource(R.drawable.btn_play);
                     }
 
                     @Override
@@ -204,14 +205,19 @@ public class PlayingPage extends AppCompatActivity {
                             mediaPlayer.seekTo(progress);
                         }
                     }
+
+
                 });
 
 
             }
 
+
             //repeat above code every second
             mHandler.postDelayed(this, 10);
         }
+
+
     };
 
     public void play(View view){
@@ -313,5 +319,11 @@ public class PlayingPage extends AppCompatActivity {
                 .append(String.format("%02d", seconds));
 
         return buf.toString();
+    }
+
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        btnPlay.setImageResource(R.drawable.btn_play);
     }
 }
