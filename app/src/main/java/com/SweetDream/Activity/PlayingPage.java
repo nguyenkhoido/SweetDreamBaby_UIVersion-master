@@ -42,6 +42,7 @@ public class PlayingPage extends AppCompatActivity {
     ImageButton btnBackActivity,btnRandom,btnBack,btnPrevious,btnPause,btnPlay, btnForward, btnNext,btnLoop;
     //Button btnTimes;
 
+
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
     @Override
@@ -69,6 +70,7 @@ public class PlayingPage extends AppCompatActivity {
                 }
             }
         });
+
 
         //Toast.makeText(this, "Data load fail" + session_id, Toast.LENGTH_LONG).show();
         // final ArrayAdapter<String> Adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.times));
@@ -115,8 +117,8 @@ public class PlayingPage extends AppCompatActivity {
             setContentView(R.layout.playing_page);
 
             // display title
-            ((TextView)findViewById(R.id.now_playing_text)).setText(audioFile);
-
+            ((TextView)findViewById(R.id.tv_now_playing)).setText(audioFile);
+            btnPlay = (ImageButton) findViewById(R.id.btnPlay);
 
             /// Load cover image (we use Picasso Library)
 
@@ -213,8 +215,22 @@ public class PlayingPage extends AppCompatActivity {
     };
 
     public void play(View view){
+// check for already playing
+        if(mediaPlayer.isPlaying()){
+            if(mediaPlayer!=null){
+                mediaPlayer.pause();
+                // Changing button image to play button
+                btnPlay.setImageResource(R.drawable.btn_play);
+            }
+        }else{
+            // Resume song
+            if(mediaPlayer!=null){
+                mediaPlayer.start();
+                // Changing button image to pause button
+                btnPlay.setImageResource(R.drawable.btn_pause);
+            }
+        }
 
-        mediaPlayer.start();
     }
 
 
