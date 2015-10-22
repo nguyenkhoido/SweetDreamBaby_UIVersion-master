@@ -9,6 +9,8 @@ import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 
+import java.net.URL;
+
 /**
  * Created by Minh Color on 10/17/2015.
  */
@@ -33,4 +35,21 @@ public class LoadImageAudioParse {
             img.setImageResource(R.drawable.thor);
         }
     }// load image
+
+    public void LoadImagesUrlParse(String directory, final ImageView img){
+        if(!directory.equalsIgnoreCase("")){
+            try {
+                URL url = new URL(directory);
+                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                img.setImageBitmap(bmp);
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        else {
+            img.setImageResource(R.drawable.thor);
+        }
+
+    }
 }

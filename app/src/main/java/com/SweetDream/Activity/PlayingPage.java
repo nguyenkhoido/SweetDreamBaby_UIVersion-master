@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.SweetDream.Extends.LoadImageAudioParse;
 import com.SweetDream.R;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -40,8 +41,8 @@ import java.io.IOException;
  */
 public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnCompletionListener{
     ImageButton btnBackActivity,btnRandom,btnBack,btnPrevious,btnPause,btnPlay, btnForward, btnNext,btnLoop;
-    //Button btnTimes;
-
+    ImageView storyImageView;
+    TextView tvDescription;
 
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
@@ -59,11 +60,22 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
             @Override
             public void done(ParseObject parseObject, ParseException e) {
                 if (parseObject != null) {
+                    // GET DETAIL STORY FROM PARSE
+                    String storyName = parseObject.getString("StoryName");
+
+                    ParseFile imageFile = parseObject.getParseFile("Image");
+                    //String storyImage = imageFile.getUrl();
+                    //Toast.makeText(PlayingPage.this, ""+storyImage,Toast.LENGTH_LONG).show();
+                    String storyAuthor = parseObject.getString("Author");
+
+                    String storyDescription = parseObject.getString("Description");
+
+                    // GET FILE MP3 RESOUCE FROM PARSE
                     ParseFile song = parseObject.getParseFile("Source");
                     String audiofile = song.getUrl();
-                    PlayMedia(audiofile);
-                    //Toast.makeText(PlayingPage.this,"Name Song is: " + parseObject.getString("LinkSong"), Toast.LENGTH_LONG).show();
-                    //ParseFile file = parseObject.getParseFile("Image");
+
+                    // PERFORM PLAY AND LOAD DETAIL STORY
+                    PlayMedia(storyName, imageFile, storyAuthor, storyDescription, audiofile);
 
                 } else {
                     Toast.makeText(PlayingPage.this, "Data load fail", Toast.LENGTH_LONG).show();
@@ -85,70 +97,69 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
     }
 
-    public void PlayMedia(String audioFile){
-        // create a media player
+    public void PlayMedia(String storyName, ParseFile storyImage, String storyAuthor, String storyDescription,String audioFile){
+        // CREATE A MEDIA PLAYER
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        // try to load data and play
+        // TRY TO LOAD DATA AND PLAY
         try {
 
-            // give data to mediaPlayer
+            // GIVE DATA TO MEDIAPLAYER
             mediaPlayer.setDataSource(audioFile);
-            // media player asynchronous preparation
+            // MEDIA PLAYER ASYNCHRONOUS PREPARATION
             mediaPlayer.prepareAsync();
 
-            // create a progress dialog (waiting media player preparation)
+            // CREATE A PROGRESS DIALOG (WAITING MEDIA PLAYER PREPARATION)
             final ProgressDialog dialog = new ProgressDialog(PlayingPage.this);
 
-            // set message of the dialog
+            // SET MESSAGE OF THE DIALOG
             dialog.setMessage("Loading Mp3");
 
-            // prevent dialog to be canceled by back button press
+            // PREVENT DIALOG TO BE CANCELED BY BACK BUTTON PRESS
             dialog.setCancelable(false);
 
-            // show dialog at the bottom
+            // SHOW DIALOG AT THE BOTTOM
             dialog.getWindow().setGravity(Gravity.CENTER);
 
-            // show dialog
+            // SHOW DIALOG
             dialog.show();
 
 
-            // inflate layout
+            // INFLATE LAYOUT
             setContentView(R.layout.playing_page);
 
-            // display title
-            ((TextView)findViewById(R.id.tv_now_playing)).setText(audioFile);
+            // DISPLAY TITLE
+            ((TextView)findViewById(R.id.tvNowPlaying)).setText(storyName+" - "+storyAuthor);
             btnPlay = (ImageButton) findViewById(R.id.btnPlay);
 
-            /// Load cover image (we use Picasso Library)
-
-            /*// Get image view
-            ImageView mImageView = (ImageView) findViewById(R.id.coverImage);
+            /// LOAD COVER IMAGE
+            // GET IMAGE VIEW
+            storyImageView = (ImageView) findViewById(R.id.storyImage);
 
             // Image url
-            String image_url = coverImage;
+            LoadImageAudioParse loadImageAudioParse = new LoadImageAudioParse();
+            loadImageAudioParse.loadImages(storyImage,storyImageView);
+
+            // GET DESCRIPTION
+            tvDescription =(TextView) findViewById(R.id.tvStoryDescription);
+            tvDescription.setText(storyDescription);
 
 
-            Picasso.with(getApplicationContext()).load(image_url).into(mImageView);*/
-
-            ///
-
-
-            // execute this code at the end of asynchronous media player preparation
+            // EXECUTE THIS CODE AT THE END OF ASYNCHRONOUS MEDIA PLAYER PREPARATION
             mediaPlayer.setOnPreparedListener(new OnPreparedListener() {
                 public void onPrepared(final MediaPlayer mp) {
 
 
-                    //start media player
+                    //START MEDIA PLAYER
                     mp.start();
 
-                    // link seekbar to bar view
+                    // LINK SEEKBAR TO BAR VIEW
                     seekBar = (SeekBar) findViewById(R.id.songProgressBar);
 
-                    //update seekbar
+                    //UPDATE SEEKBAR
                     mRunnable.run();
 
-                    //dismiss dialog
+                    //DISMISS DIALOG
                     dialog.dismiss();
                 }
             });
@@ -170,19 +181,19 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         public void run() {
             if(mediaPlayer != null) {
 
-                //set max value
+                //SET MAX VALUE
                 int mDuration = mediaPlayer.getDuration();
                 seekBar.setMax(mDuration);
 
-                //update total time text view
+                //UPDATE TOTAL TIME TEXT VIEW
                 TextView totalTime = (TextView) findViewById(R.id.songTotalDurationLabel);
                 totalTime.setText(getTimeString(mDuration));
 
-                //set progress to current position
+                //SET PROGRESS TO CURRENT POSITION
                 int mCurrentPosition = mediaPlayer.getCurrentPosition();
                 seekBar.setProgress(mCurrentPosition);
 
-                //update current time text view
+                //UPDATE CURRENT TIME TEXT VIEW
                 TextView currentTime = (TextView) findViewById(R.id.songCurrentDurationLabel);
                 currentTime.setText(getTimeString(mCurrentPosition));
 
