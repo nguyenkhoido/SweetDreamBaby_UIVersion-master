@@ -2,6 +2,7 @@ package com.SweetDream.Activity;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
         txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
         txtUserEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
-        layout = (View)findViewById(R.id.userDetailsLayout);
+        layout = (View) findViewById(R.id.userDetailsLayout);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
         if (currentUser == null) {
             btnLogin.setVisibility(View.VISIBLE);
             txtUserEmailFB.setVisibility(View.GONE);
@@ -127,12 +128,9 @@ public class MainActivity extends AppCompatActivity {
         btnLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showDialog(MainActivity.this, "Sign Out", "Are you sure to quit?", "Yes", "No");
 
-                ParseUser.logOut();
 
-                Intent intent = getIntent();
-                finish();
-                startActivity(intent);
 
             }
         });
@@ -165,6 +163,11 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.navigation_item_myDownloads:
                         fragment = new MyDownload();
                         setTitle("Sweet Dream - My Downloads");
+                        break;
+                    case R.id.navigation_item_about:
+                        fragment = new FragmentAbout();
+                        setTitle("Sweet Dream - About");
+                        break;
 
                 }
                 if (fragment != null) {
@@ -255,10 +258,10 @@ public class MainActivity extends AppCompatActivity {
 
                                     break;
 
-                                case OTHER:
+                               /* case OTHER:
                                     Toast.makeText(MainActivity.this, "Some other error: " + graphResponse.getError(), Toast.LENGTH_LONG).show();
 
-                                    break;
+                                    break;*/
                             }
                         }
                     }
@@ -333,7 +336,7 @@ public class MainActivity extends AppCompatActivity {
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 return true;
             case R.id.action_search:
-                Intent intent = new Intent(this,SearchStoryActivity.class);
+                Intent intent = new Intent(this, SearchStoryActivity.class);
                 startActivity(intent);
                 return true;
         }
@@ -376,6 +379,7 @@ public class MainActivity extends AppCompatActivity {
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
                             ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject);
+                            if(post.getInt("Price") == 0)
                             itemsFreeStoryList.add(answer);
                         }
                         adapterFreeStory.notifyDataSetChanged();
@@ -401,6 +405,7 @@ public class MainActivity extends AppCompatActivity {
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
                             ItemPaidStory answer = new ItemPaidStory(post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
+                            if(post.getInt("Price") != 0)
                             itemsPaidStoryList.add(answer);
                         }
                         adapterPaidStory.notifyDataSetChanged();
@@ -502,34 +507,33 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-}
-/*
-*
-* import android.support.v7.app.AlertDialog;
-*
-* //alert dialog for downloadDialog
-    private static AlertDialog showDialog(final Activity activity, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo){
-        AlertDialog.Builder dowloadDialog = new AlertDialog.Builder(activity);
-        dowloadDialog.setTitle(title);
-        dowloadDialog.setMessage(message);
-        dowloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+
+
+    //alert dialog for downloadDialog
+    public AlertDialog showDialog(final MainActivity activity, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo) {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
+        downloadDialog.setTitle(title);
+        downloadDialog.setMessage(message);
+        downloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Uri uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android");
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                try {
-                    activity.startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(activity, "" + e, Toast.LENGTH_SHORT).show();
-                }
+                userSignOut();
             }
         });
-        dowloadDialog.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
+        downloadDialog.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         });
-        return dowloadDialog.show();
+        return downloadDialog.show();
     }
-* */
+    private void userSignOut()
+    {
+        ParseUser.logOut();
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
+    }
+}
+

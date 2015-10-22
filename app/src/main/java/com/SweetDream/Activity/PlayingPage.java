@@ -1,12 +1,19 @@
 package com.SweetDream.Activity;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SweetDream.R;
@@ -16,35 +23,19 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
-import android.os.Bundle;
-import android.os.Handler;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.io.IOException;
 
 /**
  * Created by nguye_000 on 07/10/2015.
  */
-public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnCompletionListener{
-    ImageButton btnBackActivity,btnRandom,btnBack,btnPrevious,btnPause,btnPlay, btnForward, btnNext,btnLoop;
+public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
+    ImageButton btnBackActivity, btnRandom, btnBack, btnPrevious, btnPause, btnPlay, btnForward, btnNext, btnLoop;
     //Button btnTimes;
 
 
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,10 +73,9 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         });*/
 
 
-
     }
 
-    public void PlayMedia(String audioFile){
+    public void PlayMedia(String audioFile) {
         // create a media player
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -117,7 +107,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
             setContentView(R.layout.playing_page);
 
             // display title
-            ((TextView)findViewById(R.id.tv_now_playing)).setText(audioFile);
+            ((TextView) findViewById(R.id.tv_now_playing)).setText(audioFile);
             btnPlay = (ImageButton) findViewById(R.id.btnPlay);
 
             /// Load cover image (we use Picasso Library)
@@ -168,7 +158,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
         @Override
         public void run() {
-            if(mediaPlayer != null) {
+            if (mediaPlayer != null) {
 
                 //set max value
                 int mDuration = mediaPlayer.getDuration();
@@ -201,7 +191,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        if(mediaPlayer != null && fromUser){
+                        if (mediaPlayer != null && fromUser) {
                             mediaPlayer.seekTo(progress);
                         }
                     }
@@ -220,17 +210,17 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
     };
 
-    public void play(View view){
+    public void play(View view) {
 // check for already playing
-        if(mediaPlayer.isPlaying()){
-            if(mediaPlayer!=null){
+        if (mediaPlayer.isPlaying()) {
+            if (mediaPlayer != null) {
                 mediaPlayer.pause();
                 // Changing button image to play button
                 btnPlay.setImageResource(R.drawable.btn_play);
             }
-        }else{
+        } else {
             // Resume song
-            if(mediaPlayer!=null){
+            if (mediaPlayer != null) {
                 mediaPlayer.start();
                 // Changing button image to pause button
                 btnPlay.setImageResource(R.drawable.btn_pause);
@@ -240,13 +230,13 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     }
 
 
-    public void pause(View view){
+    public void pause(View view) {
 
         mediaPlayer.pause();
 
     }
 
-    public void stop(View view){
+    public void stop(View view) {
 
         mediaPlayer.seekTo(0);
         mediaPlayer.pause();
@@ -254,7 +244,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     }
 
 
-    public void seekForward(View view){
+    public void seekForward(View view) {
 
         //set seek time
         int seekForwardTime = 5000;
@@ -262,17 +252,17 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         // get current song position
         int currentPosition = mediaPlayer.getCurrentPosition();
         // check if seekForward time is lesser than song duration
-        if(currentPosition + seekForwardTime <= mediaPlayer.getDuration()){
+        if (currentPosition + seekForwardTime <= mediaPlayer.getDuration()) {
             // forward song
             mediaPlayer.seekTo(currentPosition + seekForwardTime);
-        }else{
+        } else {
             // forward to end position
             mediaPlayer.seekTo(mediaPlayer.getDuration());
         }
 
     }
 
-    public void seekBackward(View view){
+    public void seekBackward(View view) {
 
         //set seek time
         int seekBackwardTime = 5000;
@@ -280,10 +270,10 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         // get current song position
         int currentPosition = mediaPlayer.getCurrentPosition();
         // check if seekBackward time is greater than 0 sec
-        if(currentPosition - seekBackwardTime >= 0){
+        if (currentPosition - seekBackwardTime >= 0) {
             // forward song
             mediaPlayer.seekTo(currentPosition - seekBackwardTime);
-        }else{
+        } else {
             // backward to starting position
             mediaPlayer.seekTo(0);
         }
@@ -291,9 +281,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     }
 
 
-
-
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
 
         if (mediaPlayer != null) {
@@ -307,9 +295,9 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     private String getTimeString(long millis) {
         StringBuffer buf = new StringBuffer();
 
-        long hours = millis / (1000*60*60);
-        long minutes = ( millis % (1000*60*60) ) / (1000*60);
-        long seconds = ( ( millis % (1000*60*60) ) % (1000*60) ) / 1000;
+        long hours = millis / (1000 * 60 * 60);
+        long minutes = (millis % (1000 * 60 * 60)) / (1000 * 60);
+        long seconds = ((millis % (1000 * 60 * 60)) % (1000 * 60)) / 1000;
 
         buf
                 .append(String.format("%02d", hours))

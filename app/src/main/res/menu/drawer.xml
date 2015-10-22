@@ -21,6 +21,7 @@
             android:id="@+id/navigation_item_myDownloads"
             android:icon="@drawable/ic_download_white"
             android:title="@string/nav_item_myDownloads" />
+
     </group>
 
     <item android:title="@string/nav_sub_menu">

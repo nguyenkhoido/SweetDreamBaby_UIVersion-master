@@ -16,7 +16,9 @@
     <string name="action_home">Home</string>
     //String LoginActivity
     <string name="forgotPass"><u>Forgot password, click here!</u></string>
-
+    //String About
+    <string name="copyRight">Copyright Project II 2015 - Sweet Dream</string>
+    <string name="contentAbout">FPT Software is a part of FPT Corporation, the largest IT Corporation in Vietnam with over US$1.65 billion revenue and 22,000 employees. With focus on RandD activities to improve the quality of services, FPT Software has been serving over 350 customers worldwide, of which nearly 40 are Fortune 500 in the industries of manufacturing, semiconductors, healthcare, utility, financial services, content media and entertainment and more Qualified with CMMI 5 and ISO 27001:2013, the company delivers world-class services in Cloud, Big Data, Mobility, Legacy Migration, Application Services, Embedded System, Package Implementation, and BPO services globally from delivery centers across the United States, Japan, Europe, Australia, Vietnam and the Asia Pacific region.</string>
     //String MainActivity-------------------------------------------------------------------------------
     //String StoryDetailsActivity-------------------------------------------------------------------------------
     //String PlayingActivity-------------------------------------------------------------------------------
@@ -39,5 +41,8 @@
 
    //Facebook app ID-------------------------------------------------------------------------------
     <string name="facebook_app_id">1704750209756004</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -20,7 +20,7 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 public class RegisterActivity extends AppCompatActivity {
-Button btnReset, signup, btnBackLogin;
+Button btnReset, signup;
     EditText username, email, phone, pass, confirmPass;
     String mUsername, mEmail, mPhone, mPass, mConfirmPass;
     int mCoin = 500;
@@ -43,18 +43,7 @@ Button btnReset, signup, btnBackLogin;
         confirmPass = (EditText) findViewById(R.id.edtConfirmPassword);
         btnReset = (Button)findViewById(R.id.btnResetRg);
         signup = (Button) findViewById(R.id.btnRegister);
-        btnBackLogin = (Button) findViewById(R.id.btnBackLogin);
 
-        btnBackLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent myIntent = new Intent(RegisterActivity.this, LoginActivity.class);
-                myIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);// clear back stack
-                startActivity(myIntent);
-                finish();
-                return;
-            }
-        });
         // Use parse to test recive data
         // thong ke lai nguoi dung dang ky
         ParseAnalytics.trackAppOpened(getIntent());

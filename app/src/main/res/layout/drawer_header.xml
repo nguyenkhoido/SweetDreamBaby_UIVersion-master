@@ -4,84 +4,81 @@
 
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="150dp"
     android:background="@drawable/background_blur7"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+    android:padding="5dp"
 
-    <!---->
-    <RelativeLayout
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"
+    android:gravity="center">
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp">
 
-        <ImageButton
-            android:id="@+id/btnLogOut"
+        <com.facebook.login.widget.ProfilePictureView
+            android:id="@+id/userProfilePicture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/custom_shape_button"
-            android:src="@drawable/ic_log_out_white" />
+            facebook:com_facebook_preset_size="small" />
 
-        <!--android:visibility="gone"-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/userDetailsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:id="@+id/userDetailsLayout"
-            android:layout_alignBottom="@+id/btnLogOut"
-            android:layout_alignParentStart="true">
+            android:layout_weight="1">
 
-
-            <LinearLayout
-                android:id="@+id/linearLayout4"
+            <Button
+                android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/btnLogOut"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:orientation="vertical">
+                android:background="@null"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textSize="24dp" />
 
-                <com.facebook.login.widget.ProfilePictureView
-                    android:id="@+id/userProfilePicture"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center_horizontal"
-                    facebook:com_facebook_preset_size="small" />
-
-
-                <Button
-                    android:id="@+id/btnLogin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:text="Login"
-                    android:textAllCaps="false"
-                    android:textSize="24dp" />
-
-            </LinearLayout>
-
-            <!--   android:visibility="gone"-->
             <TextView
                 android:id="@+id/txtUserNameFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/linearLayout4"
+
                 android:text="User Name"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:paddingLeft="20dp" />
 
             <TextView
                 android:id="@+id/txtUserEmailFacebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:text="Email"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:paddingLeft="20dp" />
         </LinearLayout>
-    </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/btnLogOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/custom_shape_button"
+                android:src="@drawable/ic_log_out_white" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

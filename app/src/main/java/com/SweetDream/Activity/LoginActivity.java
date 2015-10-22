@@ -110,13 +110,13 @@ private ProgressDialog progressingDialog;
                     public void done(ParseUser user, ParseException err) {
                         processingDialog.dismiss();
                         if (user == null) {
-                            Toast.makeText(LoginActivity.this, "Uh oh. The user cancelled the Facebook login", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "The user cancelled the Facebook login", Toast.LENGTH_LONG).show();
                         } else if (user.isNew()) {
-                            Toast.makeText(LoginActivity.this, "User signed up and logged in through Facebook!", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(LoginActivity.this, "User signed up and logged in through Facebook!", Toast.LENGTH_LONG).show();
                             saveUser();
                             showUserDetailsActivity();
                         } else {
-                            Toast.makeText(LoginActivity.this, "User logged in through Facebook!", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(LoginActivity.this, "User logged in through Facebook!", Toast.LENGTH_LONG).show();
                             showUserDetailsActivity();
                         }
                     }
@@ -133,7 +133,7 @@ private ProgressDialog progressingDialog;
                     @Override
                     public void done(ParseUser user, ParseException err) {
                         if (user == null) {
-                            Toast.makeText(LoginActivity.this, "Uh oh. The user cancelled the Twitter login.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "The user cancelled the Twitter login.", Toast.LENGTH_LONG).show();
                         } else if (user.isNew()) {
                             String screen_name = ParseTwitterUtils.getTwitter().getScreenName();
                             //editor.putString("screen_name", screen_name);
@@ -142,10 +142,11 @@ private ProgressDialog progressingDialog;
                             Log.d("MyApp", screen_name + " has signed in");
                             // Refresh
                             Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                            processingDialog.dismiss();
                             startActivity(myIntent);
                         } else {
 
-                            Toast.makeText(LoginActivity.this, "User logged in through Facebook!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "User logged in through Twitter!", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

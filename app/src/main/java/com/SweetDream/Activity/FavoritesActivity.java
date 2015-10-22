@@ -1,7 +1,6 @@
 package com.SweetDream.Activity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ public class FavoritesActivity extends Fragment {
     List<ItemFavoriteStories> itemFavorites;
     FavoritesStoryAdapter adapterFavoriteStories;
 
-    @Nullable
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_favorites, container, false);
