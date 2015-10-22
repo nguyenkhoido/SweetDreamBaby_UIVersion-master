@@ -503,3 +503,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+/*
+*
+* import android.support.v7.app.AlertDialog;
+*
+* //alert dialog for downloadDialog
+    private static AlertDialog showDialog(final Activity activity, CharSequence title, CharSequence message, CharSequence buttonYes, CharSequence buttonNo){
+        AlertDialog.Builder dowloadDialog = new AlertDialog.Builder(activity);
+        dowloadDialog.setTitle(title);
+        dowloadDialog.setMessage(message);
+        dowloadDialog.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Uri uri = Uri.parse("market://search?q=pname:" + "com.google.zxing.client.android");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                try {
+                    activity.startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(activity, "" + e, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        dowloadDialog.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        return dowloadDialog.show();
+    }
+* */
