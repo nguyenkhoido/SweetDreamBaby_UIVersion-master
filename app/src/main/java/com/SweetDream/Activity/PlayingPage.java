@@ -1,21 +1,15 @@
 package com.SweetDream.Activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
-import android.view.View;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SweetDream.Extends.LoadImageAudioParse;
 import com.SweetDream.R;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -23,19 +17,35 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnPreparedListener;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.Gravity;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.IOException;
 
 /**
  * Created by nguye_000 on 07/10/2015.
  */
-public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
-    ImageButton btnBackActivity, btnRandom, btnBack, btnPrevious, btnPause, btnPlay, btnForward, btnNext, btnLoop;
-    //Button btnTimes;
-
+public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnCompletionListener{
+    ImageButton btnBackActivity,btnRandom,btnBack,btnPrevious,btnPause,btnPlay, btnForward, btnNext,btnLoop;
+    ImageView storyImageView;
+    TextView tvDescription;
 
     private MediaPlayer mediaPlayer;
     private SeekBar seekBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,11 +60,22 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
             @Override
             public void done(ParseObject parseObject, ParseException e) {
                 if (parseObject != null) {
+                    // GET DETAIL STORY FROM PARSE
+                    String storyName = parseObject.getString("StoryName");
+
+                    ParseFile imageFile = parseObject.getParseFile("Image");
+                    //String storyImage = imageFile.getUrl();
+                    //Toast.makeText(PlayingPage.this, ""+storyImage,Toast.LENGTH_LONG).show();
+                    String storyAuthor = parseObject.getString("Author");
+
+                    String storyDescription = parseObject.getString("Description");
+
+                    // GET FILE MP3 RESOUCE FROM PARSE
                     ParseFile song = parseObject.getParseFile("Source");
                     String audiofile = song.getUrl();
-                    PlayMedia(audiofile);
-                    //Toast.makeText(PlayingPage.this,"Name Song is: " + parseObject.getString("LinkSong"), Toast.LENGTH_LONG).show();
-                    //ParseFile file = parseObject.getParseFile("Image");
+
+                    // PERFORM PLAY AND LOAD DETAIL STORY
+                    PlayMedia(storyName, imageFile, storyAuthor, storyDescription, audiofile);
 
                 } else {
                     Toast.makeText(PlayingPage.this, "Data load fail", Toast.LENGTH_LONG).show();
@@ -73,72 +94,72 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         });*/
 
 
+
     }
 
-    public void PlayMedia(String audioFile) {
-        // create a media player
+    public void PlayMedia(String storyName, ParseFile storyImage, String storyAuthor, String storyDescription,String audioFile){
+        // CREATE A MEDIA PLAYER
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        // try to load data and play
+        // TRY TO LOAD DATA AND PLAY
         try {
 
-            // give data to mediaPlayer
+            // GIVE DATA TO MEDIAPLAYER
             mediaPlayer.setDataSource(audioFile);
-            // media player asynchronous preparation
+            // MEDIA PLAYER ASYNCHRONOUS PREPARATION
             mediaPlayer.prepareAsync();
 
-            // create a progress dialog (waiting media player preparation)
+            // CREATE A PROGRESS DIALOG (WAITING MEDIA PLAYER PREPARATION)
             final ProgressDialog dialog = new ProgressDialog(PlayingPage.this);
 
-            // set message of the dialog
+            // SET MESSAGE OF THE DIALOG
             dialog.setMessage("Loading Mp3");
 
-            // prevent dialog to be canceled by back button press
+            // PREVENT DIALOG TO BE CANCELED BY BACK BUTTON PRESS
             dialog.setCancelable(false);
 
-            // show dialog at the bottom
+            // SHOW DIALOG AT THE BOTTOM
             dialog.getWindow().setGravity(Gravity.CENTER);
 
-            // show dialog
+            // SHOW DIALOG
             dialog.show();
 
 
-            // inflate layout
+            // INFLATE LAYOUT
             setContentView(R.layout.playing_page);
 
-            // display title
-            ((TextView) findViewById(R.id.tv_now_playing)).setText(audioFile);
+            // DISPLAY TITLE
+            ((TextView)findViewById(R.id.tvNowPlaying)).setText(storyName+" - "+storyAuthor);
             btnPlay = (ImageButton) findViewById(R.id.btnPlay);
 
-            /// Load cover image (we use Picasso Library)
-
-            /*// Get image view
-            ImageView mImageView = (ImageView) findViewById(R.id.coverImage);
+            /// LOAD COVER IMAGE
+            // GET IMAGE VIEW
+            storyImageView = (ImageView) findViewById(R.id.storyImage);
 
             // Image url
-            String image_url = coverImage;
+            LoadImageAudioParse loadImageAudioParse = new LoadImageAudioParse();
+            loadImageAudioParse.loadImages(storyImage,storyImageView);
+
+            // GET DESCRIPTION
+            tvDescription =(TextView) findViewById(R.id.tvStoryDescription);
+            tvDescription.setText(storyDescription);
 
 
-            Picasso.with(getApplicationContext()).load(image_url).into(mImageView);*/
-
-            ///
-
-
-            // execute this code at the end of asynchronous media player preparation
+            // EXECUTE THIS CODE AT THE END OF ASYNCHRONOUS MEDIA PLAYER PREPARATION
             mediaPlayer.setOnPreparedListener(new OnPreparedListener() {
                 public void onPrepared(final MediaPlayer mp) {
 
 
-                    //start media player
+                    //START MEDIA PLAYER
                     mp.start();
 
-                    // link seekbar to bar view
+                    // LINK SEEKBAR TO BAR VIEW
                     seekBar = (SeekBar) findViewById(R.id.songProgressBar);
 
-                    //update seekbar
+                    //UPDATE SEEKBAR
                     mRunnable.run();
 
-                    //dismiss dialog
+                    //DISMISS DIALOG
                     dialog.dismiss();
                 }
             });
@@ -158,21 +179,21 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
         @Override
         public void run() {
-            if (mediaPlayer != null) {
+            if(mediaPlayer != null) {
 
-                //set max value
+                //SET MAX VALUE
                 int mDuration = mediaPlayer.getDuration();
                 seekBar.setMax(mDuration);
 
-                //update total time text view
+                //UPDATE TOTAL TIME TEXT VIEW
                 TextView totalTime = (TextView) findViewById(R.id.songTotalDurationLabel);
                 totalTime.setText(getTimeString(mDuration));
 
-                //set progress to current position
+                //SET PROGRESS TO CURRENT POSITION
                 int mCurrentPosition = mediaPlayer.getCurrentPosition();
                 seekBar.setProgress(mCurrentPosition);
 
-                //update current time text view
+                //UPDATE CURRENT TIME TEXT VIEW
                 TextView currentTime = (TextView) findViewById(R.id.songCurrentDurationLabel);
                 currentTime.setText(getTimeString(mCurrentPosition));
 
@@ -191,7 +212,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        if (mediaPlayer != null && fromUser) {
+                        if(mediaPlayer != null && fromUser){
                             mediaPlayer.seekTo(progress);
                         }
                     }
@@ -210,17 +231,17 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
     };
 
-    public void play(View view) {
+    public void play(View view){
 // check for already playing
-        if (mediaPlayer.isPlaying()) {
-            if (mediaPlayer != null) {
+        if(mediaPlayer.isPlaying()){
+            if(mediaPlayer!=null){
                 mediaPlayer.pause();
                 // Changing button image to play button
                 btnPlay.setImageResource(R.drawable.btn_play);
             }
-        } else {
+        }else{
             // Resume song
-            if (mediaPlayer != null) {
+            if(mediaPlayer!=null){
                 mediaPlayer.start();
                 // Changing button image to pause button
                 btnPlay.setImageResource(R.drawable.btn_pause);
@@ -230,13 +251,13 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     }
 
 
-    public void pause(View view) {
+    public void pause(View view){
 
         mediaPlayer.pause();
 
     }
 
-    public void stop(View view) {
+    public void stop(View view){
 
         mediaPlayer.seekTo(0);
         mediaPlayer.pause();
@@ -244,7 +265,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     }
 
 
-    public void seekForward(View view) {
+    public void seekForward(View view){
 
         //set seek time
         int seekForwardTime = 5000;
@@ -252,17 +273,17 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         // get current song position
         int currentPosition = mediaPlayer.getCurrentPosition();
         // check if seekForward time is lesser than song duration
-        if (currentPosition + seekForwardTime <= mediaPlayer.getDuration()) {
+        if(currentPosition + seekForwardTime <= mediaPlayer.getDuration()){
             // forward song
             mediaPlayer.seekTo(currentPosition + seekForwardTime);
-        } else {
+        }else{
             // forward to end position
             mediaPlayer.seekTo(mediaPlayer.getDuration());
         }
 
     }
 
-    public void seekBackward(View view) {
+    public void seekBackward(View view){
 
         //set seek time
         int seekBackwardTime = 5000;
@@ -270,10 +291,10 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         // get current song position
         int currentPosition = mediaPlayer.getCurrentPosition();
         // check if seekBackward time is greater than 0 sec
-        if (currentPosition - seekBackwardTime >= 0) {
+        if(currentPosition - seekBackwardTime >= 0){
             // forward song
             mediaPlayer.seekTo(currentPosition - seekBackwardTime);
-        } else {
+        }else{
             // backward to starting position
             mediaPlayer.seekTo(0);
         }
@@ -281,7 +302,9 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     }
 
 
-    public void onBackPressed() {
+
+
+    public void onBackPressed(){
         super.onBackPressed();
 
         if (mediaPlayer != null) {
@@ -295,9 +318,9 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     private String getTimeString(long millis) {
         StringBuffer buf = new StringBuffer();
 
-        long hours = millis / (1000 * 60 * 60);
-        long minutes = (millis % (1000 * 60 * 60)) / (1000 * 60);
-        long seconds = ((millis % (1000 * 60 * 60)) % (1000 * 60)) / 1000;
+        long hours = millis / (1000*60*60);
+        long minutes = ( millis % (1000*60*60) ) / (1000*60);
+        long seconds = ( ( millis % (1000*60*60) ) % (1000*60) ) / 1000;
 
         buf
                 .append(String.format("%02d", hours))
