@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="@drawable/background_about">
+            android:background="@drawable/xmenfirstclass">
             <!-- TODO: Update blank fragment layout -->
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:src="@drawable/background_about1"
+                    android:src="@drawable/xmenfirstclass"
                     android:layout_marginBottom="10dp"
                     android:id="@+id/imageView" />
 
