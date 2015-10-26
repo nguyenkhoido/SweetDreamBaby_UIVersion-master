@@ -27,9 +27,14 @@ public class StoryDetails extends AppCompatActivity {
     String test = "";
     Button btnPlay,btnDownload;
 
+
     ImageView storyImage;
     TextView tvStoryName, tvAuthor;
     LoadImageAudioParse load = new LoadImageAudioParse();
+
+
+    String objectId;
+    int currentStory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +45,11 @@ public class StoryDetails extends AppCompatActivity {
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
 
         Intent intent = getIntent();
-        final String objectId = intent.getStringExtra("objectId");
+        Bundle bundle = intent.getExtras();
+        objectId = bundle.getString("objectId");
+        currentStory = bundle.getInt("currentStory");
+
+        //final String objectId = intent.getStringExtra("objectId");
 
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
         query.whereEqualTo("objectId", objectId);
@@ -67,7 +76,11 @@ public class StoryDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent playIntent = new Intent(StoryDetails.this, PlayingPage.class);
-                playIntent.putExtra("objectId", objectId);
+                Bundle bundle = new Bundle();
+                bundle.putString("objectId", objectId);
+                bundle.putInt("currentStory", currentStory);
+                playIntent.putExtras(bundle);
+
                 startActivity(playIntent);
             }
         });

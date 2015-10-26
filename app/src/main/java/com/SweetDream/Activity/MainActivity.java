@@ -378,9 +378,12 @@ public class MainActivity extends AppCompatActivity {
                         // if there results, update the list of posts
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject);
+                            ParseFile song = post.getParseFile("Source");
+                            String audiofile = song.getUrl();
+                            ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject, audiofile);
+
                             if(post.getInt("Price") == 0)
-                            itemsFreeStoryList.add(answer);
+                                itemsFreeStoryList.add(answer);
                         }
                         adapterFreeStory.notifyDataSetChanged();
                         processingDialog.dismiss();
