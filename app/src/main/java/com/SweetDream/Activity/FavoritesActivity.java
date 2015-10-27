@@ -33,7 +33,6 @@ public class FavoritesActivity extends Fragment {
     List<ItemFavoriteStories> itemFavorites;
     FavoritesStoryAdapter adapterFavoriteStories;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_favorites, container, false);
@@ -81,11 +80,10 @@ public class FavoritesActivity extends Fragment {
         };
         list.setMenuCreator(creator);
 
-
-
-
         return view;
     }
+
+
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());

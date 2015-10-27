@@ -2,7 +2,6 @@ package com.SweetDream.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -57,8 +56,6 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-
-
                 Intent intent = new Intent(context,StoryDetails.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("currentStory", i);
