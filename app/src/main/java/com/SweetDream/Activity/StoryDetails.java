@@ -19,7 +19,6 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -31,8 +30,6 @@ public class StoryDetails extends AppCompatActivity {
     TextView tvStoryName, tvAuthor;
     LoadImageAudioParse load = new LoadImageAudioParse();
 
-    String objectId;
-    int currentStory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,11 +41,7 @@ public class StoryDetails extends AppCompatActivity {
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
 
         Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        objectId = bundle.getString("objectId");
-        currentStory = bundle.getInt("currentStory");
-
-        //final String objectId = intent.getStringExtra("objectId");
+        final String objectId = intent.getStringExtra("objectId");
 
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
         query.whereEqualTo("objectId", objectId);
@@ -73,8 +66,31 @@ public class StoryDetails extends AppCompatActivity {
             public void onClick(View v) {
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 if (currentUser != null) {
+                    // Create the Post object
+                    ParseObject post = new ParseObject("Users");
+                    post.put("textContent", tvStoryName.getText().toString());
 
-                    addRelationShip();
+                    // Create an author relationship with the current user
+                    post.put("author", ParseUser.getCurrentUser());
+
+                    // Save the post and return
+                    post.saveInBackground(new SaveCallback() {
+
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                setResult(RESULT_OK);
+                                finish();
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Error saving: " + e.getMessage(),
+                                        Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }
+
+                    });
+
                     //getActivity().setResult(Activity.RESULT_OK);
                     //getActivity().finish();
                 } else {
@@ -89,72 +105,11 @@ public class StoryDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent playIntent = new Intent(StoryDetails.this, PlayingPage.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("objectId", objectId);
-                bundle.putInt("currentStory", currentStory);
-                playIntent.putExtras(bundle);
-
+                playIntent.putExtra("objectId", objectId);
                 startActivity(playIntent);
             }
         });
 
-
-    }
-
-    private void addRelationShip(){
-        // Create the story that user love
-        ParseObject story = ParseObject.createWithoutData("Story", objectId);
-
-        // Get current User
-        ParseUser user = ParseUser.getCurrentUser();
-
-        // Create relationship collumn UserLove
-        ParseRelation relation = user.getRelation("StoryLove");
-
-        // Add story to Relation
-        relation.add(story);
-
-        // user save relation
-        user.saveInBackground(new SaveCallback() {
-
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Toast.makeText(StoryDetails.this, "User like this story, go to YourFavorite to see!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Error saving: " + e.getMessage(),
-                            Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
-
-        });
-
-
-        ParseObject post = new ParseObject("UserStory");
-        // Create an LoveStory relationship with the current user
-
-        ParseRelation<ParseUser> relation1 = post.getRelation("UserLove");
-        ParseRelation<ParseObject> relation2 = post.getRelation("StoryLove");
-        relation1.add(user);
-        relation2.add(story);
-        // Save the post and return
-        post.saveInBackground(new SaveCallback() {
-
-            @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Toast.makeText(StoryDetails.this, "You like this story, go to YourFavorite to see!!", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(),
-                            "Error saving: " + e.getMessage(),
-                            Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
-
-        });
 
     }
 

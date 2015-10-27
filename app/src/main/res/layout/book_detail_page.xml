@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="10dp">
 
     <!--Book Image-->
     <ImageView
@@ -11,7 +12,8 @@
         android:id="@+id/tvStoryImage"
         android:src="@drawable/avatar"
         android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:scaleType="fitCenter"/>
 
     <!-- Book Title, Author, Share and Favorite-->
     <LinearLayout
@@ -42,13 +44,14 @@
                 android:layout_height="wrap_content"
                 android:text="Book Title"
                 android:textColor="@color/primaryColor"
-                android:textSize="16dp"
+                android:textSize="32dp"
                 android:textStyle="bold" />
             <!-- TextView Author-->
             <TextView
                 android:id="@+id/tvAuthor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="24dp"
                 android:text="Author"
                 android:textColor="@color/primaryColor"
                 android:textStyle="italic" />
@@ -56,8 +59,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="20dp"
                 android:text="Price"
-                android:id="@+id/tvPrice" />
+                android:id="@+id/tvPrice"
+                android:textColor="@color/primaryColor"/>
         </LinearLayout>
         <!-- Button Favorite-->
         <ImageButton
@@ -75,60 +80,6 @@
         android:layout_marginTop="10dp">
 
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:background="#F7B84F"
-            android:id="@+id/linearLayout2">
-
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_play_white"
-                android:background="@null" />
-
-            <SeekBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#F7B84F"
-            android:layout_above="@+id/linearLayout2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="5dp">
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_play_black"
-                android:text="Play"
-                android:layout_weight="1"
-                android:id="@+id/btnPlay" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"></LinearLayout>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_download_black"
-
-                android:text="Download"
-                android:layout_weight="0.5"
-                android:id="@+id/btnDownload" />
-
-        </LinearLayout>
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -138,5 +89,33 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:textSize="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_play_black"
+                android:text="Play"
+                android:layout_weight="1"
+                android:id="@+id/btnPlay"
+                android:background="@drawable/custom_button_details_page"
+                android:layout_marginRight="5dp" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_download_black"
+                android:background="@drawable/custom_button_details_page"
+                android:text="Download"
+                android:layout_weight="1"
+                android:id="@+id/btnDownload"
+                android:layout_marginLeft="5dp" />
+
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -102,7 +102,7 @@ public class FavoritesActivity extends Fragment {
                     // if there results, update the list of posts
                     for (ParseObject post : postList) {
                         ParseFile fileObject = (ParseFile) post.get("Image");
-                        ItemFavoriteStories answer = new ItemFavoriteStories(post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject, "", true, 1, 2, "");
+                        ItemFavoriteStories answer = new ItemFavoriteStories(post.getObjectId(),post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject, "", true, 1, 2, "");
                         itemFavorites.add(answer);
                     }
                     adapterFavoriteStories.notifyDataSetChanged();

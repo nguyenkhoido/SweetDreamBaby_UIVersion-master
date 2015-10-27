@@ -6,6 +6,7 @@ import com.parse.ParseFile;
  * Created by nguye_000 on 14/10/2015.
  */
 public class ItemFavoriteStories {
+    private String objectID;
     private String titleBook;
     private String authorStory;
     private Number priceStory;
@@ -15,7 +16,8 @@ public class ItemFavoriteStories {
     private Number likeCout;
     private Number downloadCout;
     private String description;
-    public ItemFavoriteStories(String titleBook, String authorStory,Number priceStory, ParseFile image, String linkURL, boolean isBuy,Number likeCout, Number downloadCout, String description){
+    public ItemFavoriteStories(String objectID,String titleBook, String authorStory,Number priceStory, ParseFile image, String linkURL, boolean isBuy,Number likeCout, Number downloadCout, String description){
+        this.objectID = objectID;
         this.titleBook = titleBook;
         this.authorStory = authorStory;
         this.priceStory = priceStory;
@@ -26,6 +28,14 @@ public class ItemFavoriteStories {
         this.downloadCout = downloadCout;
         this.description = description;
 
+    }
+
+    public String getObjectID() {
+        return objectID;
+    }
+
+    public void setObjectID(String objectID) {
+        this.objectID = objectID;
     }
 
     public String getTitleBook() {
