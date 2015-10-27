@@ -22,7 +22,7 @@
 
         <!-- Button Share-->
         <ImageButton
-            android:id="@+id/btnShare"
+            android:id="@+id/imgBtnShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
@@ -56,7 +56,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Price" />
+                android:text="Price"
+                android:id="@+id/tvPrice" />
         </LinearLayout>
         <!-- Button Favorite-->
         <ImageButton
