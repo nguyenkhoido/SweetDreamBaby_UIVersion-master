@@ -370,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
         private void getFreeStory() {
             processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+
             query.whereEqualTo("Price", 0);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
@@ -399,6 +400,7 @@ public class MainActivity extends AppCompatActivity {
         private void getPaidStory() {
             processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+
             query.whereNotEqualTo("Price", 0);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
