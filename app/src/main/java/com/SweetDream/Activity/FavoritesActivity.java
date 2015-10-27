@@ -23,6 +23,8 @@ import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +115,16 @@ public class FavoritesActivity extends Fragment {
 
     private void getFavoriteStories() {
         //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+        // suppose we have a book object
+        ParseUser user = ParseUser.getCurrentUser();
+
+// create a relation based on the authors key
+        ParseRelation relation = user.getRelation("StoryLove");
+
+// generate a query based on that relation
+        ParseQuery query = relation.getQuery();
+
+// now execute the query
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> postList, ParseException e) {

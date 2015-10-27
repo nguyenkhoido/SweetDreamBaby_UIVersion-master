@@ -102,7 +102,7 @@ public class StoryDetails extends AppCompatActivity {
             }
         });
 
-
+        checkLove();
     }
 
     private void addRelationShip(){
@@ -162,6 +162,30 @@ public class StoryDetails extends AppCompatActivity {
 
     }
 
+    private void checkLove(){
+        // Get current User
+        ParseUser user = ParseUser.getCurrentUser();
+        // create a relation based on the authors key
+        ParseRelation relation = user.getRelation("StoryLove");
+
+// generate a query based on that relation
+        ParseQuery query = relation.getQuery();
+        query.whereEqualTo("objectId", objectId);
+        query.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject parseObject, ParseException e) {
+                if (parseObject != null) {
+                    imgBtnFavorites.setImageResource(R.drawable.ic_love_active_orange);
+                    imgBtnFavorites.setClickable(false);
+                    Toast.makeText(StoryDetails.this, "Like", Toast.LENGTH_LONG).show();
+                } else {
+                    imgBtnFavorites.setImageResource(R.drawable.ic_love_disable_orange);
+                    Toast.makeText(StoryDetails.this, "Dislike", Toast.LENGTH_LONG).show();
+                }
+            }
+
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
