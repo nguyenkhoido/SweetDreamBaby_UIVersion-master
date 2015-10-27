@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,7 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         final ItemFreeStory item = itemsFreeBooks.get(i);
         viewHolder.txtTitle.setText(item.getTitleBook());
         viewHolder.txtAuthor.setText(item.getAuthorBook());
@@ -59,7 +60,11 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
 
 
                 Intent intent = new Intent(context,StoryDetails.class);
-                intent.putExtra("objectId", item.getObjectId());
+                Bundle bundle = new Bundle();
+                bundle.putInt("currentStory", i);
+                bundle.putString("objectId",item.getObjectId());
+                //intent.putExtra("objectId", item.getObjectId());
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });

@@ -407,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
                         // if there results, update the list of posts
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemPaidStory answer = new ItemPaidStory(post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
+                            ItemPaidStory answer = new ItemPaidStory(post.getObjectId(),post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
                             if(post.getInt("Price") != 0)
                             itemsPaidStoryList.add(answer);
                         }
