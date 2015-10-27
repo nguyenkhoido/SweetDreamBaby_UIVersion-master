@@ -47,6 +47,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,13 +64,14 @@ public class MainActivity extends AppCompatActivity {
     TextView txtUserNameFB, txtUserEmailFB;
 
     private ProfilePictureView userProfilePictureView;
-    Thread mThread;
+
     View layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
         txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
         txtUserEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
@@ -131,7 +133,6 @@ public class MainActivity extends AppCompatActivity {
                 showDialog(MainActivity.this, "Sign Out", "Are you sure to quit?", "Yes", "No");
 
 
-
             }
         });
 
@@ -145,12 +146,14 @@ public class MainActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawers();
                 Fragment fragment = null;
                 switch (menuItem.getItemId()) {
+
                     case R.id.navigation_item_features:
                         fragment = new FeaturePage();
                         setTitle("Sweet Dream - Feature Page");
                         break;
 
                     case R.id.navigation_item_favorites:
+
                         fragment = new FavoritesActivity();
                         setTitle("Sweet Dream - My Favorites");
                         break;
@@ -367,23 +370,32 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // this guy will get all your story information
-        private void getFreeStory() {
-            processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
+        public void getFreeStory() {
+            processingDialog = ProgressDialog.show(getActivity(), "", "Loading data...", true);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
-                public void done(List<ParseObject> postList, ParseException e) {
+                public void done(final List<ParseObject> postList, ParseException e) {
                     if (e == null) {
-                        //processingDialog.dismiss();
-                        // if there results, update the list of posts
-                        for (ParseObject post : postList) {
-                            ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject);
-                            if(post.getInt("Price") == 0)
-                            itemsFreeStoryList.add(answer);
-                        }
-                        adapterFreeStory.notifyDataSetChanged();
-                        processingDialog.dismiss();
+
+                        ParseObject.pinAllInBackground(postList, new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+
+                                // if there results, update the list of posts
+                                for (ParseObject post : postList) {
+                                    ParseFile fileObject = (ParseFile) post.get("Image");
+                                    ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject);
+                                    if (post.getInt("Price") == 0)
+                                        itemsFreeStoryList.add(answer);
+                                }
+
+                                adapterFreeStory.notifyDataSetChanged();
+                                processingDialog.dismiss();
+                            }
+                        });
+
                     } else {
                         Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
                     }
@@ -404,10 +416,11 @@ public class MainActivity extends AppCompatActivity {
                         // if there results, update the list of posts
                         for (ParseObject post : postList) {
                             ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemPaidStory answer = new ItemPaidStory(post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
-                            if(post.getInt("Price") != 0)
-                            itemsPaidStoryList.add(answer);
+                            ItemPaidStory answer = new ItemPaidStory(post.getObjectId(),post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
+                            if (post.getInt("Price") != 0)
+                                itemsPaidStoryList.add(answer);
                         }
+
                         adapterPaidStory.notifyDataSetChanged();
                         processingDialog.dismiss();
                     } else {
@@ -416,6 +429,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+
         }
 
         // this guy is get postion of the tablayout to setview
@@ -449,10 +463,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (tabPosition == 0) {
                 //Call get free story method
-
                 getFreeStory();
                 // get Adapter above and set to recyclerview
-
                 recyclerView.setAdapter(adapterFreeStory);
                 return story_view;
             }
@@ -464,6 +476,8 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapterPaidStory);
                 return story_view;
             }
+
+
             return null;
         }
     }
@@ -528,12 +542,13 @@ public class MainActivity extends AppCompatActivity {
         });
         return downloadDialog.show();
     }
-    private void userSignOut()
-    {
+
+    private void userSignOut() {
         ParseUser.logOut();
         Intent intent = getIntent();
         finish();
         startActivity(intent);
     }
+
 }
 

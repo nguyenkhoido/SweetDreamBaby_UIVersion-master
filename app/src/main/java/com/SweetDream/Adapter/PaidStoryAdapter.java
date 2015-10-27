@@ -42,7 +42,7 @@ public class PaidStoryAdapter extends RecyclerView.Adapter<PaidStoryAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        ItemPaidStory item = itemsPaidBooks.get(i);
+        final ItemPaidStory item = itemsPaidBooks.get(i);
         viewHolder.txtTitle.setText(item.getTitleBook());
         viewHolder.txtAuthor.setText(item.getAuthorStory());
         viewHolder.txtPrice.setText(item.getPriceStory().toString()+" Coin");
@@ -52,7 +52,9 @@ public class PaidStoryAdapter extends RecyclerView.Adapter<PaidStoryAdapter.View
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                context.startActivity(new Intent(context, StoryDetails.class));
+                Intent intent = new Intent(context,StoryDetails.class);
+                intent.putExtra("objectId", item.getObjectId());
+                context.startActivity(intent);
             }
         });
     }

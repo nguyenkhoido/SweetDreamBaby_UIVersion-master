@@ -1,5 +1,7 @@
 package com.SweetDream.Activity;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -32,6 +34,7 @@ public class SearchStoryActivity extends AppCompatActivity {
     ListView listSearch;
     SearchStoryAdapter adapter;
 
+    public Dialog processingDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,7 +105,7 @@ public class SearchStoryActivity extends AppCompatActivity {
 
     // this guy will get all your story information
     private void getSearchStory() {
-        //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
+        processingDialog = ProgressDialog.show(SearchStoryActivity.this, "", "Loading data...", true);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -121,7 +124,7 @@ public class SearchStoryActivity extends AppCompatActivity {
                     for (ItemFavoriteStories wp : itemSearchStory) {
                             arrayList.add(wp);
                         }
-
+                    processingDialog.dismiss();
                     //adapter.notifyDataSetChanged();
                 } else {
                     Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());

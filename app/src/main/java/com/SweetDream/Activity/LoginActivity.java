@@ -128,7 +128,7 @@ private ProgressDialog progressingDialog;
         btnTwitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressingDialog = ProgressDialog.show(LoginActivity.this,"","Loading..",true);
+               // progressingDialog = ProgressDialog.show(LoginActivity.this,"","Loading..",true);
                 ParseTwitterUtils.logIn(LoginActivity.this, new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException err) {
@@ -142,7 +142,7 @@ private ProgressDialog progressingDialog;
                             Log.d("MyApp", screen_name + " has signed in");
                             // Refresh
                             Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
-                            processingDialog.dismiss();
+
                             startActivity(myIntent);
                         } else {
 
