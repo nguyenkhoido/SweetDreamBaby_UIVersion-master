@@ -59,8 +59,8 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
                 Intent intent = new Intent(context,StoryDetails.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("currentStory", i);
-                bundle.putString("objectId",item.getObjectId());
-                //intent.putExtra("objectId", item.getObjectId());
+                bundle.putString("objectId", item.getObjectId());
+                bundle.putString("result", "free");
                 intent.putExtras(bundle);
                 context.startActivity(intent);
             }

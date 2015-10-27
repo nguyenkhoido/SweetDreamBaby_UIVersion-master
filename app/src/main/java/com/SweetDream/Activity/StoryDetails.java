@@ -28,11 +28,13 @@ public class StoryDetails extends AppCompatActivity {
     Button btnPlay, btnDownload;
     ImageButton imgBtnFavorites;
     ImageView storyImage;
-    TextView tvStoryName, tvAuthor, tvSummariesContent, tvPrice;
+    TextView tvStoryName, tvAuthor;
     LoadImageAudioParse load = new LoadImageAudioParse();
+
 
     String objectId;
     int currentStory;
+    String result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,15 +44,14 @@ public class StoryDetails extends AppCompatActivity {
         storyImage = (ImageView) findViewById(R.id.tvStoryImage);
         tvStoryName = (TextView) findViewById(R.id.tvStoryName);
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
-        tvSummariesContent = (TextView)findViewById(R.id.tvSummariesContent);
-        tvPrice = (TextView)findViewById(R.id.tvPrice);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         objectId = bundle.getString("objectId");
         currentStory = bundle.getInt("currentStory");
+        result = bundle.getString("result");
 
-        //final String objectId = intent.getStringExtra("objectId");
-
+        Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_LONG).show();
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
         query.whereEqualTo("objectId", objectId);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -61,12 +62,10 @@ public class StoryDetails extends AppCompatActivity {
                     ParseFile file = parseObject.getParseFile("Image");
                     tvStoryName.setText(parseObject.getString("StoryName"));
                     tvAuthor.setText(parseObject.getString("Author"));
-                    tvPrice.setText(parseObject.getNumber("Price").toString());
-                    tvSummariesContent.setText(parseObject.getString("Description"));
                     load.loadImages(file, storyImage);
                     test = parseObject.getString("Author");
                 } else {
-                    Toast.makeText(StoryDetails.this, "Data load fail", Toast.LENGTH_LONG).show();
+                    Toast.makeText(StoryDetails.this, "Data load fail: "+e, Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -95,6 +94,7 @@ public class StoryDetails extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("objectId", objectId);
                 bundle.putInt("currentStory", currentStory);
+                bundle.putString("result", result);
                 playIntent.putExtras(bundle);
 
                 startActivity(playIntent);
@@ -104,7 +104,7 @@ public class StoryDetails extends AppCompatActivity {
 
     }
 
-    private void addRelationShip(){
+    private void addRelationShip() {
         // Create the story that user love
         ParseObject story = ParseObject.createWithoutData("Story", objectId);
 
@@ -161,6 +161,36 @@ public class StoryDetails extends AppCompatActivity {
 
     }
 
+    /*private void updatePostList() {
+        // Create query for objects of type "Post"
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Users");
+
+        // Restrict to cases where the author is the current user.
+        query.whereEqualTo("author", ParseUser.getCurrentUser());
+
+        // Run the query
+        query.findInBackground(new FindCallback<ParseObject>() {
+
+            @Override
+            public void done(List<ParseObject> postList,
+                             ParseException e) {
+                if (e == null) {
+                    // If there are results, update the list of posts
+                    // and notify the adapter
+                    posts.clear();
+                    for (ParseObject post : postList) {
+                        posts.add(post.getString("textContent"));
+                    }
+
+                    ((ArrayAdapter<String>) getListAdapter()).notifyDataSetChanged();
+                } else {
+                    Log.d("Post retrieval", "Error: " + e.getMessage());
+                }
+            }
+
+        });
+
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

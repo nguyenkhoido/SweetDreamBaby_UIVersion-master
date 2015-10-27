@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class PaidStoryAdapter extends RecyclerView.Adapter<PaidStoryAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(ViewHolder viewHolder, final int i) {
         final ItemPaidStory item = itemsPaidBooks.get(i);
         viewHolder.txtTitle.setText(item.getTitleBook());
         viewHolder.txtAuthor.setText(item.getAuthorStory());
@@ -53,7 +54,11 @@ public class PaidStoryAdapter extends RecyclerView.Adapter<PaidStoryAdapter.View
             public void onClick(View v) {
                 Context context = v.getContext();
                 Intent intent = new Intent(context,StoryDetails.class);
-                intent.putExtra("objectId", item.getObjectId());
+                Bundle bundle = new Bundle();
+                bundle.putInt("currentStory", i);
+                bundle.putString("objectId", item.getObjectId());
+                bundle.putString("result", "paid");
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });

@@ -78,6 +78,8 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
     private List<ParseObject> songsList;
 
+
+    String result;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +89,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         Bundle bundle = intent.getExtras();
         //objectId = bundle.getString("objectId");
         currentSongIndex = bundle.getInt("currentStory");
+        result = bundle.getString("result");
 
 
         Toast.makeText(getApplicationContext(),""+currentSongIndex,Toast.LENGTH_LONG).show();
@@ -114,9 +117,17 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         mp.setOnCompletionListener(this); // Important
 
         // Getting all songs list
-        songsList = songManager.getFreeStory();
+        if(result.equals("free")){
+            songsList = songManager.getFreeStory();
+        }
+        if(result.equals("paid")){
+            songsList = songManager.getPaidStory();
+        }
+
+
         String url = songsList.get(currentSongIndex).getParseFile("Source").getUrl();
-        Toast.makeText(getApplicationContext(),""+url,Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),""+url,Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_LONG).show();
         // By default play first song
         playSong(currentSongIndex);
 

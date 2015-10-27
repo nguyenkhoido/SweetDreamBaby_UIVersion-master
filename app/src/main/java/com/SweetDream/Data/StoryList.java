@@ -37,4 +37,22 @@ public class StoryList {
         return itemsFreeStoryList;
     }
 
+    List<ParseObject> itemsPaidStoryList;
+
+    public List<ParseObject> getPaidStory() {
+        itemsPaidStoryList = new ArrayList<>();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+        query.whereNotEqualTo("Price", 0);
+        try {
+            itemsPaidStoryList = query.find();
+
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return itemsPaidStoryList;
+    }
+
 }
