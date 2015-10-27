@@ -1,5 +1,6 @@
 package com.SweetDream.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -79,11 +80,32 @@ public class FavoritesActivity extends Fragment {
             }
         };
         list.setMenuCreator(creator);
+        list.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                ItemFavoriteStories item = itemFavorites.get(position);
 
+
+                deleteRelationShip(item);
+                itemFavorites.remove(position);
+                adapterFavoriteStories.notifyDataSetChanged();
+
+
+                return false;
+            }
+        });
         return view;
     }
 
+    private void deleteRelationShip(ItemFavoriteStories item) {
+        // delete app
+        try {
+            Intent intent = new Intent(Intent.ACTION_DELETE);
 
+            startActivity(intent);
+        } catch (Exception e) {
+        }
+    }
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
@@ -97,6 +119,7 @@ public class FavoritesActivity extends Fragment {
             public void done(List<ParseObject> postList, ParseException e) {
                 if (e == null) {
                     //processingDialog.dismiss();
+
                     // if there results, update the list of posts
                     for (ParseObject post : postList) {
                         ParseFile fileObject = (ParseFile) post.get("Image");

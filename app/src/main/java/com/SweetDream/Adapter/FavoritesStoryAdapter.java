@@ -74,34 +74,4 @@ public class FavoritesStoryAdapter extends ArrayAdapter<ItemFavoriteStories> {
         }
     }// load image
 
-    /*private void updatePostList() {
-        // Create query for objects of type "Post"
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Users");
-
-        // Restrict to cases where the author is the current user.
-        query.whereEqualTo("author", ParseUser.getCurrentUser());
-
-        // Run the query
-        query.findInBackground(new FindCallback<ParseObject>() {
-
-            @Override
-            public void done(List<ParseObject> postList,
-                             ParseException e) {
-                if (e == null) {
-                    // If there are results, update the list of posts
-                    // and notify the adapter
-                    posts.clear();
-                    for (ParseObject post : postList) {
-                        posts.add(post.getString("textContent"));
-                    }
-
-                    ((ArrayAdapter<String>) getListAdapter()).notifyDataSetChanged();
-                } else {
-                    Log.d("Post retrieval", "Error: " + e.getMessage());
-                }
-            }
-
-        });
-
-    }*/
 }
