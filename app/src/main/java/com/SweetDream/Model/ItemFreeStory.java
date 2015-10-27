@@ -11,13 +11,16 @@ public class ItemFreeStory {
     private String authorBook;
 
     private ParseFile image;
+
+    private String audioFile;
     //private int image;
 
-    public ItemFreeStory(String objectId, String titleBook, String authorBook, int price, ParseFile image) {
+    public ItemFreeStory(String objectId, String titleBook, String authorBook, int price, ParseFile image, String audioFile) {
         this.objectId = objectId;
         this.titleBook = titleBook;
         this.authorBook = authorBook;
         this.image = image;
+        this.audioFile = audioFile;
     }
 
     public String getObjectId() {
@@ -50,5 +53,13 @@ public class ItemFreeStory {
 
     public void setImage(ParseFile image) {
         this.image = image;
+    }
+
+    public String getAudioFile() {
+        return audioFile;
+    }
+
+    public void setAudioFile(String audioFile) {
+        this.audioFile = audioFile;
     }
 }
