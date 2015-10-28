@@ -176,6 +176,13 @@
                     android:background="@null"
                     android:src="@drawable/btn_previous" />
                 <!-- Backward Button -->
+                <ImageButton
+                    android:id="@+id/btnBackward"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@null"
+                    android:src="@drawable/ic_prewind_white" />
                 <!-- Play Button -->
                 <ImageButton
                     android:id="@+id/btnPlay"
@@ -186,7 +193,14 @@
                     android:onClick="play"
                     android:src="@drawable/btn_pause" />
                 <!-- Forward Button -->
-
+                <!-- Backward Button -->
+                <ImageButton
+                    android:id="@+id/btnForward"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:background="@null"
+                    android:src="@drawable/ic_forward_white" />
                 <!-- Next Button -->
                 <ImageButton
                     android:id="@+id/btnNext"

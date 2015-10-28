@@ -25,7 +25,7 @@ import com.parse.SaveCallback;
 
 public class StoryDetails extends AppCompatActivity {
     String test = "";
-    Button btnPlay, btnDownload;
+    Button btnPlay, btnDownload, btnGetStory;
     ImageButton imgBtnFavorites;
     ImageView storyImage;
     TextView tvStoryName, tvAuthor, tvSummariesContent, tvPrice;
@@ -38,6 +38,9 @@ public class StoryDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_detail_page);
+
+        btnGetStory = (Button) findViewById(R.id.btnGetStory);
+        btnDownload = (Button) findViewById(R.id.btnDownload);
         imgBtnFavorites = (ImageButton) findViewById(R.id.imgBtnFavorites);
         storyImage = (ImageView) findViewById(R.id.tvStoryImage);
         tvStoryName = (TextView) findViewById(R.id.tvStoryName);
@@ -65,11 +68,31 @@ public class StoryDetails extends AppCompatActivity {
                     tvSummariesContent.setText(parseObject.getString("Description"));
                     load.loadImages(file, storyImage);
                     test = parseObject.getString("Author");
+
+
+                    int price = (int) parseObject.getNumber("Price");
+                    if (price > 0) {
+                        btnGetStory.setVisibility(View.VISIBLE);
+                        btnPlay.setVisibility(View.GONE);
+                        btnDownload.setVisibility(View.GONE);
+                    } else {
+                        btnGetStory.setVisibility(View.GONE);
+                        btnPlay.setVisibility(View.VISIBLE);
+                        btnDownload.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     Toast.makeText(StoryDetails.this, "Data load fail", Toast.LENGTH_LONG).show();
                 }
             }
         });
+
+        btnGetStory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(StoryDetails.this, "You must get this story before play!", Toast.LENGTH_SHORT);
+            }
+        });
+
 //Get StoryObjectId and UserObjectId
         imgBtnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,29 +185,34 @@ public class StoryDetails extends AppCompatActivity {
 
     }
 
+
+
     private void checkLove(){
         // Get current User
         ParseUser user = ParseUser.getCurrentUser();
-        // create a relation based on the authors key
-        ParseRelation relation = user.getRelation("StoryLove");
+        if(user != null){
+            // create a relation based on the authors key
+            ParseRelation relation = user.getRelation("StoryLove");
 
-// generate a query based on that relation
-        ParseQuery query = relation.getQuery();
-        query.whereEqualTo("objectId", objectId);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                if (parseObject != null) {
-                    imgBtnFavorites.setImageResource(R.drawable.ic_love_active_orange);
-                    imgBtnFavorites.setClickable(false);
-                    Toast.makeText(StoryDetails.this, "Like", Toast.LENGTH_LONG).show();
-                } else {
-                    imgBtnFavorites.setImageResource(R.drawable.ic_love_disable_orange);
-                    Toast.makeText(StoryDetails.this, "Dislike", Toast.LENGTH_LONG).show();
+            // generate a query based on that relation
+            ParseQuery query = relation.getQuery();
+            query.whereEqualTo("objectId", objectId);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    if (parseObject != null) {
+                        imgBtnFavorites.setImageResource(R.drawable.ic_love_active_orange);
+                        imgBtnFavorites.setClickable(false);
+                        Toast.makeText(StoryDetails.this, "Like", Toast.LENGTH_LONG).show();
+                    } else {
+                        imgBtnFavorites.setImageResource(R.drawable.ic_love_disable_orange);
+                        Toast.makeText(StoryDetails.this, "Dislike", Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
 
-        });
+            });
+        }
+
     }
 
     @Override
