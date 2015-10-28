@@ -1,12 +1,12 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_time_li"
+    <item android:drawable="@drawable/ic_time_orange"
         android:state_focused="true"
         android:state_pressed="true" />
-    <item android:drawable="@drawable/ic_time_li"
+    <item android:drawable="@drawable/ic_time_orange"
         android:state_focused="false"
         android:state_pressed="true" />
-    <item android:drawable="@drawable/ic_time_li" android:state_focused="true" />
-    <item android:drawable="@drawable/ic_time"
+    <item android:drawable="@drawable/ic_time_orange" android:state_focused="true" />
+    <item android:drawable="@drawable/ic_time_white"
         android:state_focused="false"
         android:state_pressed="false" />
 </selector>

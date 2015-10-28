@@ -126,7 +126,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
 
         String url = songsList.get(currentSongIndex).getParseFile("Source").getUrl();
-        //Toast.makeText(getApplicationContext(),""+url,Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),""+url,Toast.LENGTH_LONG).show();
         Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_LONG).show();
         // By default play first song
         playSong(currentSongIndex);
@@ -423,7 +423,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         // remove message Handler from updating progress bar
-        mHandler.removeCallbacks(mUpdateTimeTask);
+        //mHandler.removeCallbacks(mUpdateTimeTask);
     }
 
     /**
@@ -431,7 +431,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
      * */
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        mHandler.removeCallbacks(mUpdateTimeTask);
+        /*mHandler.removeCallbacks(mUpdateTimeTask);
         int totalDuration = mp.getDuration();
         int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
 
@@ -439,7 +439,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         mp.seekTo(currentPosition);
 
         // update timer progress again
-        updateProgressBar();
+        updateProgressBar();*/
     }
 
     /**
