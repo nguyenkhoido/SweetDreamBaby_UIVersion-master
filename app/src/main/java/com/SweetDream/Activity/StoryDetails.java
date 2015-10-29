@@ -44,6 +44,7 @@ public class StoryDetails extends AppCompatActivity {
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
         tvSummariesContent = (TextView)findViewById(R.id.tvSummariesContent);
         tvPrice = (TextView)findViewById(R.id.tvPrice);
+
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         objectId = bundle.getString("objectId");
