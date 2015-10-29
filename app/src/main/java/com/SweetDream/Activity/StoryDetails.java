@@ -100,7 +100,8 @@ public class StoryDetails extends AppCompatActivity {
             public void onClick(View v) {
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 if (currentUser != null) {
-                    
+                    imgBtnFavorites.setImageResource(R.drawable.ic_love_active_orange);
+                    imgBtnFavorites.setClickable(false);
                     addRelationShip();
                     //getActivity().setResult(Activity.RESULT_OK);
                     //getActivity().finish();
