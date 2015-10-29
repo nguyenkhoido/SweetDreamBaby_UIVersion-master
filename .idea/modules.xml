@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/SweetDreamBaby_UIVersion-master.iml" filepath="$PROJECT_DIR$/SweetDreamBaby_UIVersion-master.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viettelserviceslib/viettelserviceslib.iml" filepath="$PROJECT_DIR$/viettelserviceslib/viettelserviceslib.iml" />
     </modules>
   </component>
 </project>

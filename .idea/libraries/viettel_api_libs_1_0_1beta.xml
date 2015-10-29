@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="viettel_api_libs_1.0.1beta">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/viettelserviceslib/libs/viettel_api_libs_1.0.1beta.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

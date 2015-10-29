@@ -208,7 +208,7 @@ public class StoryDetails extends AppCompatActivity {
                         Toast.makeText(StoryDetails.this, "Like", Toast.LENGTH_LONG).show();
                     } else {
                         imgBtnFavorites.setImageResource(R.drawable.ic_love_disable_orange);
-                        Toast.makeText(StoryDetails.this, "Dislike", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(StoryDetails.this, "Dislike", Toast.LENGTH_LONG).show();
                     }
                 }
 
