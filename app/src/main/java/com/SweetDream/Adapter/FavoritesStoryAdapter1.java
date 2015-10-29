@@ -3,7 +3,6 @@ package com.SweetDream.Adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,24 +20,21 @@ import com.parse.ParseObject;
 import java.util.List;
 
 /**
- * Created by nguye_000 on 28/09/2015.
+ * Created by Minh Color on 10/28/2015.
  */
-public class FavoritesStoryAdapter extends ArrayAdapter<ItemFavoriteStories> {
-
+public class FavoritesStoryAdapter1 extends ArrayAdapter<ParseObject> {
     private Context context;
 
-    List<ItemFavoriteStories> itemFavorites;
+    List<ParseObject> itemFavorites;
 
 
-    public FavoritesStoryAdapter(Context c, List<ItemFavoriteStories> list)
+    public FavoritesStoryAdapter1(Context c, List<ParseObject> list)
     {
-        super(c,R.layout.custom_favoritesbook_adapter,list);
+        super(c, R.layout.custom_favoritesbook_adapter,list);
         context =  c;
         this.itemFavorites = list;
 
     }
-
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -50,11 +46,12 @@ public class FavoritesStoryAdapter extends ArrayAdapter<ItemFavoriteStories> {
         TextView txt1=(TextView)row.findViewById(R.id.titleFavorites);
         TextView txt2 = (TextView)row.findViewById(R.id.authorFavorites);
 
-        ItemFavoriteStories item = itemFavorites.get(position);
+        //ItemFavoriteStories item = itemFavorites.get(position);
+        ParseObject item = itemFavorites.get(position);
 
-        loadImages(item.getImage(),imgView);
-        txt1.setText(item.getTitleBook());
-        txt2.setText(item.getAuthorStory());
+        loadImages(item.getParseFile("Image"),imgView);
+        txt1.setText(item.getString("StoryName"));
+        txt2.setText(item.getString("Author"));
 
         return row;
     }
@@ -77,5 +74,4 @@ public class FavoritesStoryAdapter extends ArrayAdapter<ItemFavoriteStories> {
             img.setImageResource(R.drawable.thor);
         }
     }// load image
-
 }
