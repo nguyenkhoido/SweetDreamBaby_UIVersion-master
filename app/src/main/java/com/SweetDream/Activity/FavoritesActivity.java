@@ -50,7 +50,7 @@ public class FavoritesActivity extends Fragment {
         itemFavorites1 = new ArrayList<>();
         //adapterFavoriteStories1 = new FavoritesStoryAdapter1(getActivity(), itemFavorites1);
         getFavoriteStories();
-        list.setAdapter(adapterFavoriteStories1);
+        //list.setAdapter(adapterFavoriteStories1);
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
@@ -125,7 +125,7 @@ public class FavoritesActivity extends Fragment {
 
                 });
 
-                adapterFavoriteStories1.notifyDataSetChanged();
+                list.setAdapter(adapterFavoriteStories1);
                 return true;
             }
         });
