@@ -99,6 +99,8 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         btnPlay = (ImageButton) findViewById(R.id.btnPlay);
         btnNext = (ImageButton) findViewById(R.id.btnNext);
         btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
+        btnForward = (ImageButton) findViewById(R.id.btnForward);
+        btnBackward = (ImageButton) findViewById(R.id.btnBackward);
         //btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
         btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
@@ -163,7 +165,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
          * Forward button click event
          * Forwards song specified seconds
          * */
-		/*btnForward.setOnClickListener(new View.OnClickListener() {
+		btnForward.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
@@ -180,10 +182,10 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 			}
 		});
 
-		*//**
+		/**
          * Backward button click event
          * Backward song to specified seconds
-         * *//*
+         **/
 		btnBackward.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -200,7 +202,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 				}
 
 			}
-		});*/
+		});
 
         /**
          * Next button click event

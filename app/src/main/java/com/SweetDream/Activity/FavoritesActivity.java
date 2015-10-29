@@ -10,9 +10,12 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.SweetDream.Adapter.FavoritesStoryAdapter;
+import com.SweetDream.Adapter.FavoritesStoryAdapter1;
 import com.SweetDream.Model.ItemFavoriteStories;
+import com.SweetDream.Model.ItemFreeStory;
 import com.SweetDream.R;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -25,6 +28,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +38,19 @@ import java.util.List;
 public class FavoritesActivity extends Fragment {
     SwipeMenuListView list;
     List<ItemFavoriteStories> itemFavorites;
+    List<ParseObject> itemFavorites1;
     FavoritesStoryAdapter adapterFavoriteStories;
-
+    FavoritesStoryAdapter1 adapterFavoriteStories1;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_favorites, container, false);
 
         list = (SwipeMenuListView) view.findViewById(R.id.listItemFavorites);
         itemFavorites = new ArrayList<>();
-        adapterFavoriteStories = new FavoritesStoryAdapter(getActivity(), itemFavorites);
+        itemFavorites1 = new ArrayList<>();
+        //adapterFavoriteStories1 = new FavoritesStoryAdapter1(getActivity(), itemFavorites1);
         getFavoriteStories();
-        list.setAdapter(adapterFavoriteStories);
+        list.setAdapter(adapterFavoriteStories1);
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
             public void create(SwipeMenu menu) {
@@ -85,22 +91,49 @@ public class FavoritesActivity extends Fragment {
         list.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                ItemFavoriteStories item = itemFavorites.get(position);
+                //ItemFavoriteStories item = itemFavorites.get(position);
+                ParseObject item = itemFavorites1.get(position);
+                Log.e("vi tri click: ",""+position);
+                Log.e("objectId: ", "" + item.getObjectId());
+                itemFavorites1.remove(position);
 
+// delete app
 
-                deleteRelationShip(item);
-                itemFavorites.remove(position);
-                adapterFavoriteStories.notifyDataSetChanged();
+                ParseObject object = ParseObject.createWithoutData("Story", item.getObjectId());
+//processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
+                // suppose we have a book object
+                ParseUser user = ParseUser.getCurrentUser();
 
+// create a relation based on the authors key
+                ParseRelation relation = user.getRelation("StoryLove");
+                relation.remove(object);
+                // user save relation
+                user.saveInBackground(new SaveCallback() {
 
-                return false;
+                    @Override
+                    public void done(ParseException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(), "Your story now is removed!!", Toast.LENGTH_SHORT).show();
+
+                        } else {
+                            Toast.makeText(getActivity(),
+                                    "Error removing: " + e.getMessage(),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    }
+
+                });
+
+                adapterFavoriteStories1.notifyDataSetChanged();
+                return true;
             }
         });
         return view;
     }
 
     private void deleteRelationShip(ItemFavoriteStories item) {
-        // delete app
+
         try {
             Intent intent = new Intent(Intent.ACTION_DELETE);
 
@@ -123,9 +156,15 @@ public class FavoritesActivity extends Fragment {
 
 // generate a query based on that relation
         ParseQuery query = relation.getQuery();
-
+        try {
+            itemFavorites1 = query.find();
+            adapterFavoriteStories1 = new FavoritesStoryAdapter1(getActivity(), itemFavorites1);
+            list.setAdapter(adapterFavoriteStories1);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 // now execute the query
-        query.findInBackground(new FindCallback<ParseObject>() {
+        /*query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> postList, ParseException e) {
                 if (e == null) {
@@ -143,7 +182,7 @@ public class FavoritesActivity extends Fragment {
                 }
 
             }
-        });
+        });*/
     }
 
 
