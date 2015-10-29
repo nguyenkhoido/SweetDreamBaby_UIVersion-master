@@ -101,6 +101,17 @@
                 android:text="Play"
                 android:layout_weight="1"
                 android:id="@+id/btnPlay"
+                android:visibility="gone"
+                android:background="@drawable/custom_button_details_page"
+                android:layout_marginRight="5dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Get This Story"
+                android:layout_weight="1"
+                android:id="@+id/btnGetStory"
+                android:visibility="gone"
                 android:background="@drawable/custom_button_details_page"
                 android:layout_marginRight="5dp" />
 
@@ -110,8 +121,10 @@
                 android:drawableLeft="@drawable/ic_download_black"
                 android:background="@drawable/custom_button_details_page"
                 android:text="Download"
+                android:visibility="gone"
                 android:layout_weight="1"
                 android:id="@+id/btnDownload"
+
                 android:layout_marginLeft="5dp" />
 
         </LinearLayout>

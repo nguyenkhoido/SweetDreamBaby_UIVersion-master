@@ -1,12 +1,12 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/ic_prepeat_pree"
+    <item android:drawable="@drawable/ic_repeat_orange"
         android:state_focused="true"
         android:state_pressed="true" />
-    <item android:drawable="@drawable/ic_prepeat_pree"
+    <item android:drawable="@drawable/ic_repeat_orange"
         android:state_focused="false"
         android:state_pressed="true" />
-    <item android:drawable="@drawable/ic_prepeat_pree" android:state_focused="true" />
-    <item android:drawable="@drawable/ic_prepeat"
+    <item android:drawable="@drawable/ic_repeat_orange" android:state_focused="true" />
+    <item android:drawable="@drawable/ic_repeat_white"
         android:state_focused="false"
         android:state_pressed="false" />
 </selector>
