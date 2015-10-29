@@ -49,7 +49,9 @@ public class FavoritesActivity extends Fragment {
         itemFavorites = new ArrayList<>();
         itemFavorites1 = new ArrayList<>();
         //adapterFavoriteStories1 = new FavoritesStoryAdapter1(getActivity(), itemFavorites1);
+        adapterFavoriteStories = new FavoritesStoryAdapter(getActivity(), itemFavorites);
         getFavoriteStories();
+        list.setAdapter(adapterFavoriteStories);
         //list.setAdapter(adapterFavoriteStories1);
         SwipeMenuCreator creator = new SwipeMenuCreator() {
             @Override
@@ -91,15 +93,17 @@ public class FavoritesActivity extends Fragment {
         list.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                //ItemFavoriteStories item = itemFavorites.get(position);
-                ParseObject item = itemFavorites1.get(position);
-                Log.e("vi tri click: ",""+position);
-                Log.e("objectId: ", "" + item.getObjectId());
-                itemFavorites1.remove(position);
+                ItemFavoriteStories item = itemFavorites.get(position);
+                //ParseObject item = itemFavorites1.get(position);
+                Log.e("vi tri click: ", "" + position);
+                //Log.e("objectId: ", "" + item.getObjectId());
+                itemFavorites.remove(position);
+                //itemFavorites1.remove(position);
 
 // delete app
 
-                ParseObject object = ParseObject.createWithoutData("Story", item.getObjectId());
+                ParseObject object = ParseObject.createWithoutData("Story", item.getObjectID());
+                //ParseObject object = ParseObject.createWithoutData("Story", item.getObjectId());
 //processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
                 // suppose we have a book object
                 ParseUser user = ParseUser.getCurrentUser();
@@ -124,8 +128,9 @@ public class FavoritesActivity extends Fragment {
                     }
 
                 });
-
-                list.setAdapter(adapterFavoriteStories1);
+                //adapterFavoriteStories.notifyDataSetChanged();
+                list.setAdapter(adapterFavoriteStories);
+                //list.setAdapter(adapterFavoriteStories1);
                 return true;
             }
         });
@@ -156,15 +161,15 @@ public class FavoritesActivity extends Fragment {
 
 // generate a query based on that relation
         ParseQuery query = relation.getQuery();
-        try {
+        /*try {
             itemFavorites1 = query.find();
             adapterFavoriteStories1 = new FavoritesStoryAdapter1(getActivity(), itemFavorites1);
             list.setAdapter(adapterFavoriteStories1);
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 // now execute the query
-        /*query.findInBackground(new FindCallback<ParseObject>() {
+        query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> postList, ParseException e) {
                 if (e == null) {
@@ -182,7 +187,7 @@ public class FavoritesActivity extends Fragment {
                 }
 
             }
-        });*/
+        });
     }
 
 
