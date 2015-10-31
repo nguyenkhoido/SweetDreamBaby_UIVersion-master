@@ -32,8 +32,11 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     private ImageButton btnShuffle;
     private SeekBar songProgressBar;
     private TextView songTitleLabel;
+    private TextView songDescription;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
+
+    private ImageView storyImage;
     // Media Player
     private  MediaPlayer mp;
     // Handler to update UI timer, progress bar etc,.
@@ -76,8 +79,11 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
         songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
         songTitleLabel = (TextView) findViewById(R.id.tvNowPlaying);
+        songDescription = (TextView) findViewById(R.id.tvStoryDescription);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
+
+        storyImage = (ImageView) findViewById(R.id.storyImage);
 
         // Mediaplayer
         mp = new MediaPlayer();
@@ -317,7 +323,17 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 
             // Displaying Song title
             String songTitle = songsList.get(songIndex).getString("StoryName");
-            songTitleLabel.setText(songTitle);
+            String songAuthor = songsList.get(songIndex).getString("Author");
+            songTitleLabel.setText(songTitle + " - " + songAuthor);
+
+            // Displaying Image Song
+            ParseFile image = songsList.get(songIndex).getParseFile("Image");
+            LoadImageAudioParse loadImageAudioParse = new LoadImageAudioParse();
+            loadImageAudioParse.loadImages(image, storyImage);
+
+            // Displaying Song title
+            String description = songsList.get(songIndex).getString("Description");
+            songDescription.setText(description);
 
             // Changing Button Image to pause image
             btnPlay.setImageResource(R.drawable.btn_pause);
