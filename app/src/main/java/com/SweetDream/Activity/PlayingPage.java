@@ -1,56 +1,26 @@
 package com.SweetDream.Activity;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.AudioManager;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.ImageButton;
-import android.widget.Toast;
-
-import com.SweetDream.Audio.SongsManager;
-import com.SweetDream.Audio.Utilities;
-import com.SweetDream.Data.StoryList;
-import com.SweetDream.Extends.LoadImageAudioParse;
-import com.SweetDream.Model.ItemFavoriteStories;
-import com.SweetDream.Model.ItemFreeStory;
-import com.SweetDream.R;
-import com.parse.FindCallback;
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
-
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.Gravity;
-import android.view.MenuItem;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.SweetDream.Audio.Utilities;
+import com.SweetDream.Data.StoryList;
+import com.SweetDream.R;
+import com.parse.ParseObject;
+
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Objects;
 import java.util.Random;
 
-/**
- * Created by nguye_000 on 07/10/2015.
- */
+
 public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnCompletionListener, SeekBar.OnSeekBarChangeListener{
     private ImageButton btnPlay;
     private ImageButton btnForward;
