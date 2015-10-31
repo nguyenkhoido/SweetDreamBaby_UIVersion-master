@@ -7,13 +7,16 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SweetDream.Audio.Utilities;
 import com.SweetDream.Data.StoryList;
+import com.SweetDream.Extends.LoadImageAudioParse;
 import com.SweetDream.R;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import java.io.IOException;

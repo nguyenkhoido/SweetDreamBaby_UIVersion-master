@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setText("Login");
         //Fetch Facebook user info if it is logged------------------------------------------------------------------------------------------------------------------------------------
-        ParseUser currentUser = ParseUser.getCurrentUser();
+        final ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null && currentUser.isAuthenticated()) {
             makeMeRequest();
         }
@@ -151,8 +151,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.navigation_item_favorites:
+                        if(currentUser != null){
                         fragment = new FavoritesActivity();
-                        setTitle("Sweet Dream - My Favorites");
+                        setTitle("Sweet Dream - My Favorites");}
+                        else {
+                            loadLoginView();
+                        }
                         break;
 
                     case R.id.navigation_item_myBooks:
