@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/D:/test/SweetDreamsStoryAPIVT/SweetDreamBaby_UIVersion-master/viettelserviceslib/src/main/res/values/vt_dimens.xml -->
+    <!-- From: file:/D:/test1/SweetDreamBaby_UIVersion-master/viettelserviceslib/src/main/res/values/vt_dimens.xml -->
     <eat-comment/>
     <dimen name="vt_dialog_margin">20dp</dimen>
-    <!-- From: file:/D:/test/SweetDreamsStoryAPIVT/SweetDreamBaby_UIVersion-master/viettelserviceslib/src/main/res/values/strings.xml -->
+    <!-- From: file:/D:/test1/SweetDreamBaby_UIVersion-master/viettelserviceslib/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="app_name">Viettel Service Libs</string>
-    <!-- From: file:/D:/test/SweetDreamsStoryAPIVT/SweetDreamBaby_UIVersion-master/viettelserviceslib/src/main/res/values/vt_strings.xml -->
+    <!-- From: file:/D:/test1/SweetDreamBaby_UIVersion-master/viettelserviceslib/src/main/res/values/vt_strings.xml -->
     <eat-comment/>
     <string name="vt_button_no">Hủy</string>
     <string name="vt_button_yes">Đồng ý</string>

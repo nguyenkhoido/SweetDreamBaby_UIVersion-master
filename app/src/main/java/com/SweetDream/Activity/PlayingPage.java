@@ -1,11 +1,15 @@
 package com.SweetDream.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -32,13 +36,18 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     private ImageButton btnPrevious;
     private ImageButton btnPlaylist;
     private ImageButton btnRepeat;
+    private ImageButton btnTime;
     private ImageButton btnShuffle;
     private SeekBar songProgressBar;
+
+    private Button btnDg5,btnDg1,btnAdd5,btnAdd1;
+
+    private TextView btnSpeed;
     private TextView songTitleLabel;
     private TextView songDescription;
     private TextView songCurrentDurationLabel;
     private TextView songTotalDurationLabel;
-
+    private TextView timeView;
     private ImageView storyImage;
     // Media Player
     private  MediaPlayer mp;
@@ -77,7 +86,10 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         btnPrevious = (ImageButton) findViewById(R.id.btnPrevious);
         btnForward = (ImageButton) findViewById(R.id.btnForward);
         btnBackward = (ImageButton) findViewById(R.id.btnBackward);
+        btnTime = (ImageButton)findViewById(R.id.btnTime);
         //btnPlaylist = (ImageButton) findViewById(R.id.btnPlaylist);
+
+        btnSpeed = (TextView)findViewById(R.id.btnSpeed);
         btnRepeat = (ImageButton) findViewById(R.id.btnRepeat);
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
         songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
@@ -284,6 +296,22 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
 				startActivityForResult(i, 100);
 			}
 		});*/
+        btnSpeed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CharSequence [] time = {"0x","1x","2x","4x"};
+                showDialog(PlayingPage.this, "Time Speed",time);
+
+            }
+        });
+
+        btnTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sleepTimesDialog(PlayingPage.this,"Sleep Time","Ok","Cancel");
+
+            }
+        });
 
     }
 
@@ -467,6 +495,151 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     public void onDestroy(){
         super.onDestroy();
         mp.release();
+    }
+
+
+    //alert dialog for downloadDialog
+    public AlertDialog showDialog(final PlayingPage activity, CharSequence title, CharSequence[] time) {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
+        downloadDialog.setTitle(title);
+
+        downloadDialog.setItems(time, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0:
+                        Toast.makeText(PlayingPage.this, "0x", Toast.LENGTH_SHORT).show();
+                        // get current song position
+                        int currentPosition = mp.getCurrentPosition();
+
+                        btnSpeed.setText("0x");
+
+
+                        // check if seekBackward time is greater than 0 sec
+                        /*if(currentPosition - seekBackwardTime >= 0){
+                            // forward song
+                            mp.seekTo(currentPosition - seekBackwardTime);
+                        }else{
+                            // backward to starting position
+                            mp.seekTo(0);
+                        }*/
+                        break;
+                    case 1:
+                        Toast.makeText(PlayingPage.this, "1x", Toast.LENGTH_SHORT).show();
+
+                        btnSpeed.setText("1x");
+
+
+                        break;
+                    case 2:
+                        Toast.makeText(PlayingPage.this, "2x", Toast.LENGTH_SHORT).show();
+
+                        btnSpeed.setText("2x");
+
+
+                        break;
+                    case 3:
+                        Toast.makeText(PlayingPage.this, "4x", Toast.LENGTH_SHORT).show();
+
+                        btnSpeed.setText("4x");
+
+
+                        break;
+                    default:
+                        Toast.makeText(PlayingPage.this, "0x", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                dialog.dismiss();
+            }
+        });
+
+        return downloadDialog.show();
+    }
+
+    public AlertDialog sleepTimesDialog(final PlayingPage activity, CharSequence title, CharSequence nativeBtn, CharSequence negativeBtn) {
+        AlertDialog.Builder downloadDialog = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = PlayingPage.this.getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.custom_dialog_sleep_time, null);
+        downloadDialog
+                .setView(view);
+        //setView Dialog
+        //downloadDialog.setView(R.layout.custom_dialog_sleep_time);
+        //call Id in custom dialog layout
+
+        btnDg5 = (Button)view.findViewById(R.id.btnDg5Min);
+        btnDg1 = (Button)view.findViewById(R.id.btnDg1Min);
+        btnAdd5 = (Button)view.findViewById(R.id.btnAg5Min);
+        btnAdd1 = (Button) view.findViewById(R.id.btnAg1Min);
+        timeView = (TextView) view.findViewById(R.id.txtViewTime);
+        btnDg5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sleepT = timeView.getText().toString();
+                int sleepTime = Integer.parseInt(sleepT);
+
+                int currentTime = sleepTime;
+
+                currentTime = sleepTime - 5;
+
+                timeView.setText("" + currentTime);
+            }
+        });
+        btnDg1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sleepT = timeView.getText().toString();
+                int sleepTime = Integer.parseInt(sleepT);
+
+                int currentTime = sleepTime;
+
+                currentTime = sleepTime - 1;
+
+                timeView.setText("" + currentTime);
+            }
+        });
+        btnAdd5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sleepT = timeView.getText().toString();
+                int sleepTime = Integer.parseInt(sleepT);
+
+                int currentTime = sleepTime;
+
+                currentTime = sleepTime + 5;
+
+                timeView.setText("" + currentTime);
+            }
+        });
+        btnAdd1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sleepT = timeView.getText().toString();
+                int sleepTime = Integer.parseInt(sleepT);
+
+                int currentTime = sleepTime;
+
+                currentTime = sleepTime + 1;
+
+                timeView.setText("" + currentTime);
+            }
+        });
+        downloadDialog.setTitle(title);
+        downloadDialog.setPositiveButton(nativeBtn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(PlayingPage.this,"Hello",Toast.LENGTH_SHORT).show();
+            }
+        });
+        downloadDialog.setNegativeButton(negativeBtn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        return downloadDialog.show();
     }
 
 
