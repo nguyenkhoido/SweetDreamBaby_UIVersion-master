@@ -1,7 +1,6 @@
 package com.SweetDream.Pay;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,19 +15,14 @@ import com.viettel.android.gsm.listener.ViettelOnResponse;
 
 public class PayActivity extends SuperActivity{
 //(Publisher ID : 123197
-    //Mã ứng dụng (App ID):12648
-private  int Coin = 20;
+    //Mã ứng dụng (App ID):12667
+private  int Coin = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
 
         final TextView TextCoin = (TextView) findViewById(R.id.coin);
-
-        //TextCoin.setText(String.valueOf(Coin));
-        final String SoTienNap = "10000";
-        Log.e("Chuoirave", "hoat dong log" + SoTienNap);
-
         Button btnnaptien = (Button) findViewById(R.id.btnnaptien);
 
         btnnaptien.setOnClickListener(new View.OnClickListener() {

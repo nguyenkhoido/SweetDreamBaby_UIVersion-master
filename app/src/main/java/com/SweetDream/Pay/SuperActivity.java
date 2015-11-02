@@ -2,7 +2,7 @@ package com.SweetDream.Pay;
 
 import android.widget.Toast;
 
-import com.SweetDream.Activity.MainActivity;
+import com.SweetDream.Activity.MyProfileActivity;
 import com.viettel.android.gsm.ViettelClient;
 import com.viettel.android.gsm.ViettelError;
 import com.viettel.android.gsm.services.ViettelClientSimpleActivity;
@@ -13,14 +13,15 @@ import com.viettel.android.gsm.services.ViettelClientSimpleActivity;
 public class SuperActivity extends ViettelClientSimpleActivity {
     @Override
     public Class<?> classExitApp() {
-        return MainActivity.class;
+        return MyProfileActivity.class;
+
     }
 
     @Override
     public InitializeParams initParams() {
         InitializeParams pramsAuto = new InitializeParams();
 
-        pramsAuto.setViettelId("123197","12648");
+        pramsAuto.setViettelId("123197","12667");
         pramsAuto.setTestDevice(false);
         pramsAuto.setReadTimeout(300000);
         return pramsAuto;
@@ -36,7 +37,7 @@ public class SuperActivity extends ViettelClientSimpleActivity {
       return new ViettelClient.OnConnectionCallbacks() {
           @Override
           public void onConnected() {
-              Toast.makeText(SuperActivity.this,"Connected" , Toast.LENGTH_LONG).show();
+              //Toast.makeText(SuperActivity.this,"Connected" , Toast.LENGTH_LONG).show();
           }
 
           @Override

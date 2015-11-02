@@ -23,7 +23,7 @@ public class RegisterActivity extends AppCompatActivity {
 Button btnReset, signup;
     EditText username, email, phone, pass, confirmPass;
     String mUsername, mEmail, mPhone, mPass, mConfirmPass;
-    int mCoin = 500;
+    String mCoin = "0";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +112,7 @@ Button btnReset, signup;
         user.put("phone", mPhone);
         user.setPassword(mPass);
         user.setEmail(mEmail);
-        user.put("coin",mCoin);
+        user.put("Coin",mCoin);
 
         user.signUpInBackground(new SignUpCallback() {
             @Override

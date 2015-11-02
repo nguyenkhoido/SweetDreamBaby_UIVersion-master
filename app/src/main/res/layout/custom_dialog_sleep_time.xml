@@ -31,32 +31,32 @@
         android:orientation="horizontal"
         android:gravity="center">
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:text="-5"
             android:id="@+id/btnDg5Min"
             android:background="@color/primaryColor"
             android:textColor="@color/white"
             android:layout_margin="5dp"/>
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:text="-1"
             android:id="@+id/btnDg1Min"
             android:background="@color/primaryColor"
             android:textColor="@color/white"
             android:layout_margin="5dp"/>
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:text="+5"
             android:id="@+id/btnAg5Min"
             android:background="@color/primaryColor"
             android:textColor="@color/white"
             android:layout_margin="5dp"/>
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:text="+1"
             android:id="@+id/btnAg1Min"
             android:background="@color/primaryColor"

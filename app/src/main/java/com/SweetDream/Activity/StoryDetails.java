@@ -1,8 +1,10 @@
 package com.SweetDream.Activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.SweetDream.Extends.LoadImageAudioParse;
+import com.SweetDream.Pay.SuperActivity;
 import com.SweetDream.R;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -23,17 +26,20 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-public class StoryDetails extends AppCompatActivity {
+public class StoryDetails extends SuperActivity {
     String test = "";
     Button btnPlay, btnDownload, btnGetStory;
     ImageButton imgBtnFavorites;
     ImageView storyImage;
-    TextView tvStoryName, tvAuthor, tvSummariesContent, tvPrice;
+    TextView tvStoryName, tvAuthor, tvSummariesContent, tvPrice, dialogTvTitle, dialogTvPrice, dialogTvUserCoin, dialogTvAfterPaid, dialogTvCheckCoin, txtQuestion;
     LoadImageAudioParse load = new LoadImageAudioParse();
-
+    final ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
+    int Coin;
     String objectId;
     int currentStory;
     String result;
+    AlertDialog.Builder downloadDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +51,9 @@ public class StoryDetails extends AppCompatActivity {
         storyImage = (ImageView) findViewById(R.id.tvStoryImage);
         tvStoryName = (TextView) findViewById(R.id.tvStoryName);
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
-        tvSummariesContent = (TextView)findViewById(R.id.tvSummariesContent);
-        tvPrice = (TextView)findViewById(R.id.tvPrice);
+        tvSummariesContent = (TextView) findViewById(R.id.tvSummariesContent);
+        tvPrice = (TextView) findViewById(R.id.tvPrice);
+
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -54,8 +61,7 @@ public class StoryDetails extends AppCompatActivity {
         currentStory = bundle.getInt("currentStory");
         result = bundle.getString("result");
         //final String objectId = intent.getStringExtra("objectId");
-        Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_SHORT).show();
-        ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
+        //Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_SHORT).show();
         query.whereEqualTo("objectId", objectId);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
@@ -90,7 +96,38 @@ public class StoryDetails extends AppCompatActivity {
         btnGetStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(StoryDetails.this, "You must get this story before play!", Toast.LENGTH_SHORT);
+
+                final ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    query.whereEqualTo("objectId", objectId);
+                    query.getFirstInBackground(new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject parseObject, ParseException e) {
+
+                            String userCoin = currentUser.getString("Coin");
+                            String storyCoin = "" + parseObject.getNumber("Price");
+
+                            dialogTvTitle.setText("Story Title: " + parseObject.getString("StoryName"));
+                            dialogTvPrice.setText("Story Price: " + storyCoin);
+                            dialogTvUserCoin.setText("Your Coin: " + userCoin);
+                            Coin = Integer.parseInt(userCoin) - Integer.parseInt(storyCoin);
+                            dialogTvAfterPaid.setText("After Pain: " + "" + Coin);
+
+
+                            if (Coin <= 0) {
+                                dialogTvCheckCoin.setVisibility(View.VISIBLE);
+                                txtQuestion.setVisibility(View.GONE);
+
+                            }
+                        }
+                    });
+                    payStoryDialog(StoryDetails.this, "Pay Story", "Get Story", "Cancel");
+
+                } else {
+                    loadLoginView();
+                }
+
+                //Toast.makeText(StoryDetails.this, "You must get this story before play!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -130,7 +167,7 @@ public class StoryDetails extends AppCompatActivity {
         checkLove();
     }
 
-    private void addRelationShip(){
+    private void addRelationShip() {
         // Create the story that user love
         ParseObject story = ParseObject.createWithoutData("Story", objectId);
 
@@ -188,11 +225,10 @@ public class StoryDetails extends AppCompatActivity {
     }
 
 
-
-    private void checkLove(){
+    private void checkLove() {
         // Get current User
         ParseUser user = ParseUser.getCurrentUser();
-        if(user != null){
+        if (user != null) {
             // create a relation based on the authors key
             ParseRelation relation = user.getRelation("StoryLove");
 
@@ -243,5 +279,62 @@ public class StoryDetails extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         //finish();
+    }
+
+    public AlertDialog payStoryDialog(final StoryDetails activity, CharSequence title, CharSequence nativeBtn, CharSequence negativeBtn) {
+        downloadDialog = new AlertDialog.Builder(activity);
+        LayoutInflater inflater = StoryDetails.this.getLayoutInflater();
+
+        View view = inflater.inflate(R.layout.custom_pay_dialog_layout, null);
+        dialogTvTitle = (TextView) view.findViewById(R.id.storyTitle);
+        dialogTvPrice = (TextView) view.findViewById(R.id.storyPrice);
+        dialogTvUserCoin = (TextView) view.findViewById(R.id.userCoin);
+        dialogTvAfterPaid = (TextView) view.findViewById(R.id.afterPaid);
+        dialogTvCheckCoin = (TextView) view.findViewById(R.id.txtCheckCoin);
+        txtQuestion = (TextView) view.findViewById(R.id.txtQuestion);
+        downloadDialog
+                .setView(view);
+        //setView Dialog
+        //downloadDialog.setView(R.layout.custom_dialog_sleep_time);
+        //call Id in custom dialog layout
+
+        downloadDialog.setTitle(title);
+
+        downloadDialog.setPositiveButton(nativeBtn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (Coin <= 0) {
+
+                    Intent intent = new Intent(StoryDetails.this, MyProfileActivity.class);
+                    startActivity(intent);
+                } else {
+                    ParseUser currentUser = ParseUser.getCurrentUser();
+                    currentUser.put("Coin",""+Coin);
+                    currentUser.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e != null){
+                                Toast.makeText(StoryDetails.this,"Paid Sucessfully",Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(StoryDetails.this,""+e,Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    btnGetStory.setVisibility(View.GONE);
+                    btnPlay.setVisibility(View.VISIBLE);
+                    btnDownload.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        downloadDialog.setNegativeButton(negativeBtn, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+
+        return downloadDialog.show();
     }
 }
