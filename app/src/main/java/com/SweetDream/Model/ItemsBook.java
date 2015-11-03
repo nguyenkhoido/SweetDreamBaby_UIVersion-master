@@ -1,14 +1,26 @@
 package com.SweetDream.Model;
 
+import com.parse.ParseFile;
+
 /**
  * Created by nguye_000 on 21/09/2015.
  */
 public class ItemsBook {
+    public String getObjectID() {
+        return ObjectID;
+    }
+
+    public void setObjectID(String objectID) {
+        ObjectID = objectID;
+    }
+
+    private String ObjectID;
     private String titleBook;
     private String typeBook;
-    private int image;
+    private ParseFile image;
 
-    public ItemsBook(String titleBook, String typeBook, int image) {
+    public ItemsBook(String objectid ,String titleBook, String typeBook, ParseFile image) {
+        this.ObjectID = objectid;
         this.titleBook = titleBook;
         this.typeBook = typeBook;
         this.image = image;
@@ -30,13 +42,14 @@ public class ItemsBook {
         this.typeBook = typeBook;
     }
 
-    public int getImage() {
+    public ParseFile getImage() {
         return image;
     }
 
-    public void setImage(int image) {
+    public void setImage(ParseFile image) {
         this.image = image;
     }
+
 
 
 }

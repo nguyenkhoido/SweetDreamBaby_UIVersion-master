@@ -21,7 +21,11 @@ public class SuperActivity extends ViettelClientSimpleActivity {
     public InitializeParams initParams() {
         InitializeParams pramsAuto = new InitializeParams();
 
-        pramsAuto.setViettelId("123197","12667");
+        /*setViettelID để kết nối với :
+        Publisher ID : 123197
+        Mã ứng dụng (App ID):12667*/
+
+        pramsAuto.setViettelId("123197", "12667");
         pramsAuto.setTestDevice(false);
         pramsAuto.setReadTimeout(300000);
         return pramsAuto;
@@ -34,17 +38,23 @@ public class SuperActivity extends ViettelClientSimpleActivity {
 
     @Override
     public ViettelClient.OnConnectionCallbacks onConnectionCallbacks() {
-      return new ViettelClient.OnConnectionCallbacks() {
-          @Override
-          public void onConnected() {
-              //Toast.makeText(SuperActivity.this,"Connected" , Toast.LENGTH_LONG).show();
-          }
+        return new ViettelClient.OnConnectionCallbacks() {
+            @Override
 
-          @Override
-          public void onConnectFail(ViettelError viettelError) {
-            String str = viettelError !=  null ? viettelError.toString() : "Connect failure!!!";
-              Toast.makeText(SuperActivity.this,str , Toast.LENGTH_LONG).show();
-          }
-      };
+            public void onConnected() {
+                //Toast.makeText(SuperActivity.this,"Connected" , Toast.LENGTH_LONG).show();
+
+
+              /*Hàm connected thông báo khi đã kết nối với API của Viettel*/
+            }
+
+            @Override
+            public void onConnectFail(ViettelError viettelError) {
+              /*Hàm Connect failure thông báo khi kết nối không được với API của Viettel*/
+
+                String str = viettelError != null ? viettelError.toString() : "Connect failure!!!";
+                Toast.makeText(SuperActivity.this, str, Toast.LENGTH_LONG).show();
+            }
+        };
     }
 }

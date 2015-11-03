@@ -1,88 +1,76 @@
 package com.SweetDream.Adapter;
 
-import android.support.v7.widget.RecyclerView;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.SweetDream.Model.ItemsBook;
 import com.SweetDream.R;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by nguye_000 on 16/09/2015.
- */
-public class MyBooksAdapter extends RecyclerView.Adapter<MyBooksAdapter.ViewHolder> {
+public class MyBooksAdapter extends ArrayAdapter<ItemsBook> {
 
-    List<ItemsBook> itemMyBooks;
+    private Context context;
 
-    public MyBooksAdapter() {
-        super();
-        itemMyBooks = new ArrayList<ItemsBook>();
+    List<ItemsBook> itemBooks;
 
-        itemMyBooks = new ArrayList<ItemsBook>();
 
-        ItemsBook item = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
+    public MyBooksAdapter(Context c, List<ItemsBook> list)
+    {
+        super(c,R.layout.custom_cardview_bookslist_adapter,list);
+        context =  c;
+        this.itemBooks = list;
 
-        itemMyBooks.add(item);
-
-        ItemsBook item1 = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
-
-        itemMyBooks.add(item1);
-
-        ItemsBook item2 = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
-
-        itemMyBooks.add(item2);
-
-        ItemsBook item3 = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
-
-        itemMyBooks.add(item3);
-
-        ItemsBook item4 = new ItemsBook("Iron Man","Free",R.drawable.ironman2);
-
-        itemMyBooks.add(item4);
     }
+
+
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.custom_cardview_bookslist_adapter, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(v);
-        return viewHolder;
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View row = inflater.inflate(R.layout.custom_cardview_bookslist_adapter, null);
+
+        ImageView imgView = (ImageView)row.findViewById(R.id.imgBooks);
+        TextView txt1=(TextView)row.findViewById(R.id.titleBook);
+        TextView txt2 = (TextView)row.findViewById(R.id.authorBook);
+
+        ItemsBook item = itemBooks.get(position);
+
+        loadImages(item.getImage(),imgView);
+        txt1.setText(item.getTitleBook());
+        txt2.setText(item.getTypeBook());
+
+        return row;
     }
+    private void loadImages(ParseFile thumbnail, final ImageView img) {
 
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int i) {
-        ItemsBook item = itemMyBooks.get(i);
-        viewHolder.txtTitle.setText(item.getTitleBook());
-        viewHolder.txtType.setText(item.getTypeBook());
-        viewHolder.imgCardView.setImageResource(item.getImage());
-    }
+        if (thumbnail != null) {
+            thumbnail.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
 
-    @Override
-    public int getItemCount() {
-        return itemMyBooks.size();
-    }
+                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                        img.setImageBitmap(bmp);
 
-    class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ImageView imgCardView;
-        public TextView txtTitle;
-        public TextView txtType;
-        Button btnBooksListPage;
-        public ViewHolder(View itemView) {
-            super(itemView);
-            imgCardView = (ImageView) itemView.findViewById(R.id.imgCardView);
-            txtTitle = (TextView) itemView.findViewById(R.id.txtTitleBooksListPage);
-            txtType = (TextView) itemView.findViewById(R.id.txtTypeBooksListPage);
-
-            btnBooksListPage = (Button)itemView.findViewById(R.id.btnBooksListPage);
-            btnBooksListPage.setVisibility(itemView.GONE);
+                    } else {
+                    }
+                }
+            });
+        } else {
+            img.setImageResource(R.drawable.thor);
         }
-    }
+    }// load image
+
 }

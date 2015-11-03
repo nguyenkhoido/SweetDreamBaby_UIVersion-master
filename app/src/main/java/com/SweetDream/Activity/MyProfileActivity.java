@@ -58,38 +58,41 @@ public class MyProfileActivity extends SuperActivity {
 
         String phone = currentUser.getString("phone");
 
-        /*if(phone.equals("")){
-            edtPhone.setText("Update Later!");
-        }
-        else{
-            edtPhone.setText(phone);
-        }*/
         edtCoin.setText(currentUser.getString("Coin"));
 
         btnGetCoin = (Button) findViewById(R.id.btnGetCoin);
         btnUpdateAccount = (Button) findViewById(R.id.btnUpdateAccInfor);
+
+
         btnGetCoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*Gọi ViettelClient để xử lý dưới hệ thống*/
                 final ViettelClient viettelClient = getViettelClient();
+
                 if (viettelClient == null) {
                     Toast.makeText(MyProfileActivity.this, viettelClient.toString(), Toast.LENGTH_LONG).show();
                     return;
                 }
-
+                /*Gọi phương thức thanh toán topupCardApp của Viettel : thanh toán qua thẻ cào */
                 ChargingGateWayApi.topupCardApp(viettelClient, new ViettelOnResponse<TopupInfo>() {
                     @Override
                     public void onResult(final TopupInfo topupInfo, final int vtCode) {
                         if (vtCode == VtResponseCode.VT_RESULT_OK && topupInfo != null) {
                             if (vtCode == 1) {
+                                /*Khi nạp thẻ đúng , hệ thống VT sẽ trã về 1 , thì nạp thành công*/
                                 String napthanhcong = "Nạp Thành công";
-
+                                /*topupInfo.getAmount().toString().equals("10000") : là khi nạp thẻ thành công , getAmount trên hệ thống
+                                *  trả về mã số thẻ mà người dùng đã nạp.
+                                *  Sau khi hệ thống trả về , số tiền mà người dùng nạp sẽ được quy đổi ra Coic trên ứng dụng.*/
                                 if (topupInfo.getAmount().toString().equals("10000")) {
 
                                     String CoinUser = currentUser.getString("Coin");
-
+                                /*Coin User là lấy số Coin hiện tại của User đang đăng nhập trên hệ thống*/
                                     Coin = Integer.parseInt(CoinUser) + 10;
+                                    /*Lấy số Coin hiện tại của User + 10 là số tiền nạp thẻ 10000 VNĐ khi nạp thành công*/
                                     currentUser.put("Coin", ""+Coin);
+                                    /*Put tổng số Coin mà User đó có đưa lên Server và lưu lại*/
                                     currentUser.saveInBackground(new SaveCallback() {
                                         @Override
                                         public void done(ParseException e) {
@@ -104,28 +107,124 @@ public class MyProfileActivity extends SuperActivity {
                                     });
 
                                     edtCoin.setText(currentUser.getString("Coin"));
+                                    /*Hiện số Coin mà User có*/
                                     Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();
 
                                 } else if (topupInfo.getAmount().toString().equals("20000")) {
-                                   /* Coin = Coin + 20;
-                                    edtCoin.setText(String.valueOf(Coin));*/
+                                    String CoinUser = currentUser.getString("Coin");
+                                /*Coin User là lấy số Coin hiện tại của User đang đăng nhập trên hệ thống*/
+                                    Coin = Integer.parseInt(CoinUser) + 20;
+                                    /*Lấy số Coin hiện tại của User + 10 là số tiền nạp thẻ 10000 VNĐ khi nạp thành công*/
+                                    currentUser.put("Coin", ""+Coin);
+                                    /*Put tổng số Coin mà User đó có đưa lên Server và lưu lại*/
+                                    currentUser.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if(e == null){
+
+                                                Toast.makeText(MyProfileActivity.this, "Luu Thanh Cong", Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                Toast.makeText(MyProfileActivity.this, "Loi: "+e, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+
+                                    edtCoin.setText(currentUser.getString("Coin"));
+                                    /*Hiện số Coin mà User có*/
                                     Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();
                                 } else if (topupInfo.getAmount().toString().equals("50000")) {
-                                    /*Coin = Coin + 50;
-                                    edtCoin.setText(String.valueOf(Coin));
-                                    Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();*/
+                                    String CoinUser = currentUser.getString("Coin");
+                                /*Coin User là lấy số Coin hiện tại của User đang đăng nhập trên hệ thống*/
+                                    Coin = Integer.parseInt(CoinUser) + 50;
+                                    /*Lấy số Coin hiện tại của User + 10 là số tiền nạp thẻ 10000 VNĐ khi nạp thành công*/
+                                    currentUser.put("Coin", ""+Coin);
+                                    /*Put tổng số Coin mà User đó có đưa lên Server và lưu lại*/
+                                    currentUser.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if(e == null){
+
+                                                Toast.makeText(MyProfileActivity.this, "Luu Thanh Cong", Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                Toast.makeText(MyProfileActivity.this, "Loi: "+e, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+
+                                    edtCoin.setText(currentUser.getString("Coin"));
+                                    /*Hiện số Coin mà User có*/
+                                    Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();
                                 } else if (topupInfo.getAmount().toString().equals("100000")) {
-                                   /* Coin = Coin + 100;
-                                    edtCoin.setText(String.valueOf(Coin));
-                                    Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();*/
+                                    String CoinUser = currentUser.getString("Coin");
+                                /*Coin User là lấy số Coin hiện tại của User đang đăng nhập trên hệ thống*/
+                                    Coin = Integer.parseInt(CoinUser) + 100;
+                                    /*Lấy số Coin hiện tại của User + 10 là số tiền nạp thẻ 10000 VNĐ khi nạp thành công*/
+                                    currentUser.put("Coin", ""+Coin);
+                                    /*Put tổng số Coin mà User đó có đưa lên Server và lưu lại*/
+                                    currentUser.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if(e == null){
+
+                                                Toast.makeText(MyProfileActivity.this, "Luu Thanh Cong", Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                Toast.makeText(MyProfileActivity.this, "Loi: "+e, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+
+                                    edtCoin.setText(currentUser.getString("Coin"));
+                                    /*Hiện số Coin mà User có*/
+                                    Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();
                                 } else if (topupInfo.getAmount().toString().equals("200000")) {
-                                   /* Coin = Coin + 200;
-                                    edtCoin.setText(String.valueOf(Coin));
-                                    Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();*/
+                                    String CoinUser = currentUser.getString("Coin");
+                                /*Coin User là lấy số Coin hiện tại của User đang đăng nhập trên hệ thống*/
+                                    Coin = Integer.parseInt(CoinUser) + 200;
+                                    /*Lấy số Coin hiện tại của User + 10 là số tiền nạp thẻ 10000 VNĐ khi nạp thành công*/
+                                    currentUser.put("Coin", ""+Coin);
+                                    /*Put tổng số Coin mà User đó có đưa lên Server và lưu lại*/
+                                    currentUser.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if(e == null){
+
+                                                Toast.makeText(MyProfileActivity.this, "Luu Thanh Cong", Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                Toast.makeText(MyProfileActivity.this, "Loi: "+e, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+
+                                    edtCoin.setText(currentUser.getString("Coin"));
+                                    /*Hiện số Coin mà User có*/
+                                    Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();
                                 } else if (topupInfo.getAmount().toString().equals("500000")) {
-                                   /* Coin = Coin + 500;
-                                    edtCoin.setText(String.valueOf(Coin));
-                                    Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();*/
+                                    String CoinUser = currentUser.getString("Coin");
+                                /*Coin User là lấy số Coin hiện tại của User đang đăng nhập trên hệ thống*/
+                                    Coin = Integer.parseInt(CoinUser) + 500;
+                                    /*Lấy số Coin hiện tại của User + 10 là số tiền nạp thẻ 10000 VNĐ khi nạp thành công*/
+                                    currentUser.put("Coin", ""+Coin);
+                                    /*Put tổng số Coin mà User đó có đưa lên Server và lưu lại*/
+                                    currentUser.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            if(e == null){
+
+                                                Toast.makeText(MyProfileActivity.this, "Luu Thanh Cong", Toast.LENGTH_LONG).show();
+                                            }
+                                            else {
+                                                Toast.makeText(MyProfileActivity.this, "Loi: "+e, Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+
+                                    edtCoin.setText(currentUser.getString("Coin"));
+                                    /*Hiện số Coin mà User có*/
+                                    Toast.makeText(MyProfileActivity.this, napthanhcong, Toast.LENGTH_LONG).show();
                                 }
                             }
                         } else if (vtCode == 106) {

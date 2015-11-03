@@ -14,8 +14,7 @@ import com.viettel.android.gsm.charging.TopupInfo;
 import com.viettel.android.gsm.listener.ViettelOnResponse;
 
 public class PayActivity extends SuperActivity{
-//(Publisher ID : 123197
-    //Mã ứng dụng (App ID):12667
+
 private  int Coin = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

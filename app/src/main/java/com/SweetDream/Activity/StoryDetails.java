@@ -86,6 +86,8 @@ public class StoryDetails extends SuperActivity {
                         btnGetStory.setVisibility(View.GONE);
                         btnPlay.setVisibility(View.VISIBLE);
                         btnDownload.setVisibility(View.VISIBLE);
+
+                        tvPrice.setText("You Got this Story go to , your book to see !!");
                     }
                 } else {
                     Toast.makeText(StoryDetails.this, "Data load fail", Toast.LENGTH_LONG).show();
@@ -165,6 +167,7 @@ public class StoryDetails extends SuperActivity {
         });
 
         checkLove();
+        checkIsBuy();
     }
 
     private void addRelationShip() {
@@ -224,6 +227,68 @@ public class StoryDetails extends SuperActivity {
 
     }
 
+    private void addRelationShipIsBuy() {
+        // Create the story that user love
+        ParseObject story = ParseObject.createWithoutData("Story", objectId);
+
+        // Get current User
+        ParseUser user = ParseUser.getCurrentUser();
+
+        // Create relationship collumn UserLove
+        ParseRelation relation = user.getRelation("StoryPaid");
+
+        // Add story to Relation
+        relation.add(story);
+
+        // user save relation
+        user.saveInBackground(new SaveCallback() {
+
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(StoryDetails.this, "User Buy this story, go to Your Book to see!!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "Error saving: " + e.getMessage(),
+                            Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+
+        });
+
+    }
+    private void checkIsBuy() {
+        // Get current User
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user != null) {
+            // create a relation based on the authors key
+            ParseRelation relation = user.getRelation("StoryPaid");
+
+            // generate a query based on that relation
+            ParseQuery query = relation.getQuery();
+            query.whereEqualTo("objectId", objectId);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    if (parseObject != null) {
+                        btnGetStory.setVisibility(View.GONE);
+                        btnPlay.setVisibility(View.VISIBLE);
+                        btnDownload.setVisibility(View.VISIBLE);
+                        tvPrice.setText("You Got this Story go to , your book to see !!");
+                    } else {
+
+                        btnGetStory.setVisibility(View.VISIBLE);
+                        btnPlay.setVisibility(View.GONE);
+                        btnDownload.setVisibility(View.GONE);
+
+                    }
+                }
+
+            });
+        }
+
+    }
 
     private void checkLove() {
         // Get current User
@@ -292,8 +357,7 @@ public class StoryDetails extends SuperActivity {
         dialogTvAfterPaid = (TextView) view.findViewById(R.id.afterPaid);
         dialogTvCheckCoin = (TextView) view.findViewById(R.id.txtCheckCoin);
         txtQuestion = (TextView) view.findViewById(R.id.txtQuestion);
-        downloadDialog
-                .setView(view);
+        downloadDialog.setView(view);
         //setView Dialog
         //downloadDialog.setView(R.layout.custom_dialog_sleep_time);
         //call Id in custom dialog layout
@@ -309,21 +373,23 @@ public class StoryDetails extends SuperActivity {
                     startActivity(intent);
                 } else {
                     ParseUser currentUser = ParseUser.getCurrentUser();
-                    currentUser.put("Coin",""+Coin);
+                    currentUser.put("Coin", "" + Coin);
+                    addRelationShipIsBuy();
                     currentUser.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            if(e != null){
-                                Toast.makeText(StoryDetails.this,"Paid Sucessfully",Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Toast.makeText(StoryDetails.this,""+e,Toast.LENGTH_SHORT).show();
+                            if (e != null) {
+                                Toast.makeText(StoryDetails.this, "Paid Sucessfully", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                Toast.makeText(StoryDetails.this, "" + e, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                     btnGetStory.setVisibility(View.GONE);
                     btnPlay.setVisibility(View.VISIBLE);
                     btnDownload.setVisibility(View.VISIBLE);
+                    tvPrice.setText("You Got this Story go to , your book to see !!");
                 }
             }
         });
