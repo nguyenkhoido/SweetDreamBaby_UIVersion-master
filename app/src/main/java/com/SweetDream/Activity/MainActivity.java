@@ -160,8 +160,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.navigation_item_myBooks:
+                        if(currentUser != null){
                         fragment = new MyBookActivity();
-                        setTitle("Sweet Dream - My Books");
+                        setTitle("Sweet Dream - My Books");}
+                        else {
+                            loadLoginView();
+                        }
                         break;
 
                     case R.id.navigation_item_myDownloads:

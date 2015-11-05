@@ -216,7 +216,7 @@ private ProgressDialog progressingDialog;
 
                 ParseUser.logInInBackground(strUserNameParse, strPasswordParse, new LogInCallback() {
                     @Override
-                    public void done(ParseUser user, com.parse.ParseException e) {
+                    public void done(ParseUser user, ParseException e) {
 
                         if (user !=null) {
 
@@ -258,6 +258,7 @@ private ProgressDialog progressingDialog;
                 if (userProfile.has("email")) {
                     currentUser.setEmail(userProfile.getString("email"));
                 }
+                currentUser.put("Coin", 0);
 
                 // Alert
                 currentUser.saveInBackground(new SaveCallback() {

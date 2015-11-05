@@ -2,7 +2,9 @@ package com.SweetDream.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -26,10 +28,17 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
 public class StoryDetails extends SuperActivity {
     String test = "";
     Button btnPlay, btnDownload, btnGetStory;
-    ImageButton imgBtnFavorites;
+    ImageButton imgBtnFavorites, imgBtnShare;
     ImageView storyImage;
     TextView tvStoryName, tvAuthor, tvSummariesContent, tvPrice, dialogTvTitle, dialogTvPrice, dialogTvUserCoin, dialogTvAfterPaid, dialogTvCheckCoin, txtQuestion;
     LoadImageAudioParse load = new LoadImageAudioParse();
@@ -45,9 +54,11 @@ public class StoryDetails extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_detail_page);
 
+
         btnGetStory = (Button) findViewById(R.id.btnGetStory);
         btnDownload = (Button) findViewById(R.id.btnDownload);
         imgBtnFavorites = (ImageButton) findViewById(R.id.imgBtnFavorites);
+        imgBtnShare = (ImageButton) findViewById(R.id.imgBtnShare);
         storyImage = (ImageView) findViewById(R.id.tvStoryImage);
         tvStoryName = (TextView) findViewById(R.id.tvStoryName);
         tvAuthor = (TextView) findViewById(R.id.tvAuthor);
@@ -62,38 +73,61 @@ public class StoryDetails extends SuperActivity {
         result = bundle.getString("result");
         //final String objectId = intent.getStringExtra("objectId");
         //Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_SHORT).show();
-        query.whereEqualTo("objectId", objectId);
-        query.getFirstInBackground(new GetCallback<ParseObject>() {
-            @Override
-            public void done(ParseObject parseObject, ParseException e) {
-                if (parseObject != null) {
-                    //Toast.makeText(StoryDetails.this, parseObject.getString("StoryName"),Toast.LENGTH_LONG).show();
-                    ParseFile file = parseObject.getParseFile("Image");
-                    tvStoryName.setText(parseObject.getString("StoryName"));
-                    tvAuthor.setText(parseObject.getString("Author"));
-                    tvPrice.setText(parseObject.getNumber("Price").toString());
-                    tvSummariesContent.setText(parseObject.getString("Description"));
-                    load.loadImages(file, storyImage);
-                    test = parseObject.getString("Author");
+        if(result.equals("free")){
+            query.whereEqualTo("objectId", objectId);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    if (parseObject != null) {
+                        //Toast.makeText(StoryDetails.this, parseObject.getString("StoryName"),Toast.LENGTH_LONG).show();
+                        ParseFile file = parseObject.getParseFile("Image");
+                        tvStoryName.setText(parseObject.getString("StoryName"));
+                        tvAuthor.setText(parseObject.getString("Author"));
+                        tvPrice.setText(parseObject.getNumber("Price").toString());
+                        tvSummariesContent.setText(parseObject.getString("Description"));
+                        load.loadImages(file, storyImage);
+                        test = parseObject.getString("Author");
+
+                            btnGetStory.setVisibility(View.GONE);
+                            btnPlay.setVisibility(View.VISIBLE);
+                            btnDownload.setVisibility(View.VISIBLE);
+                            tvPrice.setVisibility(View.GONE);
 
 
-                    int price = (int) parseObject.getNumber("Price");
-                    if (price > 0) {
+                    } else {
+                        Toast.makeText(StoryDetails.this, "Data load fail", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+        else{
+            query.whereEqualTo("objectId", objectId);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    if (parseObject != null) {
+                        //Toast.makeText(StoryDetails.this, parseObject.getString("StoryName"),Toast.LENGTH_LONG).show();
+                        ParseFile file = parseObject.getParseFile("Image");
+                        tvStoryName.setText(parseObject.getString("StoryName"));
+                        tvAuthor.setText(parseObject.getString("Author"));
+                        tvPrice.setText(parseObject.getNumber("Price").toString());
+                        tvSummariesContent.setText(parseObject.getString("Description"));
+                        load.loadImages(file, storyImage);
+                        test = parseObject.getString("Author");
+
                         btnGetStory.setVisibility(View.VISIBLE);
                         btnPlay.setVisibility(View.GONE);
                         btnDownload.setVisibility(View.GONE);
-                    } else {
-                        btnGetStory.setVisibility(View.GONE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                        btnDownload.setVisibility(View.VISIBLE);
+                        tvPrice.setVisibility(View.VISIBLE);
 
-                        tvPrice.setText("You Got this Story go to , your book to see !!");
+
+                    } else {
+                        Toast.makeText(StoryDetails.this, "Data load fail", Toast.LENGTH_LONG).show();
                     }
-                } else {
-                    Toast.makeText(StoryDetails.this, "Data load fail", Toast.LENGTH_LONG).show();
                 }
-            }
-        });
+            });
+        }
+
 
         btnGetStory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +167,12 @@ public class StoryDetails extends SuperActivity {
             }
         });
 
+        imgBtnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareContent();
+            }
+        });
 //Get StoryObjectId and UserObjectId
         imgBtnFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,13 +316,13 @@ public class StoryDetails extends SuperActivity {
                         btnPlay.setVisibility(View.VISIBLE);
                         btnDownload.setVisibility(View.VISIBLE);
                         tvPrice.setText("You Got this Story go to , your book to see !!");
-                    } else {
+                    } /*else {
 
                         btnGetStory.setVisibility(View.VISIBLE);
                         btnPlay.setVisibility(View.GONE);
                         btnDownload.setVisibility(View.GONE);
 
-                    }
+                    }*/
                 }
 
             });
@@ -402,5 +442,84 @@ public class StoryDetails extends SuperActivity {
 
 
         return downloadDialog.show();
+    }
+
+    String[] nameOfAppsToShareWith = new String[]{"facebook", "twitter", "gmail"};
+    String[] blacklist = new String[]{"com.any.package", "net.other.package"};
+    private void shareContent() {
+        // your share intent
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "Your feeling about this application");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "quangminhlk1994@gmail.com");
+        // ... anything else you want to add invoke custom chooser
+        startActivity(generateCustomChooserIntent(intent, blacklist));
+    }
+
+    private Intent generateCustomChooserIntent(Intent prototype,
+                                               String[] forbiddenChoices) {
+        List<Intent> targetedShareIntents = new ArrayList<>();
+        List<HashMap<String, String>> intentMetaInfo = new ArrayList<HashMap<String, String>>();
+        Intent chooserIntent;
+
+        Intent dummy = new Intent(prototype.getAction());
+        dummy.setType(prototype.getType());
+        List<ResolveInfo> resInfo = getPackageManager().queryIntentActivities(dummy, 0);
+
+        if (!resInfo.isEmpty()) {
+            for (ResolveInfo resolveInfo : resInfo) {
+                if (resolveInfo.activityInfo == null
+                        || Arrays.asList(forbiddenChoices).contains(
+                        resolveInfo.activityInfo.packageName))
+                    continue;
+                //Get all the posible sharers
+                HashMap<String, String> info = new HashMap<String, String>();
+                info.put("packageName", resolveInfo.activityInfo.packageName);
+                info.put("className", resolveInfo.activityInfo.name);
+                String appName = String.valueOf(resolveInfo.activityInfo
+                        .loadLabel(getPackageManager()));
+                info.put("simpleName", appName);
+                //Add only what we want
+                if (Arrays.asList(nameOfAppsToShareWith).contains(
+                        appName.toLowerCase())) {
+                    intentMetaInfo.add(info);
+                }
+            }
+
+            if (!intentMetaInfo.isEmpty()) {
+                // sorting for nice readability
+                Collections.sort(intentMetaInfo,
+                        new Comparator<HashMap<String, String>>() {
+                            @Override
+                            public int compare(
+                                    HashMap<String, String> map,
+                                    HashMap<String, String> map2) {
+                                return map.get("simpleName").compareTo(
+                                        map2.get("simpleName"));
+                            }
+                        });
+
+                // create the custom intent list
+                for (HashMap<String, String> metaInfo : intentMetaInfo) {
+                    Intent targetedShareIntent = (Intent) prototype.clone();
+                    targetedShareIntent.setPackage(metaInfo.get("packageName"));
+                    targetedShareIntent.setClassName(
+                            metaInfo.get("packageName"),
+                            metaInfo.get("className"));
+                    targetedShareIntents.add(targetedShareIntent);
+                }
+                String shareVia = getString(R.string.open_email_via);
+                String shareTitle = shareVia.substring(0, 1).toUpperCase()
+                        + shareVia.substring(1);
+                chooserIntent = Intent.createChooser(targetedShareIntents
+                        .remove(targetedShareIntents.size() - 1), shareTitle);
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS,
+                        targetedShareIntents.toArray(new Parcelable[]{}));
+                return chooserIntent;
+            }
+        }
+
+        return Intent.createChooser(prototype,
+                "Share app to");
     }
 }

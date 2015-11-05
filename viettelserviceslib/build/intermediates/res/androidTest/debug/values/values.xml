@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/K:/Data/FPT/MyAndroid/SweetDreamBaby_UIVersion-master/viettelserviceslib/build/intermediates/bundles/debug/res/values/values.xml -->
+    <!-- From: file:/E:/Project/SweetDreamBaby_UIVersion-master/viettelserviceslib/build/intermediates/bundles/debug/res/values/values.xml -->
     <eat-comment/>
     <dimen name="vt_dialog_margin">20dp</dimen>
     <string name="app_name">Viettel Service Libs</string>
