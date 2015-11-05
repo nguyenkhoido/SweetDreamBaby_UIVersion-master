@@ -11,6 +11,11 @@
         android:layout_height="fill_parent"
         android:orientation="horizontal">
 
+        <com.parse.ParseImageView
+            android:id="@+id/imgBooks"
+            android:layout_width="300dp"
+            android:layout_height="200dp" />
+<!--
         <ImageView
             android:id="@+id/imgBooks"
             android:layout_width="300dp"
@@ -19,6 +24,7 @@
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:src="@drawable/avatar" />
+-->
 
         <LinearLayout
             android:layout_width="match_parent"

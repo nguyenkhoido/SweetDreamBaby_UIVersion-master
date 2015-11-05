@@ -18,6 +18,7 @@ import com.SweetDream.R;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseImageView;
 
 import java.util.List;
 
@@ -46,14 +47,14 @@ public class PaidStoryAdapter extends RecyclerView.Adapter<PaidStoryAdapter.View
         final ItemPaidStory item = itemsPaidBooks.get(i);
         viewHolder.txtTitle.setText(item.getTitleBook());
         viewHolder.txtAuthor.setText(item.getAuthorStory());
-        viewHolder.txtPrice.setText(item.getPriceStory().toString()+" Coin");
+        viewHolder.txtPrice.setText(item.getPriceStory().toString() + " Coin");
         //viewHolder.imgPaidStory.setImageResource(item.getImage());
-        loadImages(item.getImage(),viewHolder.imgPaidStory);
+        loadImages(item.getImage(), viewHolder.imgPaidStory);
         viewHolder.imgPaidStory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = v.getContext();
-                Intent intent = new Intent(context,StoryDetails.class);
+                Intent intent = new Intent(context, StoryDetails.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("currentStory", i);
                 bundle.putString("objectId", item.getObjectId());
@@ -70,31 +71,28 @@ public class PaidStoryAdapter extends RecyclerView.Adapter<PaidStoryAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imgPaidStory;
-        public TextView txtTitle,txtAuthor,txtPrice;
+        public ParseImageView imgPaidStory;
+        public TextView txtTitle, txtAuthor, txtPrice;
 
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imgPaidStory = (ImageView) itemView.findViewById(R.id.imgTabFreeBooks);
+            imgPaidStory = (ParseImageView) itemView.findViewById(R.id.imgTabFreeBooks);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitleTabFreeBooks);
             txtAuthor = (TextView) itemView.findViewById(R.id.txtTypeTabFreeBooks);
             txtPrice = (TextView) itemView.findViewById(R.id.txtPriceStory);
             //btnTabFreeBooks.setVisibility(itemView.GONE);
         }
     }
-    private void loadImages(ParseFile thumbnail, final ImageView img) {
+
+    private void loadImages(ParseFile thumbnail, final ParseImageView img) {
 
         if (thumbnail != null) {
-            thumbnail.getDataInBackground(new GetDataCallback() {
+            img.setParseFile(thumbnail);
+            img.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        img.setImageBitmap(bmp);
-                    } else {
-                    }
+                    // nothing to do
                 }
             });
         } else {

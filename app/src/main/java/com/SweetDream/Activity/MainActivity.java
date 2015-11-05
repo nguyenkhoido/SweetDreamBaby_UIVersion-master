@@ -66,10 +66,33 @@ public class MainActivity extends AppCompatActivity {
     Thread mThread;
     View layout;
 
+
+    //Declare list from parse and adapter of Recyclerview
+    private static List<ItemFreeStory> itemsFreeStoryList;
+    private static List<ItemPaidStory> itemsPaidStoryList;
+    private static FreeStoryAdapter adapterFreeStory;
+    private static PaidStoryAdapter adapterPaidStory;
+
+    private static List<ItemFreeStory> itemsBestFreeStoryList;
+    private static List<ItemPaidStory> itemsBestPaidStoryList;
+    private static FreeStoryAdapter adapterBestFreeStory;
+    private static PaidStoryAdapter adapterBestPaidStory;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        itemsFreeStoryList = new ArrayList<>();
+        itemsPaidStoryList = new ArrayList<>();
+        adapterFreeStory = new FreeStoryAdapter(itemsFreeStoryList);
+        adapterPaidStory = new PaidStoryAdapter(itemsPaidStoryList);
+
+        itemsBestFreeStoryList = new ArrayList<>();
+        itemsBestPaidStoryList = new ArrayList<>();
+        adapterBestFreeStory = new FreeStoryAdapter(itemsBestFreeStoryList);
+        adapterBestPaidStory = new PaidStoryAdapter(itemsBestPaidStoryList);
+
         userProfilePictureView = (ProfilePictureView) findViewById(R.id.userProfilePicture);
         txtUserNameFB = (TextView) findViewById(R.id.txtUserNameFacebook);
         txtUserEmailFB = (TextView) findViewById(R.id.txtUserEmailFacebook);
@@ -214,6 +237,8 @@ public class MainActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
+
+        // check user current
         ParseUser currentUser = ParseUser.getCurrentUser();
         if (currentUser != null && currentUser.isAuthenticated()) {
             // Check if the user is currently logged
@@ -356,81 +381,25 @@ public class MainActivity extends AppCompatActivity {
         private static final String TAB_POSITION = "tab_position";
 
         //Declare list from parse and adapter of Recyclerview
-        List<ItemFreeStory> itemsFreeStoryList;
+        /*List<ItemFreeStory> itemsFreeStoryList;
         List<ItemPaidStory> itemsPaidStoryList;
         FreeStoryAdapter adapterFreeStory;
-        PaidStoryAdapter adapterPaidStory;
+        PaidStoryAdapter adapterPaidStory;*/
         public Dialog processingDialog;
 
         // in contructor create list from parse
         public DesignDemoFragment() {
 
-            itemsFreeStoryList = new ArrayList<>();
+            /*itemsFreeStoryList = new ArrayList<>();
             itemsPaidStoryList = new ArrayList<>();
             adapterFreeStory = new FreeStoryAdapter(itemsFreeStoryList);
-            adapterPaidStory = new PaidStoryAdapter(itemsPaidStoryList);
+            adapterPaidStory = new PaidStoryAdapter(itemsPaidStoryList);*/
 
             //processingDialog = new ProgressDialog(getActivity());
 
         }
 
-        // this guy will get all your story information
-        private void getFreeStory() {
-            processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
 
-            query.whereEqualTo("Price", 0);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> postList, ParseException e) {
-                    if (e == null) {
-                        //processingDialog.dismiss();
-                        // if there results, update the list of posts
-                        for (ParseObject post : postList) {
-                            ParseFile fileObject = (ParseFile) post.get("Image");
-                            ParseFile song = post.getParseFile("Source");
-                            String audiofile = song.getUrl();
-                            ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject, audiofile);
-
-                                itemsFreeStoryList.add(answer);
-                        }
-                        adapterFreeStory.notifyDataSetChanged();
-                        processingDialog.dismiss();
-                    } else {
-                        Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
-                    }
-
-                }
-            });
-        }
-
-        // this guy will get all your story information
-        private void getPaidStory() {
-            processingDialog = ProgressDialog.show(super.getActivity(), "", "Loading data...", true);
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
-
-            query.whereNotEqualTo("Price", 0);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> postList, ParseException e) {
-                    if (e == null) {
-                        //processingDialog.dismiss();
-                        // if there results, update the list of posts
-                        for (ParseObject post : postList) {
-                            ParseFile fileObject = (ParseFile) post.get("Image");
-                            ItemPaidStory answer = new ItemPaidStory(post.getObjectId(),post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
-
-                            itemsPaidStoryList.add(answer);
-                        }
-                        adapterPaidStory.notifyDataSetChanged();
-                        processingDialog.dismiss();
-                    } else {
-                        Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
-                    }
-
-                }
-            });
-        }
 
         // this guy is get postion of the tablayout to setview
         public static DesignDemoFragment newInstance(int tabPosition) {
@@ -463,8 +432,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (tabPosition == 0) {
                 //Call get free story method
-
                 getFreeStory();
+
                 // get Adapter above and set to recyclerview
 
                 recyclerView.setAdapter(adapterFreeStory);
@@ -476,6 +445,22 @@ public class MainActivity extends AppCompatActivity {
                 getPaidStory();
 
                 recyclerView.setAdapter(adapterPaidStory);
+                return story_view;
+            }
+            if (tabPosition == 2) {
+
+                //Call get paid story method
+                getBestFreeStory();
+
+                recyclerView.setAdapter(adapterBestFreeStory);
+                return story_view;
+            }
+            if (tabPosition == 3) {
+
+                //Call get paid story method
+                getBestPaidStory();
+
+                recyclerView.setAdapter(adapterBestPaidStory);
                 return story_view;
             }
             return null;
@@ -548,6 +533,123 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         finish();
         startActivity(intent);
+    }
+
+    // this guy will get all your story information
+    private static void getFreeStory() {
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+
+        query.whereEqualTo("Price", 0);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> postList, ParseException e) {
+                if (e == null) {
+                    //processingDialog.dismiss();
+                    // if there results, update the list of posts
+                    for (ParseObject post : postList) {
+                        ParseFile fileObject = (ParseFile) post.get("Image");
+                        ParseFile song = post.getParseFile("Source");
+                        String audiofile = song.getUrl();
+                        ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject, audiofile);
+
+                        itemsFreeStoryList.add(answer);
+                    }
+                    adapterFreeStory.notifyDataSetChanged();
+
+                } else {
+                    Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
+                }
+
+            }
+        });
+    }
+
+    // this guy will get all your story information
+    private static void getPaidStory() {
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+
+        query.whereNotEqualTo("Price", 0);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> postList, ParseException e) {
+                if (e == null) {
+                    //processingDialog.dismiss();
+                    // if there results, update the list of posts
+                    for (ParseObject post : postList) {
+                        ParseFile fileObject = (ParseFile) post.get("Image");
+                        ItemPaidStory answer = new ItemPaidStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
+
+                        itemsPaidStoryList.add(answer);
+                    }
+                    adapterPaidStory.notifyDataSetChanged();
+
+                } else {
+                    Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
+                }
+
+            }
+        });
+    }
+
+    // this guy will get all your story information
+    private static void getBestFreeStory() {
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+        query.whereEqualTo("Price", 0);
+        query.orderByDescending("LikeCount");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> postList, ParseException e) {
+                if (e == null) {
+                    //processingDialog.dismiss();
+                    // if there results, update the list of posts
+                    for (ParseObject post : postList) {
+                        ParseFile fileObject = (ParseFile) post.get("Image");
+                        ParseFile song = post.getParseFile("Source");
+                        String audiofile = song.getUrl();
+                        ItemFreeStory answer = new ItemFreeStory(post.getObjectId(), post.getString("StoryName"), post.getString("Author"), post.getInt("Price"), fileObject, audiofile);
+
+                        itemsBestFreeStoryList.add(answer);
+                    }
+                    adapterBestFreeStory.notifyDataSetChanged();
+                    //processingDialog.dismiss();
+                } else {
+                    Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
+                }
+
+            }
+        });
+    }
+    // this guy will get all your story information
+    private static void getBestPaidStory() {
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+        query.whereGreaterThan("Price", 0);
+        query.orderByDescending("DownLoadCount");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> postList, ParseException e) {
+                if (e == null) {
+                    //processingDialog.dismiss();
+                    // if there results, update the list of posts
+                    for (ParseObject post : postList) {
+                        ParseFile fileObject = (ParseFile) post.get("Image");
+                        ParseFile song = post.getParseFile("Source");
+                        String audiofile = song.getUrl();
+                        ItemPaidStory answer = new ItemPaidStory(post.getObjectId(),post.getString("StoryName"), post.getString("Author"), post.getNumber("Price"), fileObject);
+
+                        itemsBestPaidStoryList.add(answer);
+                    }
+                    adapterBestPaidStory.notifyDataSetChanged();
+                    //processingDialog.dismiss();
+                } else {
+                    Log.d(getClass().getSimpleName(), "Error: " + e.getMessage());
+                }
+
+            }
+        });
     }
 }
 

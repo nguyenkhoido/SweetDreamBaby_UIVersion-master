@@ -15,6 +15,7 @@ import com.SweetDream.R;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseImageView;
 
 import java.util.List;
 
@@ -41,7 +42,7 @@ public class MyBooksAdapter extends ArrayAdapter<ItemsBook> {
         LayoutInflater inflater = LayoutInflater.from(context);
         View row = inflater.inflate(R.layout.custom_cardview_bookslist_adapter, null);
 
-        ImageView imgView = (ImageView)row.findViewById(R.id.imgBooks);
+        ParseImageView imgView = (ParseImageView)row.findViewById(R.id.imgBooks);
         TextView txt1=(TextView)row.findViewById(R.id.titleBook);
         TextView txt2 = (TextView)row.findViewById(R.id.authorBook);
 
@@ -53,19 +54,16 @@ public class MyBooksAdapter extends ArrayAdapter<ItemsBook> {
 
         return row;
     }
-    private void loadImages(ParseFile thumbnail, final ImageView img) {
+    
+    // load file from parse and set it to imageview (not real)
+    private void loadImages(ParseFile thumbnail, final ParseImageView img) {
 
         if (thumbnail != null) {
-            thumbnail.getDataInBackground(new GetDataCallback() {
+            img.setParseFile(thumbnail);
+            img.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        img.setImageBitmap(bmp);
-
-                    } else {
-                    }
+                    // nothing to do
                 }
             });
         } else {

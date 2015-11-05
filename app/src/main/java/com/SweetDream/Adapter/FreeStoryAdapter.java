@@ -18,6 +18,7 @@ import com.SweetDream.R;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseImageView;
 
 import java.util.List;
 
@@ -73,14 +74,14 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imgFreeStory;
+        public ParseImageView imgFreeStory;
         public TextView txtTitle,txtAuthor,txtPrice;
 
 
         //Button btnTabFreeBooks;
         public ViewHolder(View itemView) {
             super(itemView);
-            imgFreeStory = (ImageView) itemView.findViewById(R.id.imgTabFreeBooks);
+            imgFreeStory = (ParseImageView) itemView.findViewById(R.id.imgTabFreeBooks);
             txtTitle = (TextView) itemView.findViewById(R.id.txtTitleTabFreeBooks);
             txtAuthor = (TextView) itemView.findViewById(R.id.txtTypeTabFreeBooks);
             txtPrice = (TextView)itemView.findViewById(R.id.txtPriceStory);
@@ -89,19 +90,14 @@ public class FreeStoryAdapter extends RecyclerView.Adapter<FreeStoryAdapter.View
     }
 
     // load file from parse and set it to imageview (not real)
-    private void loadImages(ParseFile thumbnail, final ImageView img) {
+    private void loadImages(ParseFile thumbnail, final ParseImageView img) {
 
         if (thumbnail != null) {
-            thumbnail.getDataInBackground(new GetDataCallback() {
+            img.setParseFile(thumbnail);
+            img.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        img.setImageBitmap(bmp);
-
-                    } else {
-                    }
+                    // nothing to do
                 }
             });
         } else {

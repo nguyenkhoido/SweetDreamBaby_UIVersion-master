@@ -99,6 +99,14 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 
         storyImage = (ImageView) findViewById(R.id.storyImage);
+        ImageButton imgBtnBackActivity = (ImageButton)findViewById(R.id.imgBtnBackActivity);
+        imgBtnBackActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
 
         // Mediaplayer
         mp = new MediaPlayer();

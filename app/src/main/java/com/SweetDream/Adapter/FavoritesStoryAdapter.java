@@ -16,6 +16,7 @@ import com.SweetDream.R;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseImageView;
 import com.parse.ParseObject;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class FavoritesStoryAdapter extends ArrayAdapter<ItemFavoriteStories> {
         LayoutInflater inflater = LayoutInflater.from(context);
         View row = inflater.inflate(R.layout.custom_favoritesbook_adapter, null);
 
-        ImageView imgView = (ImageView)row.findViewById(R.id.imgFavorites);
+        ParseImageView imgView = (ParseImageView)row.findViewById(R.id.imgFavorites);
         TextView txt1=(TextView)row.findViewById(R.id.titleFavorites);
         TextView txt2 = (TextView)row.findViewById(R.id.authorFavorites);
 
@@ -58,19 +59,15 @@ public class FavoritesStoryAdapter extends ArrayAdapter<ItemFavoriteStories> {
 
         return row;
     }
-    private void loadImages(ParseFile thumbnail, final ImageView img) {
+    // load file from parse and set it to imageview (not real)
+    private void loadImages(ParseFile thumbnail, final ParseImageView img) {
 
         if (thumbnail != null) {
-            thumbnail.getDataInBackground(new GetDataCallback() {
+            img.setParseFile(thumbnail);
+            img.loadInBackground(new GetDataCallback() {
                 @Override
                 public void done(byte[] data, ParseException e) {
-                    if (e == null) {
-
-                        Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                        img.setImageBitmap(bmp);
-
-                    } else {
-                    }
+                    // nothing to do
                 }
             });
         } else {
