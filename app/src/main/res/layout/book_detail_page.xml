@@ -3,22 +3,21 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    >
 
     <!--Book Image-->
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvStoryImage"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal"
-        android:scaleType="fitCenter"/>
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="top"
+        android:scaleType="centerCrop"
+        android:id="@+id/tvStoryImage"/>
 
     <!-- Book Title, Author, Share and Favorite-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:gravity="center|bottom"
         android:layout_marginTop="10dp">
 
         <!-- Button Share-->
