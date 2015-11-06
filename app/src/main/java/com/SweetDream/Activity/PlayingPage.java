@@ -98,11 +98,12 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         btnShuffle = (ImageButton) findViewById(R.id.btnShuffle);
         songProgressBar = (SeekBar) findViewById(R.id.songProgressBar);
         songTitleLabel = (TextView) findViewById(R.id.tvNowPlaying);
-        songDescription = (TextView) findViewById(R.id.tvStoryDescription);
+        //songDescription = (TextView) findViewById(R.id.tvStoryDescription);
         songCurrentDurationLabel = (TextView) findViewById(R.id.songCurrentDurationLabel);
         songTotalDurationLabel = (TextView) findViewById(R.id.songTotalDurationLabel);
 
-        storyImage = (ImageView) findViewById(R.id.storyImage);
+        //storyImage = (ImageView) findViewById(R.id.storyImage);
+
         ImageButton imgBtnBackActivity = (ImageButton)findViewById(R.id.imgBtnBackActivity);
         imgBtnBackActivity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +126,8 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         if(result.equals("free")){
             songsList = songManager.getFreeStory();
             String url = songsList.get(currentSongIndex).getParseFile("Source").getUrl();
-            Toast.makeText(getApplicationContext(),""+url,Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(),""+url,Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_LONG).show();
             // By default play first song
             playSong(currentSongIndex);
         }
@@ -397,13 +398,15 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
             songTitleLabel.setText(songTitle + " - " + songAuthor);
 
             // Displaying Image Song
-            ParseFile image = songsList.get(songIndex).getParseFile("Image");
-            LoadImageAudioParse loadImageAudioParse = new LoadImageAudioParse();
-            loadImageAudioParse.loadImages(image, storyImage);
 
-            // Displaying Song title
-            String description = songsList.get(songIndex).getString("Description");
-            songDescription.setText(description);
+           /* ParseFile image = songsList.get(songIndex).getParseFile("Image");
+            LoadImageAudioParse loadImageAudioParse = new LoadImageAudioParse();
+            loadImageAudioParse.loadImages(image, storyImage);*/
+
+            // Displaying Song Description
+
+          /*  String description = songsList.get(songIndex).getString("Description");
+            songDescription.setText(description);*/
 
             // Changing Button Image to pause image
             btnPlay.setImageResource(R.drawable.btn_pause);
@@ -438,6 +441,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
             songTitleLabel.setText(storyName + " - " + storyAuthor);
 
             // Displaying Image Song
+
             LoadImageAudioParse loadImageAudioParse = new LoadImageAudioParse();
             loadImageAudioParse.loadImages(imageFile, storyImage);
 

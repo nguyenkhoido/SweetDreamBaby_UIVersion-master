@@ -1,7 +1,6 @@
 package com.SweetDream.Activity;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -190,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
                             loadLoginView();
                         }
                         break;
-
                     case R.id.navigation_item_myDownloads:
                         fragment = new MyDownload();
                         setTitle("Sweet Dream - My Downloads");

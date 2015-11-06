@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolBarListen">
-
+<!--
         <LinearLayout
             android:id="@+id/songThumbnail"
             android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 android:text="Description"
                 android:textColor="@color/black"
                 android:textSize="20dp" />
-        </LinearLayout>
+        </LinearLayout>-->
     </ScrollView>
 
 

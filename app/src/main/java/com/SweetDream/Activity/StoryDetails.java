@@ -54,7 +54,7 @@ public class StoryDetails extends SuperActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.book_detail_page);
 
-
+//Get ID Widget in layout
         btnGetStory = (Button) findViewById(R.id.btnGetStory);
         btnDownload = (Button) findViewById(R.id.btnDownload);
         imgBtnFavorites = (ImageButton) findViewById(R.id.imgBtnFavorites);
@@ -110,7 +110,7 @@ public class StoryDetails extends SuperActivity {
                         ParseFile file = parseObject.getParseFile("Image");
                         tvStoryName.setText(parseObject.getString("StoryName"));
                         tvAuthor.setText(parseObject.getString("Author"));
-                        tvPrice.setText(parseObject.getNumber("Price").toString());
+                        tvPrice.setText("Price: "+parseObject.getNumber("Price").toString());
                         tvSummariesContent.setText(parseObject.getString("Description"));
                         load.loadImages(file, storyImage);
                         test = parseObject.getString("Author");
@@ -286,7 +286,7 @@ public class StoryDetails extends SuperActivity {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Toast.makeText(StoryDetails.this, "User Buy this story, go to Your Book to see!!", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(StoryDetails.this, "User Buy this story, go to Your Book to see!!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Error saving: " + e.getMessage(),

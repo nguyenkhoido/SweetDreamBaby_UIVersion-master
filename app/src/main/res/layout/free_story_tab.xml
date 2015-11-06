@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#E9E9E9">
+    android:background="@drawable/headerimg6">
 
-    <!--android:background="@drawable/headerimg6"-->
+    <!--android:background="#E9E9E9"-->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_freeStoryTab"
         android:layout_width="match_parent"
