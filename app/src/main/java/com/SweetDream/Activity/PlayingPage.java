@@ -20,8 +20,11 @@ import com.SweetDream.Audio.Utilities;
 import com.SweetDream.Data.StoryList;
 import com.SweetDream.Extends.LoadImageAudioParse;
 import com.SweetDream.R;
+import com.parse.GetCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.io.IOException;
 import java.util.List;
@@ -64,7 +67,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
     private List<ParseObject> songsList;
 
 
-    String result;
+    String result, objectId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,7 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         Bundle bundle = intent.getExtras();
         //objectId = bundle.getString("objectId");
         currentSongIndex = bundle.getInt("currentStory");
+        objectId =bundle.getString("objectId");
         result = bundle.getString("result");
 
 
@@ -120,17 +124,44 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
         // Getting all songs list
         if(result.equals("free")){
             songsList = songManager.getFreeStory();
+            String url = songsList.get(currentSongIndex).getParseFile("Source").getUrl();
+            Toast.makeText(getApplicationContext(),""+url,Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_LONG).show();
+            // By default play first song
+            playSong(currentSongIndex);
         }
         if(result.equals("paid")){
-            songsList = songManager.getPaidStory();
+            ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Story");
+            query.whereEqualTo("objectId", objectId);
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    if (parseObject != null) {
+                        // GET DETAIL STORY FROM PARSE
+                        String storyName = parseObject.getString("StoryName");
+
+                        ParseFile imageFile = parseObject.getParseFile("Image");
+                        //String storyImage = imageFile.getUrl();
+                        //Toast.makeText(PlayingPage.this, ""+storyImage,Toast.LENGTH_LONG).show();
+                        String storyAuthor = parseObject.getString("Author");
+
+                        String storyDescription = parseObject.getString("Description");
+
+                        // GET FILE MP3 RESOUCE FROM PARSE
+                        ParseFile song = parseObject.getParseFile("Source");
+                        String audiofile = song.getUrl();
+                        playSong(storyName, imageFile, storyAuthor, storyDescription, audiofile);
+
+
+                    } else {
+                        Toast.makeText(PlayingPage.this, "Data load fail", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
 
 
-        String url = songsList.get(currentSongIndex).getParseFile("Source").getUrl();
-        Toast.makeText(getApplicationContext(),""+url,Toast.LENGTH_LONG).show();
-        Toast.makeText(getApplicationContext(),""+result,Toast.LENGTH_LONG).show();
-        // By default play first song
-        playSong(currentSongIndex);
+
 
         /**
          * Play button click event
@@ -373,6 +404,45 @@ public class PlayingPage extends AppCompatActivity implements MediaPlayer.OnComp
             // Displaying Song title
             String description = songsList.get(songIndex).getString("Description");
             songDescription.setText(description);
+
+            // Changing Button Image to pause image
+            btnPlay.setImageResource(R.drawable.btn_pause);
+
+            // set Progress bar values
+            songProgressBar.setProgress(0);
+            songProgressBar.setMax(100);
+
+            // Updating progress bar
+            updateProgressBar();
+
+
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void  playSong(String storyName, ParseFile imageFile, String storyAuthor, String storyDescription,String sourceFile){
+        // Play song
+        try {
+            mp.reset();
+            //mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mp.setDataSource(sourceFile);
+            mp.prepare();
+            mp.start();
+
+
+            // Displaying Song title
+            songTitleLabel.setText(storyName + " - " + storyAuthor);
+
+            // Displaying Image Song
+            LoadImageAudioParse loadImageAudioParse = new LoadImageAudioParse();
+            loadImageAudioParse.loadImages(imageFile, storyImage);
+
+            // Displaying Song title
+            songDescription.setText(storyDescription);
 
             // Changing Button Image to pause image
             btnPlay.setImageResource(R.drawable.btn_pause);

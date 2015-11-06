@@ -28,20 +28,39 @@ public class StoryList {
         return itemsFreeStoryList;
     }
 
-    List<ParseObject> itemsPaidStoryList;
+    List<ParseObject> itemsBestFreeStoryList;
 
-    public List<ParseObject> getPaidStory() {
-        itemsPaidStoryList = new ArrayList<>();
+    public List<ParseObject> getBestFreeStory() {
+        itemsBestFreeStoryList = new ArrayList<>();
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
-        query.whereNotEqualTo("Price", 0);
+        query.whereEqualTo("Price", 0);
+        query.orderByDescending("LikeCount");
         try {
-            itemsPaidStoryList = query.find();
+            itemsBestFreeStoryList = query.find();
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return itemsPaidStoryList;
+        return itemsBestFreeStoryList;
     }
+
+    List<ParseObject> itemsMyBookStoryList;
+
+    public List<ParseObject> getMyBook() {
+        itemsMyBookStoryList = new ArrayList<>();
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Story");
+        query.whereEqualTo("Price", 0);
+        query.orderByDescending("LikeCount");
+        try {
+            itemsMyBookStoryList = query.find();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return itemsMyBookStoryList;
+    }
+
 
 }

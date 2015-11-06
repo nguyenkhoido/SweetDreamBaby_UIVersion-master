@@ -85,6 +85,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:textColor="@color/black"
             android:textSize="20dp" />
 
         <LinearLayout
