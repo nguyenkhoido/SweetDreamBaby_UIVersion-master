@@ -247,6 +247,25 @@ private ProgressDialog progressingDialog;
     private void saveUser() {
         ParseUser currentUser = ParseUser.getCurrentUser();
 
+        currentUser.put("Coin", "0");
+
+        // Alert
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Toast.makeText(LoginActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
+
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    builder.setMessage(e.getMessage())
+                            .setTitle("Update State")
+                            .setPositiveButton(android.R.string.ok, null);
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+            }
+        });
 
         if (currentUser.has("profile")) {
             JSONObject userProfile = currentUser.getJSONObject("profile");
@@ -258,25 +277,7 @@ private ProgressDialog progressingDialog;
                 if (userProfile.has("email")) {
                     currentUser.setEmail(userProfile.getString("email"));
                 }
-                currentUser.put("Coin", 0);
 
-                // Alert
-                currentUser.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if (e == null) {
-                            Toast.makeText(LoginActivity.this, "Update Account Success!", Toast.LENGTH_LONG).show();
-
-                        } else {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                            builder.setMessage(e.getMessage())
-                                    .setTitle("Update State")
-                                    .setPositiveButton(android.R.string.ok, null);
-                            AlertDialog dialog = builder.create();
-                            dialog.show();
-                        }
-                    }
-                });
 
             } catch (JSONException e) {
                 Toast.makeText(LoginActivity.this, "Error parsing saved user data.", Toast.LENGTH_LONG).show();
@@ -424,4 +425,6 @@ private ProgressDialog progressingDialog;
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

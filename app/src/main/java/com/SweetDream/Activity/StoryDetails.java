@@ -100,7 +100,7 @@ public class StoryDetails extends SuperActivity {
                 }
             });
         }
-        else{
+        if(result.equals("paid")){
             query.whereEqualTo("objectId", objectId);
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
@@ -508,7 +508,7 @@ public class StoryDetails extends SuperActivity {
                             metaInfo.get("className"));
                     targetedShareIntents.add(targetedShareIntent);
                 }
-                String shareVia = getString(R.string.open_email_via);
+                String shareVia = getString(R.string.offer_share_via);
                 String shareTitle = shareVia.substring(0, 1).toUpperCase()
                         + shareVia.substring(1);
                 chooserIntent = Intent.createChooser(targetedShareIntents
@@ -520,6 +520,6 @@ public class StoryDetails extends SuperActivity {
         }
 
         return Intent.createChooser(prototype,
-                "Share app to");
+                getString(R.string.offer_share_via));
     }
 }

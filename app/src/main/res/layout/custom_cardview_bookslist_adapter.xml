@@ -9,12 +9,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <com.parse.ParseImageView
             android:id="@+id/imgBooks"
-            android:layout_width="300dp"
-            android:layout_height="200dp" />
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
 <!--
         <ImageView
             android:id="@+id/imgBooks"
@@ -28,30 +30,30 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="5dp">
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="#7000"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/titleBook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:layout_gravity="right"
-                android:textColor="@color/primaryColor"
-                android:textSize="30dp"
-                android:textStyle="bold" />
+                android:textColor="@color/white"
+                android:textSize="24dp"
+                android:textStyle="bold|italic"
+                android:layout_marginLeft="5dp" />
 
             <TextView
                 android:id="@+id/authorBook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:layout_gravity="right"
-                android:textColor="@color/primaryColor"
-                android:textSize="24dp"
-                android:textStyle="italic" />
+                android:gravity="left"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold|italic" />
         </LinearLayout>
 
     </LinearLayout>

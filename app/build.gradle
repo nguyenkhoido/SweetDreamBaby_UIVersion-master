@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'MyAndroidKey'
+            keyAlias 'MinhColor'
             keyPassword '123456'
-            storeFile file('C:/Users/nguye_000/Desktop/key/keystore.jks')
+            storeFile file('C:/Users/Minh Color/Desktop/MinhColor.jks')
             storePassword '123456'
         }
     }
@@ -15,9 +15,10 @@ android {
         applicationId "com.echessa.SweetDream"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 1
+        versionCode
         versionName "1.0"
         multiDexEnabled true
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -26,13 +27,15 @@ android {
             signingConfig signingConfigs.config
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
     // Module dependency on ParseUI libraries sources
     // Android SDK
     // Audience Network SDK
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     //compile 'com.parse:parse-android:1.10.2'
     compile files('libs/Parse-1.9.3.jar')
     compile files('libs/ParseFacebookUtilsV4-1.9.3.jar')
